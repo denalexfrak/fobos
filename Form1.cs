@@ -66,62 +66,23 @@ namespace fobos_w
 
         class Tree
         {
-            
+          //  public Dictionary<string, Tree2> trees2 { get; set; }
             public string name { get; set; }
             public string type { get; set; }
             public string id { get; set; }
         }
 
-        
-              
+        class Tree2
+        {
+          // public Dictionary<string, Tree2> trees2 { get; set; }
+            public string name { get; set; }
+            public string type { get; set; }
+            public string id { get; set; }
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
-            // string json = @"    {
-            //    ""users"": {
-            //        ""10045"": {
-            //            ""name"": ""steve"",
-            //            ""state"": ""NY"",
-            //            ""id"": ""ebb2-92bf-3062-7774""
-            //        },
-            //        ""12345"": {
-            //            ""name"": ""mike"",
-            //            ""state"": ""MA"",
-            //            ""id"": ""fb60-b34f-6dc8-aaf7""
-            //        },
-            //        ""100034"": {
-            //            ""name"": ""tom"",
-            //            ""state"": ""WA"",
-            //            ""id"": ""cedf-c56f-18a4-4b1""
-            //        }
-            //    }
-            //}";
-            string json = getContent("https://lk.curog.ru/api.tree/get_tree/?id=14029&key=9778a18d58d75bf6d569d31ef277c2cc");
-            RootObject root = JsonConvert.DeserializeObject<RootObject>(json);
-
-           
-
-            foreach (string key in root.trees.Keys)
-             {
-
-
-            //    Console.WriteLine("key: " + key);
-            //    User user = root.users[key];
-            //    Console.WriteLine("name: " + user.name);
-            //    Console.WriteLine("type: " + user.type);
-            //    Console.WriteLine("id: " + user.id);
-            //    Console.WriteLine();                
-            //MessageBox.Show(key);
-            //User user = root.users[key];
-            //MessageBox.Show(user.name);
-            //MessageBox.Show(user.type);
-            //MessageBox.Show(user.id);
-
-
-             }
-
-
-
-
+            
 
         }
 
@@ -137,15 +98,18 @@ namespace fobos_w
         {
             string json = getContent("https://lk.curog.ru/api.tree/get_tree/?id=14029&key=9778a18d58d75bf6d569d31ef277c2cc");
 
-            Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
-            //  var str = resultObject["tree"]?["16590"].ToString();
+            Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);            
             var str = resultObject["tree"].ToString();
-           // RootObject root = JsonConvert.DeserializeObject<RootObject>(str);
+
             var values = JsonConvert.DeserializeObject<Dictionary<string, Tree>>(str);
-            // List<RootObject> list = JsonConvert.DeserializeObject<List<RootObject>>(str);
             foreach (var item in values)
             {
-                MessageBox.Show(item.ToString());
+               // var str2 = resultObject[item].ToString();
+                //MessageBox.Show(str2.ToString());
+                 MessageBox.Show(item.ToString());
+                //MessageBox.Show();
+
+
             }
         }
     }
