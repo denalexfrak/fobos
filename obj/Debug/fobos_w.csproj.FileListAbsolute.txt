@@ -1,0 +1,13 @@
+D:\project c\fobos\fobos_w\fobos_w\bin\Debug\fobos_w.exe.config
+D:\project c\fobos\fobos_w\fobos_w\bin\Debug\fobos_w.exe
+D:\project c\fobos\fobos_w\fobos_w\bin\Debug\fobos_w.pdb
+D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.csprojAssemblyReference.cache
+D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.Form1.resources
+D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.Properties.Resources.resources
+D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.csproj.GenerateResource.cache
+D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.csproj.CoreCompileInputs.cache
+D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.exe
+D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.pdb
+D:\project c\fobos\fobos_w\fobos_w\bin\Debug\Newtonsoft.Json.dll
+D:\project c\fobos\fobos_w\fobos_w\bin\Debug\Newtonsoft.Json.xml
+D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.csproj.CopyComplete
