@@ -60,13 +60,11 @@ namespace fobos_w
 
         class RootObject
         {
-          //  public string status { get; set; }
             public Dictionary<string, Tree> trees { get; set; }
         }
 
         class Tree
         {
-          //  public Dictionary<string, Tree2> trees2 { get; set; }
             public string name { get; set; }
             public string type { get; set; }
             public string id { get; set; }
@@ -74,23 +72,18 @@ namespace fobos_w
 
         class Tree2
         {
-          // public Dictionary<string, Tree2> trees2 { get; set; }
             public string name { get; set; }
             public string type { get; set; }
             public string id { get; set; }
         }
 
         private void button2_Click(object sender, EventArgs e)
-        {
-            
+        {            
 
         }
 
         private void button3_Click(object sender, EventArgs e)
-        {
-            string json = getContent("https://lk.curog.ru/api.tree/get_tree/?id=14029&key=9778a18d58d75bf6d569d31ef277c2cc");
-
-            var values = JsonConvert.DeserializeObject<Dictionary<string, Tree>>(json);
+        {     
             
         }
 
@@ -100,17 +93,14 @@ namespace fobos_w
 
             Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);            
             var str = resultObject["tree"].ToString();
+            Dictionary<string, Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Tree>>(str);
 
-            var values = JsonConvert.DeserializeObject<Dictionary<string, Tree>>(str);
-            foreach (var item in values)
+            foreach (KeyValuePair<string, Tree> keyValue in values)
             {
-               // var str2 = resultObject[item].ToString();
-                //MessageBox.Show(str2.ToString());
-                 MessageBox.Show(item.ToString());
-                //MessageBox.Show();
-
-
+                dataGridView1.Rows.Add(keyValue.Key); 
             }
+
+           
         }
     }
     }
