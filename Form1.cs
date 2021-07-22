@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -51,30 +52,28 @@ namespace fobos_w
 
 
 
-        private void button1_Click(object sender, EventArgs e)
-        {         
+      
 
-
-        }
-
-
-        class RootObject
-        {
-            public Dictionary<string, Tree> trees { get; set; }
-        }
+      
 
         class Tree
         {
-            public string name { get; set; }
-            public string type { get; set; }
+            [JsonProperty("id")]
             public string id { get; set; }
+            [JsonProperty("name")]
+            public string name { get; set; }
+            [JsonProperty("type")]
+            public string type { get; set; }
         }
 
         class Tree2
         {
-            public string name { get; set; }
-            public string type { get; set; }
+           
             public string id { get; set; }
+         
+            public string name { get; set; }
+           
+            public string type { get; set; }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -93,14 +92,80 @@ namespace fobos_w
 
             Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);            
             var str = resultObject["tree"].ToString();
+            var str2 = resultObject["tree"]?["16590"].ToString();
+            var str3 = resultObject["tree"]?["16590"]?["16591"].ToString();
+            //MessageBox.Show(str2.ToString());
+
+            //string json2 = JsonConvert.SerializeObject(str, Formatting.None);
+
+            //Newtonsoft.Json.Linq.JObject resultObject2 = Newtonsoft.Json.Linq.JObject.Parse(json2);
+            //var str2 = resultObject["15730"].ToString();
+
+            // MessageBox.Show(str.ToString());
             Dictionary<string, Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Tree>>(str);
+          //  Dictionary<string, Tree2> values2 = JsonConvert.DeserializeObject<Dictionary<string, Tree2>>(str2);
 
             foreach (KeyValuePair<string, Tree> keyValue in values)
             {
-                dataGridView1.Rows.Add(keyValue.Key); 
+                dataGridView1.Rows.Add(keyValue.Key);
+               
+                //    Newtonsoft.Json.Linq.JObject resultObject2 = Newtonsoft.Json.Linq.JObject.Parse(json);                
+                //    var str2 = resultObject2["tree"]?["16590"].ToString();
+                //    Dictionary<string, Tree2> values2 = JsonConvert.DeserializeObject<Dictionary<string, Tree2>>(str2);
+
+                //    foreach (KeyValuePair2<string, Tree2> keyValue2 in values2)
+                //    {
+                        dataGridView2.Rows.Add(keyValue.Value);
+                //    }
             }
 
-           
+
+            Tree2 account = JsonConvert.DeserializeObject<Tree2>(str3);
+            MessageBox.Show(account.name.ToString());
+
+            Tree2 account2 = JsonConvert.DeserializeObject<Tree2>(str2);         
+            MessageBox.Show(account2.name.ToString());
+            //for (int x1 = 0; x1 <  data_tree2.Count; x1++)
+            //{
+            //    string row = data_tree2[x1];
+
+            //}
+        }
+
+
+
+
+      
+
+
+
+
+         class Order
+                {
+                    [JsonProperty("id")]
+                    public string id { get; set; }
+                    [JsonProperty("name")]
+                    public string name { get; set; }
+                    [JsonProperty("type")]
+                    public string type { get; set; }            
+                }
+
+
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+          
+        }
+
+
+
+
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
     }
