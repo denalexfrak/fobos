@@ -76,6 +76,33 @@ namespace fobos_w
             public string type { get; set; }
         }
 
+
+        class Tree3
+        {
+            public string id { get; set; }
+
+            public string name { get; set; }
+
+            public string type { get; set; }
+        }
+
+
+
+
+
+
+        public enum AddressType
+        {
+            
+        }
+
+        public class Address
+        {
+            public string City { get; set; }
+        }
+
+
+
         private void button2_Click(object sender, EventArgs e)
         {            
 
@@ -91,40 +118,55 @@ namespace fobos_w
             string json = getContent("https://lk.curog.ru/api.tree/get_tree/?id=14029&key=9778a18d58d75bf6d569d31ef277c2cc");
 
             Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);            
-            var str = resultObject["tree"].ToString();
-            var str2 = resultObject["tree"]?["16590"].ToString();
+            var str1 = resultObject["tree"].ToString();
+            
             var str3 = resultObject["tree"]?["16590"]?["16591"].ToString();
-            //MessageBox.Show(str2.ToString());
-
-            //string json2 = JsonConvert.SerializeObject(str, Formatting.None);
-
-            //Newtonsoft.Json.Linq.JObject resultObject2 = Newtonsoft.Json.Linq.JObject.Parse(json2);
-            //var str2 = resultObject["15730"].ToString();
-
-            // MessageBox.Show(str.ToString());
-            Dictionary<string, Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Tree>>(str);
-          //  Dictionary<string, Tree2> values2 = JsonConvert.DeserializeObject<Dictionary<string, Tree2>>(str2);
+           
+            Dictionary<string, Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Tree>>(str1);
+          
 
             foreach (KeyValuePair<string, Tree> keyValue in values)
             {
+                //1-я итерация самый верхний уровень
                 dataGridView1.Rows.Add(keyValue.Key);
-               
-                //    Newtonsoft.Json.Linq.JObject resultObject2 = Newtonsoft.Json.Linq.JObject.Parse(json);                
-                //    var str2 = resultObject2["tree"]?["16590"].ToString();
-                //    Dictionary<string, Tree2> values2 = JsonConvert.DeserializeObject<Dictionary<string, Tree2>>(str2);
+                Tree2 account1 = JsonConvert.DeserializeObject<Tree2>(str1);
+                if (account1.name != null)
+                {
+                  //  MessageBox.Show(account1.name.ToString());
+                }
 
-                //    foreach (KeyValuePair2<string, Tree2> keyValue2 in values2)
-                //    {
-                        dataGridView2.Rows.Add(keyValue.Value);
-                //    }
+                //1-й уровень поиск данных на втором уровне
+                var str2 = resultObject["tree"]?[keyValue.Key].ToString();
+                Tree2 account2 = JsonConvert.DeserializeObject<Tree2>(str2);
+                if (account2.name != null)
+                {
+                 //   MessageBox.Show(account2.name.ToString());
+                }
+
+
+                //2-я итерация перебор второго уровня               
+                Dictionary<AddressType, Address> values2 = JsonConvert.DeserializeObject<Dictionary<AddressType, Address>>(str2);
+
+                //foreach (KeyValuePair<string, Tree3> keyValue2 in values2)
+                //   {
+                // dataGridView2.Rows.Add(keyValue2.Key);
+                //       MessageBox.Show(keyValue2.Key.ToString());
+                //   }
+
             }
 
 
-            Tree2 account = JsonConvert.DeserializeObject<Tree2>(str3);
-            MessageBox.Show(account.name.ToString());
+          //  Tree2 account = JsonConvert.DeserializeObject<Tree2>(str3);
+          //  MessageBox.Show(account.name.ToString());
 
-            Tree2 account2 = JsonConvert.DeserializeObject<Tree2>(str2);         
-            MessageBox.Show(account2.name.ToString());
+           // Tree2 account2 = JsonConvert.DeserializeObject<Tree2>(str2);         
+          //  MessageBox.Show(account2.name.ToString());
+
+          //  Tree2 account3 = JsonConvert.DeserializeObject<Tree2>(str1);
+          //  if (account3.name != null)
+          //  {
+          //      MessageBox.Show(account3.name.ToString());
+          //  }
             //for (int x1 = 0; x1 <  data_tree2.Count; x1++)
             //{
             //    string row = data_tree2[x1];
