@@ -166,79 +166,83 @@ namespace fobos_w
 
             Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
             var str1 = resultObject["tree"].ToString();
-            
+            string str0 = resultObject["status"].ToString();
+            MessageBox.Show(str0.ToString());
 
             Dictionary<string, Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Tree>>(str1);
 
             int i_1 = 0;
-
-            foreach (KeyValuePair<string, Tree> keyValue in values)
+            if (str1 != "[]" && str0=="ok")
             {
-                //1-я итерация самый верхний уровень
-                
-                Tree2 account1 = JsonConvert.DeserializeObject<Tree2>(str1);
-
-                if (keyValue.Key != null)
-                {
-                    Application.DoEvents();
-
-                    //1-й уровень поиск данных на втором уровне                    
-                    var str2 = resultObject["tree"]?[keyValue.Key].ToString();
-                    Tree3 account2 = JsonConvert.DeserializeObject<Tree3>(str2);
-
-                    //заполняем таблицу 1-го уровня древа
-                    dataGridView1.Rows.Add();
-                    dataGridView1.Rows[i_1].Cells[0].Value = Convert.ToString(i_1 + 1);
-                    dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account2.id.ToString());
-                    dataGridView1.Rows[i_1].Cells[2].Value = Convert.ToString(account2.name.ToString());
-                    dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account2.type.ToString());
-                    i_1++;
-
-                       
-
-
-
-                    //2-я итерация перебор второго уровня
-                    string json2 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
-                    Newtonsoft.Json.Linq.JObject resultObject2 = Newtonsoft.Json.Linq.JObject.Parse(json2);
-                    var str3 = resultObject2["tree"].ToString();
-                    if (str3 != "[]")
+                    foreach (KeyValuePair<string, Tree> keyValue in values)
                     {
-                        
-                          Dictionary<string, Tree4> values2 = JsonConvert.DeserializeObject<Dictionary<string, Tree4>>(str3);
-                          foreach (KeyValuePair<string, Tree4> keyValue2 in values2)
-                            {
-                             var str3_1 = resultObject2["tree"]?[keyValue2.Key].ToString();
-                             Tree4_1 account3 = JsonConvert.DeserializeObject<Tree4_1>(str3_1);
-                                //заполняем таблицу 2-го уровня древа
-                                dataGridView1.Rows.Add();
-                                dataGridView1.Rows[i_1].Cells[0].Value = Convert.ToString(i_1);
-                                dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account3.id.ToString());
-                                dataGridView1.Rows[i_1].Cells[2].Value = Convert.ToString(account3.name.ToString());
-                                dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account3.type.ToString());
-                                dataGridView1.Rows[i_1].Cells[4].Value = Convert.ToString(account2.id.ToString());
-                                i_1++;
+                    //1-я итерация самый верхний уровень
+                
+                    Tree2 account1 = JsonConvert.DeserializeObject<Tree2>(str1);
+
+                    if (keyValue.Key != null)
+                    {
+                        Application.DoEvents();
+
+                        //1-й уровень поиск данных на втором уровне                    
+                        var str2 = resultObject["tree"]?[keyValue.Key].ToString();
+                        if (str2 != "[]")
+                        {
+                            Tree3 account2 = JsonConvert.DeserializeObject<Tree3>(str2);
+
+                            //заполняем таблицу 1-го уровня древа
+                            dataGridView1.Rows.Add();
+                            dataGridView1.Rows[i_1].Cells[0].Value = Convert.ToString(i_1 + 1);
+                            dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account2.id.ToString());
+                            dataGridView1.Rows[i_1].Cells[2].Value = Convert.ToString(account2.name.ToString());
+                            dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account2.type.ToString());
+                            i_1++;
 
 
-                            //3-я итерация перебор третьего уровня
-                            string json3 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue2.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
-                            Newtonsoft.Json.Linq.JObject resultObject3 = Newtonsoft.Json.Linq.JObject.Parse(json3);
-                            var str4 = resultObject3["tree"].ToString();
-                            if (str4 != "[]")
+
+
+
+                            //2-я итерация перебор второго уровня
+                            string json2 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                            Newtonsoft.Json.Linq.JObject resultObject2 = Newtonsoft.Json.Linq.JObject.Parse(json2);
+                            var str3 = resultObject2["tree"].ToString();
+                            if (str3 != "[]")
                             {
-                                Dictionary<string, Tree5> values3 = JsonConvert.DeserializeObject<Dictionary<string, Tree5>>(str4);
-                                foreach (KeyValuePair<string, Tree5> keyValue3 in values3)
+
+                                Dictionary<string, Tree4> values2 = JsonConvert.DeserializeObject<Dictionary<string, Tree4>>(str3);
+                                foreach (KeyValuePair<string, Tree4> keyValue2 in values2)
                                 {
-                                    var str4_1 = resultObject3["tree"]?[keyValue3.Key].ToString();
-                                    Tree5_1 account4 = JsonConvert.DeserializeObject<Tree5_1>(str4_1);
+                                    var str3_1 = resultObject2["tree"]?[keyValue2.Key].ToString();
+                                    Tree4_1 account3 = JsonConvert.DeserializeObject<Tree4_1>(str3_1);
                                     //заполняем таблицу 2-го уровня древа
                                     dataGridView1.Rows.Add();
                                     dataGridView1.Rows[i_1].Cells[0].Value = Convert.ToString(i_1);
-                                    dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account4.id.ToString());
-                                    dataGridView1.Rows[i_1].Cells[2].Value = Convert.ToString(account4.name.ToString());
-                                    dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account4.type.ToString());
-                                    dataGridView1.Rows[i_1].Cells[4].Value = Convert.ToString(account3.id.ToString());
+                                    dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account3.id.ToString());
+                                    dataGridView1.Rows[i_1].Cells[2].Value = Convert.ToString(account3.name.ToString());
+                                    dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account3.type.ToString());
+                                    dataGridView1.Rows[i_1].Cells[4].Value = Convert.ToString(account2.id.ToString());
                                     i_1++;
+
+
+                                    //3-я итерация перебор третьего уровня
+                                    string json3 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue2.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                                    Newtonsoft.Json.Linq.JObject resultObject3 = Newtonsoft.Json.Linq.JObject.Parse(json3);
+                                    var str4 = resultObject3["tree"].ToString();
+                                    if (str4 != "[]")
+                                    {
+                                        Dictionary<string, Tree5> values3 = JsonConvert.DeserializeObject<Dictionary<string, Tree5>>(str4);
+                                        foreach (KeyValuePair<string, Tree5> keyValue3 in values3)
+                                        {
+                                            var str4_1 = resultObject3["tree"]?[keyValue3.Key].ToString();
+                                            Tree5_1 account4 = JsonConvert.DeserializeObject<Tree5_1>(str4_1);
+                                            //заполняем таблицу 2-го уровня древа
+                                            dataGridView1.Rows.Add();
+                                            dataGridView1.Rows[i_1].Cells[0].Value = Convert.ToString(i_1);
+                                            dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account4.id.ToString());
+                                            dataGridView1.Rows[i_1].Cells[2].Value = Convert.ToString(account4.name.ToString());
+                                            dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account4.type.ToString());
+                                            dataGridView1.Rows[i_1].Cells[4].Value = Convert.ToString(account3.id.ToString());
+                                            i_1++;
 
 
 
@@ -261,30 +265,30 @@ namespace fobos_w
                                                     dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account5.type.ToString());
                                                     dataGridView1.Rows[i_1].Cells[4].Value = Convert.ToString(account4.id.ToString());
                                                     i_1++;
-                                                     dataGridView2.Rows.Add(keyValue4.Key);
 
-                                        }
+
+                                                }
                                             }
 
 
 
+                                        }
+                                    }
+
+
+
+
+
+
+
                                 }
+
                             }
-
-
-                            
-
-
-
-
                         }
 
+                         } 
+
                     }
-
-
-                    //  }
-
-                }
 
             }
 
