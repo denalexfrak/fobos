@@ -86,21 +86,23 @@ namespace fobos_w
             public string type { get; set; }
         }
 
-
-
-
-
-
-        public enum AddressType
+        class Tree4
         {
-            
+            public string id { get; set; }
+
+            public string name { get; set; }
+
+            public string type { get; set; }
         }
 
-        public class Address
+        class Tree5
         {
-            public string City { get; set; }
-        }
+            public string id { get; set; }
 
+            public string name { get; set; }
+
+            public string type { get; set; }
+        }
 
 
         private void button2_Click(object sender, EventArgs e)
@@ -117,64 +119,75 @@ namespace fobos_w
         {
             string json = getContent("https://lk.curog.ru/api.tree/get_tree/?id=14029&key=9778a18d58d75bf6d569d31ef277c2cc");
 
-            Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);            
+            Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
             var str1 = resultObject["tree"].ToString();
-            
-            var str3 = resultObject["tree"]?["16590"]?["16591"].ToString();
+
            
+
             Dictionary<string, Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Tree>>(str1);
-          
+
 
             foreach (KeyValuePair<string, Tree> keyValue in values)
             {
                 //1-я итерация самый верхний уровень
-                dataGridView1.Rows.Add(keyValue.Key);
+                
                 Tree2 account1 = JsonConvert.DeserializeObject<Tree2>(str1);
-                if (account1.name != null)
+
+                if (keyValue.Key != null)
                 {
-                  //  MessageBox.Show(account1.name.ToString());
+
+                    //1-й уровень поиск данных на втором уровне
+                    dataGridView1.Rows.Add(keyValue.Key);
+                    var str2 = resultObject["tree"]?[keyValue.Key].ToString();
+                    Tree3 account2 = JsonConvert.DeserializeObject<Tree3>(str2);
+
+
+
+                    //    MessageBox.Show(account2.id.ToString()+ "--" +account2.name.ToString() + "--" + account2.type.ToString());
+
+
+
+                    //2-я итерация перебор второго уровня
+                    string json2 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                    Newtonsoft.Json.Linq.JObject resultObject2 = Newtonsoft.Json.Linq.JObject.Parse(json2);
+                    var str3 = resultObject2["tree"].ToString();
+                    if (str3 != "[]")
+                    {
+                        
+                          Dictionary<string, Tree4> values2 = JsonConvert.DeserializeObject<Dictionary<string, Tree4>>(str3);
+                          foreach (KeyValuePair<string, Tree4> keyValue2 in values2)
+                            {
+                        //    Tree4 account2 = JsonConvert.DeserializeObject<Tree4>(str1);
+                        //         MessageBox.Show(keyValue2.Key.ToString());
+                             dataGridView2.Rows.Add(keyValue2.Key);
+
+
+                        //3-я итерация перебор третьего уровня
+                        string json3 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue2.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                        Newtonsoft.Json.Linq.JObject resultObject3 = Newtonsoft.Json.Linq.JObject.Parse(json3);
+                        var str4 = resultObject3["tree"].ToString();
+                            if (str4 != "[]")
+                            {
+                                Dictionary<string, Tree5> values3 = JsonConvert.DeserializeObject<Dictionary<string, Tree5>>(str4);
+                                foreach (KeyValuePair<string, Tree5> keyValue3 in values3)
+                                {
+                                    //    MessageBox.Show(keyValue3.Key.ToString());
+                                    dataGridView3.Rows.Add(keyValue3.Key);
+                                }
+                            }
+
+                    }
+
+                    }
+
+
+                    //  }
+
                 }
-
-                //1-й уровень поиск данных на втором уровне
-                var str2 = resultObject["tree"]?[keyValue.Key].ToString();
-                Tree2 account2 = JsonConvert.DeserializeObject<Tree2>(str2);
-                if (account2.name != null)
-                {
-                 //   MessageBox.Show(account2.name.ToString());
-                }
-
-
-                //2-я итерация перебор второго уровня               
-                Dictionary<AddressType, Address> values2 = JsonConvert.DeserializeObject<Dictionary<AddressType, Address>>(str2);
-
-                //foreach (KeyValuePair<string, Tree3> keyValue2 in values2)
-                //   {
-                // dataGridView2.Rows.Add(keyValue2.Key);
-                //       MessageBox.Show(keyValue2.Key.ToString());
-                //   }
 
             }
 
-
-          //  Tree2 account = JsonConvert.DeserializeObject<Tree2>(str3);
-          //  MessageBox.Show(account.name.ToString());
-
-           // Tree2 account2 = JsonConvert.DeserializeObject<Tree2>(str2);         
-          //  MessageBox.Show(account2.name.ToString());
-
-          //  Tree2 account3 = JsonConvert.DeserializeObject<Tree2>(str1);
-          //  if (account3.name != null)
-          //  {
-          //      MessageBox.Show(account3.name.ToString());
-          //  }
-            //for (int x1 = 0; x1 <  data_tree2.Count; x1++)
-            //{
-            //    string row = data_tree2[x1];
-
-            //}
         }
-
-
 
 
       
@@ -182,15 +195,6 @@ namespace fobos_w
 
 
 
-         class Order
-                {
-                    [JsonProperty("id")]
-                    public string id { get; set; }
-                    [JsonProperty("name")]
-                    public string name { get; set; }
-                    [JsonProperty("type")]
-                    public string type { get; set; }            
-                }
 
 
 
