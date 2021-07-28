@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,15 @@ namespace fobos_w
         {
             InitializeComponent();
         }
+
+
+
+        public string GetConnectionString()
+        {
+            return  "Data Source=" + textBox1.Text + ";Initial Catalog=" + textBox2.Text + ";Persist Security Info=True;User ID=" + textBox3.Text + ";Password=" + textBox4.Text + "";            
+
+        }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -322,6 +332,46 @@ namespace fobos_w
         private void button1_Click_1(object sender, EventArgs e)
         {
             
+        }
+
+        private void button2_Click_2(object sender, EventArgs e)
+        {
+           
+
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            string connectionString = GetConnectionString();
+
+            using (SqlConnection connection = new SqlConnection())
+            {
+                connection.ConnectionString = connectionString;
+
+                connection.Open();
+
+
+                // запрос
+                string sql = "SELECT [id] FROM [waviot_data].[dbo].[tree_elements]";
+                // объект для выполнения SQL-запроса
+                SqlCommand command = new SqlCommand(sql, connection);
+                // выполняем запрос и получаем ответ
+                string name = command.ExecuteScalar().ToString();
+                // выводим ответ 
+                MessageBox.Show(name);
+
+                command.ExecuteNonQuery();
+                System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command);
+                DataTable DT = new DataTable();
+                DA.Fill(DT);
+                dataGridView2.DataSource = DT;
+                //закрываем и освобождаем ресурсы
+                connection.Close();
+                connection.Dispose();
+                //проверка выполнения
+                // MessageBox.Show(connection.State.ToString());
+                //MessageBox.Show(connection.ConnectionString);
+            }
         }
     }
     }
