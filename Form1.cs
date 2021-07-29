@@ -28,7 +28,7 @@ namespace fobos_w
 
         public string GetConnectionString()
         {
-            return  "Data Source=" + textBox1.Text + ";Initial Catalog=" + textBox2.Text + ";Persist Security Info=True;User ID=" + textBox3.Text + ";Password=" + textBox4.Text + ";MultipleActiveResultSets=True";            
+            return "Data Source=" + textBox1.Text + ";Initial Catalog=" + textBox2.Text + ";Persist Security Info=True;User ID=" + textBox3.Text + ";Password=" + textBox4.Text + ";MultipleActiveResultSets=True";
 
         }
 
@@ -58,13 +58,13 @@ namespace fobos_w
 
 
 
-    
 
 
 
-      
 
-      
+
+
+
 
         class Tree
         {
@@ -159,13 +159,13 @@ namespace fobos_w
         }
 
         private void button2_Click(object sender, EventArgs e)
-        {            
+        {
 
         }
 
         private void button3_Click(object sender, EventArgs e)
-        {     
-            
+        {
+
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -193,12 +193,12 @@ namespace fobos_w
 
 
             int i_1 = 0;
-            if (str1 != "[]" && str0=="ok")
+            if (str1 != "[]" && str0 == "ok")
             {
-                    foreach (KeyValuePair<string, Tree> keyValue in values)
-                    {
+                foreach (KeyValuePair<string, Tree> keyValue in values)
+                {
                     //1-я итерация самый верхний уровень
-                
+
                     Tree2 account1 = JsonConvert.DeserializeObject<Tree2>(str1);
 
                     if (keyValue.Key != null)
@@ -221,26 +221,26 @@ namespace fobos_w
 
                             //запрос на существование id в базе
                             // запрос
-                            string id_tree_el="";
-                            string sql1_1 = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] WHERE [id_tree_el]='"+ account2.id.ToString() + "'";
+                            string id_tree_el = "";
+                            string sql1_1 = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] WHERE [id_tree_el]='" + account2.id.ToString() + "'";
                             // объект для выполнения SQL-запроса
                             SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
                             // выполняем запрос и получаем ответ
                             if (command1_1.ExecuteScalar() != null)
-                            { 
+                            {
                                 id_tree_el = command1_1.ExecuteScalar().ToString();
                             }
-                                                    
+
 
                             if (id_tree_el == account2.id.ToString())
                             {
                                 // запрос
                                 string sql1_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
                                                     "  SET    " +
-                                                    "     [name] = '"+ account2.name.ToString() + "' " +
+                                                    "     [name] = '" + account2.name.ToString() + "' " +
                                                     "    ,[type] = '" + account2.type.ToString() + "' " +
                                                     " WHERE  " +
-                                                    "     [id_tree_el] = '" + account2.id.ToString() + "' " +                                                                                                       
+                                                    "     [id_tree_el] = '" + account2.id.ToString() + "' " +
                                                     " ";
                                 // объект для выполнения SQL-запроса
                                 SqlCommand command1_0 = new SqlCommand(sql1_0, connection);
@@ -296,8 +296,8 @@ namespace fobos_w
                             }
 
 
-                                //2-я итерация перебор второго уровня
-                                string json2 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                            //2-я итерация перебор второго уровня
+                            string json2 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                             Newtonsoft.Json.Linq.JObject resultObject2 = Newtonsoft.Json.Linq.JObject.Parse(json2);
                             var str3 = resultObject2["tree"].ToString();
                             if (str3 != "[]")
@@ -343,8 +343,9 @@ namespace fobos_w
                                         // объект для выполнения SQL-запроса
                                         SqlCommand command3_0 = new SqlCommand(sql2_0, connection);
                                         command3_0.ExecuteNonQuery();
-                                    } else
-                                    { 
+                                    }
+                                    else
+                                    {
                                         // запрос
                                         string sql2 = "INSERT INTO [waviot_data].[dbo].[tree_elements] ( " +
                                                         "      " +
@@ -598,9 +599,9 @@ namespace fobos_w
                             }
                         }
 
-                         } 
-
                     }
+
+                }
 
             }
 
@@ -610,7 +611,7 @@ namespace fobos_w
         }
 
 
-      
+
 
 
 
@@ -622,7 +623,7 @@ namespace fobos_w
         private void button1_Click(object sender, EventArgs e)
         {
 
-          
+
         }
 
 
@@ -636,12 +637,12 @@ namespace fobos_w
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            
+
         }
 
         private void button2_Click_2(object sender, EventArgs e)
         {
-           
+
 
         }
 
@@ -748,8 +749,8 @@ namespace fobos_w
         private void button1_Click_2(object sender, EventArgs e)
         {
             dataGridView1.Rows.Clear();
+            dataGridView2.Rows.Clear();
 
-             
             string connectionString = GetConnectionString();
 
             SqlConnection connection = new SqlConnection();
@@ -758,7 +759,7 @@ namespace fobos_w
 
             connection.Open();
 
-            
+
             string sql = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] ORDER BY [id]";
 
             SqlCommand command = new SqlCommand(sql, connection);
@@ -769,11 +770,11 @@ namespace fobos_w
             {
                 while (reader.Read())
                 {
-                   // MessageBox.Show(reader.GetInt32(0).ToString()+ " -- " +reader.GetString(1));
+                    // MessageBox.Show(reader.GetInt32(0).ToString()+ " -- " +reader.GetString(1));
 
                     string json = getContent("https://lk.curog.ru/api.tree/get_elements/?id=" + reader.GetInt32(0).ToString() + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                     Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
-                    
+
                     var str1 = resultObject["elements"].ToString();
                     string str0 = resultObject["status"].ToString();
                     if (str0 == "ok")
@@ -788,24 +789,24 @@ namespace fobos_w
                                 if (str2 != "[]")
                                 {
                                     Get_Tree account5 = JsonConvert.DeserializeObject<Get_Tree>(str2);
-                                    
+
                                     // запрос -  дозаполняем таблицу ovm_code
                                     string sql4_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
                                                         "  SET    " +
-                                                        "     [deleted] = '" +      account5.deleted.ToString() + "' " +
-                                                        "    ,[lastname] = '" +     account5.lastname.ToString() + "' " +
-                                                        "    ,[firstname] = '" +    account5.firstname.ToString() + "' " +
-                                                        "    ,[middlename] = '" +   account5.middlename.ToString() + "' " +
-                                                        "    ,[appartment] = '" +   account5.appartment.ToString() + "' " +
-                                                        "    ,[city] = '" +         account5.city.ToString() + "' " +
-                                                        "    ,[district] = '" +     account5.district + "' " +
-                                                        "    ,[street] = '" +       account5.street.ToString() + "' " +
-                                                        "    ,[locality] = '" +     account5.locality + "' " +
-                                                        "    ,[building] = '" +     account5.building.ToString() + "' " +
-                                                        "    ,[entrance] = '" +     account5.entrance.ToString() + "' " +
-                                                        "    ,[account]= '" +       account5.account.ToString() + "' " +
-                                                        "    ,[vm_code] = '" +      account5.vm_code + "' " +
-                                                        "    ,[ovm_code] = '" +     account5.ovm_code + "' " +
+                                                        "     [deleted] = '" + account5.deleted.ToString() + "' " +
+                                                        "    ,[lastname] = '" + account5.lastname.ToString() + "' " +
+                                                        "    ,[firstname] = '" + account5.firstname.ToString() + "' " +
+                                                        "    ,[middlename] = '" + account5.middlename.ToString() + "' " +
+                                                        "    ,[appartment] = '" + account5.appartment.ToString() + "' " +
+                                                        "    ,[city] = '" + account5.city.ToString() + "' " +
+                                                        "    ,[district] = '" + account5.district + "' " +
+                                                        "    ,[street] = '" + account5.street.ToString() + "' " +
+                                                        "    ,[locality] = '" + account5.locality + "' " +
+                                                        "    ,[building] = '" + account5.building.ToString() + "' " +
+                                                        "    ,[entrance] = '" + account5.entrance.ToString() + "' " +
+                                                        "    ,[account]= '" + account5.account.ToString() + "' " +
+                                                        "    ,[vm_code] = '" + account5.vm_code + "' " +
+                                                        "    ,[ovm_code] = '" + account5.ovm_code + "' " +
                                                         " WHERE  " +
                                                         "     [id_tree_el] = '" + keyValue4.Key + "' " +
                                                         " ";
@@ -830,24 +831,24 @@ namespace fobos_w
 
 
 
-            
 
 
-                // запрос
-                string sql_V = "SELECT [id], [id_tree_el], [name], [type], " +
-                               "  [parent_id_tree_el] [deleted], [lastname], [firstname], [middlename], [appartment], [city], [district], [street] " +
-                               " ,[locality], [building], [entrance], [account], [vm_code], [ovm_code] " +
-                               "FROM [waviot_data].[dbo].[tree_elements]";
-                // объект для выполнения SQL-запроса
-                SqlCommand command_v = new SqlCommand(sql_V, connection);
 
-                command_v.ExecuteNonQuery();
-                System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command_v);
-                DataTable DT = new DataTable();
-                DA.Fill(DT);
-                dataGridView2.DataSource = DT;                
-              
-            
+            // запрос
+            string sql_V = "SELECT [id], [id_tree_el], [name], [type], " +
+                           "  [parent_id_tree_el] [deleted], [lastname], [firstname], [middlename], [appartment], [city], [district], [street] " +
+                           " ,[locality], [building], [entrance], [account], [vm_code], [ovm_code] " +
+                           "FROM [waviot_data].[dbo].[tree_elements]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command_v = new SqlCommand(sql_V, connection);
+
+            command_v.ExecuteNonQuery();
+            System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command_v);
+            DataTable DT = new DataTable();
+            DA.Fill(DT);
+            dataGridView2.DataSource = DT;
+
+
 
 
 
@@ -855,6 +856,192 @@ namespace fobos_w
             connection.Close();
             connection.Dispose();
 
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// загрузка модемов
+        /// </summary>
+
+
+
+        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
+       
+
+
+
+        public class Modems_data
+        {
+            [JsonProperty("id")]
+            public string id { get; set; }
+
+            [JsonProperty("modem_type")]
+            public string modem_type { get; set; }
+
+            [JsonProperty("modem_full_type")]
+            public string modem_full_type { get; set; }
+
+            [JsonProperty("modem_modification")]
+            public string modem_modification { get; set; }
+
+            [JsonProperty("protocol_id")]
+            public string protocol_id { get; set; }
+
+            [JsonProperty("flavor_id")]
+            public string flavor_id { get; set; }
+
+            [JsonProperty("last_station_time")]
+            public string last_station_time { get; set; }
+
+            [JsonProperty("last_config_time")]
+            public string last_config_time { get; set; }
+
+            [JsonProperty("hw_version")]
+            public string hw_version { get; set; }
+
+            [JsonProperty("sw_version")]
+            public string sw_version { get; set; }
+
+            [JsonProperty("latitude")]
+            public string latitude { get; set; }
+
+            [JsonProperty("longitude")]
+            public string longitude { get; set; }
+
+            [JsonProperty("reg_way")]
+            public string reg_way { get; set; }
+
+            [JsonProperty("reg_date")]
+            public string reg_date { get; set; }
+
+            [JsonProperty("disabled")]
+            public string disabled { get; set; }
+
+            [JsonProperty("temperature")]
+            public string temperature { get; set; }
+
+            [JsonProperty("battery")]
+            public string battery { get; set; }
+
+            [JsonProperty("battery_type")]
+            public string battery_type { get; set; }
+
+            [JsonProperty("last_info_message")]
+            public string last_info_message { get; set; }
+
+            [JsonProperty("value_formats")]
+            public string value_formats { get; set; }
+
+            [JsonProperty("is_balance")]
+            public string is_balance { get; set; }
+
+            [JsonProperty("dl_enabled")]
+            public string dl_enabled { get; set; }
+
+            [JsonProperty("dl_change_timestamp")]
+            public string dl_change_timestamp { get; set; }
+
+            [JsonProperty("last_snr")]
+            public string last_snr { get; set; }
+
+            [JsonProperty("previous_snr")]
+            public string previous_snr { get; set; }
+
+            [JsonProperty("last_rssi")]
+            public string last_rssi { get; set; }
+
+            [JsonProperty("previous_rssi")]
+            public string previous_rssi { get; set; }
+
+            [JsonProperty("station_id")]
+            public string station_id { get; set; }
+
+        }
+
+       
+
+        private void button2_Click_3(object sender, EventArgs e)
+        {
+
+
+
+
+
+
+            dataGridView3.Rows.Clear();
+
+            string connectionString = GetConnectionString();
+
+            SqlConnection connection = new SqlConnection();
+
+            connection.ConnectionString = connectionString;
+
+            connection.Open();
+
+
+            string sql = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements]";
+
+            SqlCommand command = new SqlCommand(sql, connection);
+            SqlDataReader reader = command.ExecuteReader();
+
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+
+                    
+
+                    string json = getContent("https://lk.curog.ru/api.tree/get_modems/?id=" + reader.GetInt32(0).ToString() + "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                    Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+
+                    var str1 = resultObject["modems"].ToString();
+                    
+
+                    string str0 = resultObject["status"].ToString();
+                    if (str0 == "ok")
+                    {
+                        if (str1 != "[]" && str1 != null)
+                        {
+                                                      
+                            
+                               
+                                
+
+                              str1 = str1.Trim(new Char[] { '[', ']' });
+                            MessageBox.Show(str1.ToString());
+                            Modems_data modems_d = JsonConvert.DeserializeObject<Modems_data>(str1);                         
+
+
+                               MessageBox.Show(modems_d.id.ToString());
+
+
+                        }
+                    }
+                }
+            }
+
+            //закрываем и освобождаем ресурсы
+            connection.Close();
+            connection.Dispose();
         }
     }
     }
