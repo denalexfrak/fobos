@@ -28,7 +28,7 @@ namespace fobos_w
 
         public string GetConnectionString()
         {
-            return  "Data Source=" + textBox1.Text + ";Initial Catalog=" + textBox2.Text + ";Persist Security Info=True;User ID=" + textBox3.Text + ";Password=" + textBox4.Text + "";            
+            return  "Data Source=" + textBox1.Text + ";Initial Catalog=" + textBox2.Text + ";Persist Security Info=True;User ID=" + textBox3.Text + ";Password=" + textBox4.Text + ";MultipleActiveResultSets=True";            
 
         }
 
@@ -181,6 +181,17 @@ namespace fobos_w
 
             Dictionary<string, Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Tree>>(str1);
 
+
+            string connectionString = GetConnectionString();
+
+            SqlConnection connection = new SqlConnection();
+
+            connection.ConnectionString = connectionString;
+
+            connection.Open();
+
+
+
             int i_1 = 0;
             if (str1 != "[]" && str0=="ok")
             {
@@ -208,12 +219,85 @@ namespace fobos_w
                             dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account2.type.ToString());
                             i_1++;
 
+                            //запрос на существование id в базе
+                            // запрос
+                            string id_tree_el="";
+                            string sql1_1 = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] WHERE [id_tree_el]='"+ account2.id.ToString() + "'";
+                            // объект для выполнения SQL-запроса
+                            SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
+                            // выполняем запрос и получаем ответ
+                            if (command1_1.ExecuteScalar() != null)
+                            { 
+                                id_tree_el = command1_1.ExecuteScalar().ToString();
+                            }
+                                                    
+
+                            if (id_tree_el == account2.id.ToString())
+                            {
+                                // запрос
+                                string sql1_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
+                                                    "  SET    " +
+                                                    "     [name] = '"+ account2.name.ToString() + "' " +
+                                                    "    ,[type] = '" + account2.type.ToString() + "' " +
+                                                    " WHERE  " +
+                                                    "     [id_tree_el] = '" + account2.id.ToString() + "' " +                                                                                                       
+                                                    " ";
+                                // объект для выполнения SQL-запроса
+                                SqlCommand command1_0 = new SqlCommand(sql1_0, connection);
+                                command1_0.ExecuteNonQuery();
+                            }
+                            else
+                            {
+                                // запрос
+                                string sql1 = "INSERT INTO [waviot_data].[dbo].[tree_elements] ( " +
+                                                    "      " +
+                                                    "     [id_tree_el] " +
+                                                    "     ,[name] " +
+                                                    "     ,[type] " +
+                                                    "     ,[parent_id_tree_el] " +
+                                                    "     ,[deleted] " +
+                                                    "     ,[lastname] " +
+                                                    "     ,[firstname] " +
+                                                    "     ,[middlename] " +
+                                                    "     ,[appartment] " +
+                                                    "     ,[city] " +
+                                                    "     ,[district] " +
+                                                    "     ,[street] " +
+                                                    "     ,[locality] " +
+                                                    "     ,[building] " +
+                                                    "     ,[entrance] " +
+                                                    "     ,[account] " +
+                                                    "     ,[vm_code] " +
+                                                    "     ,[ovm_code]) " +
+                                                    " VALUES ( " +
+                                                    " '" + account2.id.ToString() + "', " +
+                                                    " '" + account2.name.ToString() + "', " +
+                                                    " '" + account2.type.ToString() + "', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '', " +
+                                                    " '' " +
+                                                    " )";
+                                // объект для выполнения SQL-запроса
+                                SqlCommand command1 = new SqlCommand(sql1, connection);
+                                command1.ExecuteNonQuery();
+
+                            }
 
 
-
-
-                            //2-я итерация перебор второго уровня
-                            string json2 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                                //2-я итерация перебор второго уровня
+                                string json2 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                             Newtonsoft.Json.Linq.JObject resultObject2 = Newtonsoft.Json.Linq.JObject.Parse(json2);
                             var str3 = resultObject2["tree"].ToString();
                             if (str3 != "[]")
@@ -232,8 +316,80 @@ namespace fobos_w
                                     dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account3.type.ToString());
                                     dataGridView1.Rows[i_1].Cells[4].Value = Convert.ToString(account2.id.ToString());
                                     i_1++;
+                                    //запрос на существование id в базе
+                                    // запрос
+                                    string id_tree_el_3 = "";
+                                    string sql3_1 = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] WHERE [id_tree_el]='" + account3.id.ToString() + "'";
+                                    // объект для выполнения SQL-запроса
+                                    SqlCommand command3_1 = new SqlCommand(sql3_1, connection);
+                                    // выполняем запрос и получаем ответ
+                                    if (command3_1.ExecuteScalar() != null)
+                                    {
+                                        id_tree_el_3 = command3_1.ExecuteScalar().ToString();
+                                    }
 
 
+                                    if (id_tree_el_3 == account3.id.ToString())
+                                    {
+                                        // запрос
+                                        string sql2_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
+                                                            "  SET    " +
+                                                            "     [name] = '" + account3.name.ToString() + "' " +
+                                                            "    ,[type] = '" + account3.type.ToString() + "' " +
+                                                            "    ,[parent_id_tree_el] = '" + account2.id.ToString() + "' " +
+                                                            " WHERE  " +
+                                                            "     [id_tree_el] = '" + account3.id.ToString() + "' " +
+                                                            " ";
+                                        // объект для выполнения SQL-запроса
+                                        SqlCommand command3_0 = new SqlCommand(sql2_0, connection);
+                                        command3_0.ExecuteNonQuery();
+                                    } else
+                                    { 
+                                        // запрос
+                                        string sql2 = "INSERT INTO [waviot_data].[dbo].[tree_elements] ( " +
+                                                        "      " +
+                                                        "     [id_tree_el] " +
+                                                        "     ,[name] " +
+                                                        "     ,[type] " +
+                                                        "     ,[parent_id_tree_el] " +
+                                                        "     ,[deleted] " +
+                                                        "     ,[lastname] " +
+                                                        "     ,[firstname] " +
+                                                        "     ,[middlename] " +
+                                                        "     ,[appartment] " +
+                                                        "     ,[city] " +
+                                                        "     ,[district] " +
+                                                        "     ,[street] " +
+                                                        "     ,[locality] " +
+                                                        "     ,[building] " +
+                                                        "     ,[entrance] " +
+                                                        "     ,[account] " +
+                                                        "     ,[vm_code] " +
+                                                        "     ,[ovm_code]) " +
+                                                        " VALUES ( " +
+                                                        " '" + account3.id.ToString() + "', " +
+                                                        " '" + account3.name.ToString() + "', " +
+                                                        " '" + account3.type.ToString() + "', " +
+                                                        " '" + account2.id.ToString() + "', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '', " +
+                                                        " '' " +
+                                                        " )";
+                                        // объект для выполнения SQL-запроса
+                                        SqlCommand command2 = new SqlCommand(sql2, connection);
+                                        command2.ExecuteNonQuery();
+                                    }
                                     //3-я итерация перебор третьего уровня
                                     string json3 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue2.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                                     Newtonsoft.Json.Linq.JObject resultObject3 = Newtonsoft.Json.Linq.JObject.Parse(json3);
@@ -253,9 +409,81 @@ namespace fobos_w
                                             dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account4.type.ToString());
                                             dataGridView1.Rows[i_1].Cells[4].Value = Convert.ToString(account3.id.ToString());
                                             i_1++;
+                                            //запрос на существование id в базе
+                                            // запрос
+                                            string id_tree_el_4 = "";
+                                            string sql4_1 = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] WHERE [id_tree_el]='" + account4.id.ToString() + "'";
+                                            // объект для выполнения SQL-запроса
+                                            SqlCommand command4_1 = new SqlCommand(sql4_1, connection);
+                                            // выполняем запрос и получаем ответ
+                                            if (command4_1.ExecuteScalar() != null)
+                                            {
+                                                id_tree_el_4 = command4_1.ExecuteScalar().ToString();
+                                            }
 
 
-
+                                            if (id_tree_el_4 == account4.id.ToString())
+                                            {
+                                                // запрос
+                                                string sql3_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
+                                                                    "  SET    " +
+                                                                    "     [name] = '" + account4.name.ToString() + "' " +
+                                                                    "    ,[type] = '" + account4.type.ToString() + "' " +
+                                                                    "    ,[parent_id_tree_el] = '" + account3.id.ToString() + "' " +
+                                                                    " WHERE  " +
+                                                                    "     [id_tree_el] = '" + account4.id.ToString() + "' " +
+                                                                    " ";
+                                                // объект для выполнения SQL-запроса
+                                                SqlCommand command4_0 = new SqlCommand(sql3_0, connection);
+                                                command4_0.ExecuteNonQuery();
+                                            }
+                                            else
+                                            {
+                                                // запрос
+                                                string sql3 = "INSERT INTO [waviot_data].[dbo].[tree_elements] ( " +
+                                                            "      " +
+                                                            "     [id_tree_el] " +
+                                                            "     ,[name] " +
+                                                            "     ,[type] " +
+                                                            "     ,[parent_id_tree_el] " +
+                                                            "     ,[deleted] " +
+                                                            "     ,[lastname] " +
+                                                            "     ,[firstname] " +
+                                                            "     ,[middlename] " +
+                                                            "     ,[appartment] " +
+                                                            "     ,[city] " +
+                                                            "     ,[district] " +
+                                                            "     ,[street] " +
+                                                            "     ,[locality] " +
+                                                            "     ,[building] " +
+                                                            "     ,[entrance] " +
+                                                            "     ,[account] " +
+                                                            "     ,[vm_code] " +
+                                                            "     ,[ovm_code]) " +
+                                                            " VALUES ( " +
+                                                            " '" + account4.id.ToString() + "', " +
+                                                            " '" + account4.name.ToString() + "', " +
+                                                            " '" + account4.type.ToString() + "', " +
+                                                            " '" + account3.id.ToString() + "', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '', " +
+                                                            " '' " +
+                                                            " )";
+                                                // объект для выполнения SQL-запроса
+                                                SqlCommand command3 = new SqlCommand(sql3, connection);
+                                                command3.ExecuteNonQuery();
+                                            }
                                             //4-я итерация
                                             string json4 = getContent(@"https://lk.curog.ru/api.tree/get_tree/?id=" + keyValue3.Key + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                                             Newtonsoft.Json.Linq.JObject resultObject4 = Newtonsoft.Json.Linq.JObject.Parse(json4);
@@ -276,7 +504,81 @@ namespace fobos_w
                                                     dataGridView1.Rows[i_1].Cells[4].Value = Convert.ToString(account4.id.ToString());
                                                     i_1++;
 
+                                                    //запрос на существование id в базе
+                                                    // запрос
+                                                    string id_tree_el_5 = "";
+                                                    string sql5_1 = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] WHERE [id_tree_el]='" + account5.id.ToString() + "'";
+                                                    // объект для выполнения SQL-запроса
+                                                    SqlCommand command5_1 = new SqlCommand(sql5_1, connection);
+                                                    // выполняем запрос и получаем ответ
+                                                    if (command5_1.ExecuteScalar() != null)
+                                                    {
+                                                        id_tree_el_5 = command5_1.ExecuteScalar().ToString();
+                                                    }
 
+
+                                                    if (id_tree_el_5 == account5.id.ToString())
+                                                    {
+                                                        // запрос
+                                                        string sql4_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
+                                                                            "  SET    " +
+                                                                            "     [name] = '" + account5.name.ToString() + "' " +
+                                                                            "    ,[type] = '" + account5.type.ToString() + "' " +
+                                                                            "    ,[parent_id_tree_el] = '" + account4.id.ToString() + "' " +
+                                                                            " WHERE  " +
+                                                                            "     [id_tree_el] = '" + account5.id.ToString() + "' " +
+                                                                            " ";
+                                                        // объект для выполнения SQL-запроса
+                                                        SqlCommand command5_0 = new SqlCommand(sql4_0, connection);
+                                                        command5_0.ExecuteNonQuery();
+                                                    }
+                                                    else
+                                                    {
+                                                        // запрос
+                                                        string sql4 = "INSERT INTO [waviot_data].[dbo].[tree_elements] ( " +
+                                                                    "      " +
+                                                                    "     [id_tree_el] " +
+                                                                    "     ,[name] " +
+                                                                    "     ,[type] " +
+                                                                    "     ,[parent_id_tree_el] " +
+                                                                    "     ,[deleted] " +
+                                                                    "     ,[lastname] " +
+                                                                    "     ,[firstname] " +
+                                                                    "     ,[middlename] " +
+                                                                    "     ,[appartment] " +
+                                                                    "     ,[city] " +
+                                                                    "     ,[district] " +
+                                                                    "     ,[street] " +
+                                                                    "     ,[locality] " +
+                                                                    "     ,[building] " +
+                                                                    "     ,[entrance] " +
+                                                                    "     ,[account] " +
+                                                                    "     ,[vm_code] " +
+                                                                    "     ,[ovm_code]) " +
+                                                                    " VALUES ( " +
+                                                                    " '" + account5.id.ToString() + "', " +
+                                                                    " '" + account5.name.ToString() + "', " +
+                                                                    " '" + account5.type.ToString() + "', " +
+                                                                    " '" + account4.id.ToString() + "', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '', " +
+                                                                    " '' " +
+                                                                    " )";
+                                                        // объект для выполнения SQL-запроса
+                                                        SqlCommand command4 = new SqlCommand(sql4, connection);
+                                                        command4.ExecuteNonQuery();
+                                                    }
                                                 }
                                             }
 
@@ -301,6 +603,9 @@ namespace fobos_w
                     }
 
             }
+
+            connection.Close();
+            connection.Dispose();
 
         }
 
@@ -340,38 +645,216 @@ namespace fobos_w
 
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+        class Get_Tree
+        {
+            [JsonProperty("id")]
+            public string id { get; set; }
+
+            [JsonProperty("path")]
+            public string path { get; set; }
+
+            [JsonProperty("name")]
+            public string name { get; set; }
+
+            [JsonProperty("type")]
+            public string type { get; set; }
+
+            [JsonProperty("timezone_id")]
+            public string timezone_id { get; set; }
+
+            [JsonProperty("deleted")]
+            public string deleted { get; set; }
+
+            [JsonProperty("company_id")]
+            public string company_id { get; set; }
+
+            [JsonProperty("tariff_id")]
+            public string tariff_id { get; set; }
+
+            [JsonProperty("weight")]
+            public string weight { get; set; }
+
+            [JsonProperty("latitude")]
+            public string latitude { get; set; }
+
+            [JsonProperty("longitude")]
+            public string longitude { get; set; }
+
+            [JsonProperty("ovm_available")]
+            public string ovm_available { get; set; }
+
+            [JsonProperty("lastname")]
+            public string lastname { get; set; }
+
+            [JsonProperty("firstname")]
+            public string firstname { get; set; }
+
+            [JsonProperty("middlename")]
+            public string middlename { get; set; }
+
+            [JsonProperty("point_type")]
+            public string point_type { get; set; }
+
+            [JsonProperty("appartment")]
+            public string appartment { get; set; }
+
+            [JsonProperty("city")]
+            public string city { get; set; }
+
+            [JsonProperty("district")]
+            public string district { get; set; }
+
+            [JsonProperty("street")]
+            public string street { get; set; }
+
+            [JsonProperty("locality")]
+            public string locality { get; set; }
+
+            [JsonProperty("building")]
+            public string building { get; set; }
+
+            [JsonProperty("entrance")]
+            public string entrance { get; set; }
+
+            [JsonProperty("floor")]
+            public string floor { get; set; }
+
+            [JsonProperty("account")]
+            public string account { get; set; }
+
+            [JsonProperty("transformer_substation")]
+            public string transformer_substation { get; set; }
+
+            [JsonProperty("vm_code")]
+            public string vm_code { get; set; }
+
+            [JsonProperty("ovm_code")]
+            public string ovm_code { get; set; }
+
+        }
+
         private void button1_Click_2(object sender, EventArgs e)
         {
+            dataGridView1.Rows.Clear();
+
+             
             string connectionString = GetConnectionString();
 
-            using (SqlConnection connection = new SqlConnection())
-            {
-                connection.ConnectionString = connectionString;
+            SqlConnection connection = new SqlConnection();
 
-                connection.Open();
+            connection.ConnectionString = connectionString;
+
+            connection.Open();
+
+            
+            string sql = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] ORDER BY [id]";
+
+            SqlCommand command = new SqlCommand(sql, connection);
+            SqlDataReader reader = command.ExecuteReader();
+
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                   // MessageBox.Show(reader.GetInt32(0).ToString()+ " -- " +reader.GetString(1));
+
+                    string json = getContent("https://lk.curog.ru/api.tree/get_elements/?id=" + reader.GetInt32(0).ToString() + "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                    Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+                    
+                    var str1 = resultObject["elements"].ToString();
+                    string str0 = resultObject["status"].ToString();
+                    if (str0 == "ok")
+                    {
+                        if (str1 != "[]" && str1 != null)
+                        {
+
+                            Dictionary<string, Get_Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Get_Tree>>(str1);
+                            foreach (KeyValuePair<string, Get_Tree> keyValue4 in values)
+                            {
+                                var str2 = resultObject["elements"]?[keyValue4.Key].ToString();
+                                if (str2 != "[]")
+                                {
+                                    Get_Tree account5 = JsonConvert.DeserializeObject<Get_Tree>(str2);
+
+                                    // запрос -  дозаполняем таблицу ovm_code
+                                    string sql4_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
+                                                        "  SET    " +
+                                                        "     [deleted] = '" + account5.deleted.ToString() + "' " +
+                                                        "    ,[lastname] = '" + account5.lastname.ToString() + "' " +
+                                                        "    ,[firstname] = '" + account5.firstname.ToString() + "' " +
+                                                        "    ,[middlename] = '" + account5.middlename.ToString() + "' " +
+                                                        "    ,[appartment] = '" + account5.appartment.ToString() + "' " +
+                                                        "    ,[city] = '" + account5.city.ToString() + "' " +
+                                                        "    ,[district] = '" + account5.district.ToString() + "' " +
+                                                        "    ,[street] = '" + account5.street.ToString() + "' " +
+                                                        "    ,[locality] = '" + account5.locality.ToString() + "' " +
+                                                        "    ,[building] = '" + account5.building.ToString() + "' " +
+                                                        "    ,[entrance] = '" + account5.entrance.ToString() + "' " +
+                                                        "    ,[account]= '" + account5.account.ToString() + "' " +
+                                                        "    ,[vm_code] = '" + account5.vm_code.ToString() + "' " +
+                                                        "    ,[ovm_code] = '" + account5.ovm_code.ToString() + "' " +
+                                                        " WHERE  " +
+                                                        "     [id_tree_el] = '" + keyValue4.Key + "' " +
+                                                        " ";
+                                    // объект для выполнения SQL-запроса
+                                    SqlCommand command5_0 = new SqlCommand(sql4_0, connection);
+                                    command5_0.ExecuteNonQuery();
+                                    //  dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account5.id.ToString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("No rows found.");
+            }
+            reader.Close();
+
+
+
+
+
+
+            
 
 
                 // запрос
-                string sql = "SELECT [id] FROM [waviot_data].[dbo].[tree_elements]";
+                string sql_V = "SELECT [id], [id_tree_el], [name], [type], " +
+                               "  [parent_id_tree_el] [deleted], [lastname], [firstname], [middlename], [appartment], [city], [district], [street] " +
+                               " ,[locality], [building], [entrance], [account], [vm_code], [ovm_code] " +
+                               "FROM [waviot_data].[dbo].[tree_elements]";
                 // объект для выполнения SQL-запроса
-                SqlCommand command = new SqlCommand(sql, connection);
-                // выполняем запрос и получаем ответ
-                string name = command.ExecuteScalar().ToString();
-                // выводим ответ 
-                MessageBox.Show(name);
+                SqlCommand command_v = new SqlCommand(sql_V, connection);
 
-                command.ExecuteNonQuery();
-                System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command);
+                command_v.ExecuteNonQuery();
+                System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command_v);
                 DataTable DT = new DataTable();
                 DA.Fill(DT);
-                dataGridView2.DataSource = DT;
-                //закрываем и освобождаем ресурсы
-                connection.Close();
-                connection.Dispose();
-                //проверка выполнения
-                // MessageBox.Show(connection.State.ToString());
-                //MessageBox.Show(connection.ConnectionString);
-            }
+                dataGridView2.DataSource = DT;                
+              
+            
+
+
+
+            //закрываем и освобождаем ресурсы
+            connection.Close();
+            connection.Dispose();
+
         }
     }
     }
