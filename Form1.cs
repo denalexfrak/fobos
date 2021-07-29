@@ -788,24 +788,24 @@ namespace fobos_w
                                 if (str2 != "[]")
                                 {
                                     Get_Tree account5 = JsonConvert.DeserializeObject<Get_Tree>(str2);
-
+                                    
                                     // запрос -  дозаполняем таблицу ovm_code
                                     string sql4_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
                                                         "  SET    " +
-                                                        "     [deleted] = '" + account5.deleted.ToString() + "' " +
-                                                        "    ,[lastname] = '" + account5.lastname.ToString() + "' " +
-                                                        "    ,[firstname] = '" + account5.firstname.ToString() + "' " +
-                                                        "    ,[middlename] = '" + account5.middlename.ToString() + "' " +
-                                                        "    ,[appartment] = '" + account5.appartment.ToString() + "' " +
-                                                        "    ,[city] = '" + account5.city.ToString() + "' " +
-                                                        "    ,[district] = '" + account5.district.ToString() + "' " +
-                                                        "    ,[street] = '" + account5.street.ToString() + "' " +
-                                                        "    ,[locality] = '" + account5.locality.ToString() + "' " +
-                                                        "    ,[building] = '" + account5.building.ToString() + "' " +
-                                                        "    ,[entrance] = '" + account5.entrance.ToString() + "' " +
-                                                        "    ,[account]= '" + account5.account.ToString() + "' " +
-                                                        "    ,[vm_code] = '" + account5.vm_code.ToString() + "' " +
-                                                        "    ,[ovm_code] = '" + account5.ovm_code.ToString() + "' " +
+                                                        "     [deleted] = '" +      account5.deleted.ToString() + "' " +
+                                                        "    ,[lastname] = '" +     account5.lastname.ToString() + "' " +
+                                                        "    ,[firstname] = '" +    account5.firstname.ToString() + "' " +
+                                                        "    ,[middlename] = '" +   account5.middlename.ToString() + "' " +
+                                                        "    ,[appartment] = '" +   account5.appartment.ToString() + "' " +
+                                                        "    ,[city] = '" +         account5.city.ToString() + "' " +
+                                                        "    ,[district] = '" +     account5.district + "' " +
+                                                        "    ,[street] = '" +       account5.street.ToString() + "' " +
+                                                        "    ,[locality] = '" +     account5.locality + "' " +
+                                                        "    ,[building] = '" +     account5.building.ToString() + "' " +
+                                                        "    ,[entrance] = '" +     account5.entrance.ToString() + "' " +
+                                                        "    ,[account]= '" +       account5.account.ToString() + "' " +
+                                                        "    ,[vm_code] = '" +      account5.vm_code + "' " +
+                                                        "    ,[ovm_code] = '" +     account5.ovm_code + "' " +
                                                         " WHERE  " +
                                                         "     [id_tree_el] = '" + keyValue4.Key + "' " +
                                                         " ";
