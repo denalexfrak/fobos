@@ -1186,6 +1186,45 @@ namespace fobos_w
             connection.Close();
             connection.Dispose();
         }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+
+
+            dataGridView4.Rows.Clear();
+
+            string connectionString = GetConnectionString();
+
+            SqlConnection connection = new SqlConnection();
+
+            connection.ConnectionString = connectionString;
+
+            connection.Open();
+
+
+            string sql = "SELECT DISTINCT [id_tree_el] FROM [waviot_data].[dbo].[modems]";
+
+            SqlCommand command = new SqlCommand(sql, connection);
+            SqlDataReader reader = command.ExecuteReader();
+
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string json = getContent("https://lk.curog.ru/api.data/get_full_element_info/?id=" + reader.GetInt32(0).ToString() + "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                    Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+
+                    var str1 = resultObject["devices"].ToString();
+                    MessageBox.Show(str1.ToString());
+                }
+            }
+
+
+
+
+
+        }
     }
     }
 
