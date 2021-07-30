@@ -1021,17 +1021,110 @@ namespace fobos_w
                     {
                         if (str1 != "[]" && str1 != null)
                         {
-                                                      
-                            
-                               
-                                
-
-                              str1 = str1.Trim(new Char[] { '[', ']' });
+                            str1 = str1.Trim(new Char[] { '[', ']' });
                             MessageBox.Show(str1.ToString());
-                            Modems_data modems_d = JsonConvert.DeserializeObject<Modems_data>(str1);                         
+                            Modems_data modems_d = JsonConvert.DeserializeObject<Modems_data>(str1);
+
+                           // записываем данные в таблицу по модемам modems
+                           //   MessageBox.Show(modems_d.last_config_time);
+                            //MessageBox.Show(reader.GetInt32(0).ToString());
+                            //MessageBox.Show(modems_d.id);
+                            //MessageBox.Show(modems_d.modem_type);
+                            //MessageBox.Show(modems_d.modem_full_type);
+                            //MessageBox.Show(modems_d.modem_modification);
+                            //MessageBox.Show(modems_d.protocol_id);
+                            //MessageBox.Show(modems_d.flavor_id);
+                            //MessageBox.Show(modems_d.last_station_time);
+                            //MessageBox.Show(modems_d.last_config_time);
+                            //MessageBox.Show(modems_d.hw_version);
+                            //MessageBox.Show(modems_d.sw_version);
+                            //MessageBox.Show(modems_d.latitude);
+                            //MessageBox.Show(modems_d.longitude);
+                            //MessageBox.Show(modems_d.reg_way);
+                            //MessageBox.Show(modems_d.reg_date);
+                            //MessageBox.Show(modems_d.disabled);
+                            //MessageBox.Show(modems_d.temperature);
+                            //MessageBox.Show(modems_d.battery);
+                            //MessageBox.Show(modems_d.battery_type);
+                            //MessageBox.Show(modems_d.last_info_message);
+                            //MessageBox.Show(modems_d.value_formats);
+                            //MessageBox.Show(modems_d.is_balance);
+                            //MessageBox.Show(modems_d.dl_enabled);
+                            //MessageBox.Show(modems_d.dl_change_timestamp);
+                            //MessageBox.Show(modems_d.last_snr);
+                            //MessageBox.Show(modems_d.previous_snr);
+                            //MessageBox.Show(modems_d.last_rssi);
+                            //MessageBox.Show(modems_d.previous_rssi);
+                            //MessageBox.Show(modems_d.station_id);
+                            Application.DoEvents();
+
+                            string sql4 = "INSERT INTO [waviot_data].[dbo].[modems] ( " +                                                                 
+                                                                 "  [id_tree_el] " +
+                                                                 " ,[id_16hex] " +
+                                                                 " ,[modem_type] " +
+                                                                 " ,[modem_full_type] " +
+                                                                 " ,[modem_modification] " +
+                                                                 " ,[protocol_id] " +
+                                                                 " ,[flavor_id] " +
+                                                                 " ,[last_station_time] " +
+                                                                 " ,[last_config_time] " +
+                                                                 " ,[hw_version] " +
+                                                                 " ,[sw_version] " +
+                                                                 " ,[latitude] " +
+                                                                 " ,[longitude] " +
+                                                                 " ,[reg_way] " +
+                                                                 " ,[reg_date] " +
+                                                                 " ,[disabled] " +
+                                                                 " ,[temperature] " +
+                                                                 " ,[battery] " +
+                                                                 " ,[battery_type] " +
+                                                                 " ,[last_info_message] " +
+                                                                 " ,[value_formats] " +
+                                                                 " ,[is_balance] " +
+                                                                 " ,[dl_enabled] " +
+                                                                 " ,[dl_change_timestamp] " +
+                                                                 " ,[last_snr] " +
+                                                                 " ,[previous_snr] " +
+                                                                 " ,[last_rssi] " +
+                                                                 " ,[previous_rssi] " +
+                                                                 " ,[station_id] )" +
+                                                                   " VALUES ( " +
+                                                                   " '" + reader.GetInt32(0).ToString() + "', " +
+                                                                   " '" + modems_d.id + "', " +
+                                                                   " '" + modems_d.modem_type + "', " +
+                                                                   " '" + modems_d.modem_full_type + "', " +
+                                                                   " '" + modems_d.modem_modification + "', " +
+                                                                   " '" + modems_d.protocol_id + "', " +
+                                                                   " '" + modems_d.flavor_id + "', " +
+                                                                   " '" + modems_d.last_station_time + "', " +
+                                                                   " '" + modems_d.last_config_time + "', " +
+                                                                   " '" + modems_d.hw_version + "', " +
+                                                                   " '" + modems_d.sw_version + "', " +
+                                                                   " '" + modems_d.latitude + "', " +
+                                                                   " '" + modems_d.longitude + "', " +
+                                                                   " '" + modems_d.reg_way + "', " +
+                                                                   " '" + modems_d.reg_date + "', " +
+                                                                   " '" + modems_d.disabled + "', " +
+                                                                   " '" + modems_d.temperature + "', " +
+                                                                   " '" + modems_d.battery + "', " +
+                                                                   " '" + modems_d.battery_type + "', " +
+                                                                   " '" + modems_d.last_info_message + "', " +
+                                                                   " '" + modems_d.value_formats + "', " +
+                                                                   " '" + modems_d.is_balance + "', " +
+                                                                   " '" + modems_d.dl_enabled + "', " +
+                                                                   " '" + modems_d.dl_change_timestamp + "', " +
+                                                                   " '" + modems_d.last_snr + "', " +
+                                                                   " '" + modems_d.previous_snr + "', " +                                                                  
+                                                                   " '" + modems_d.last_rssi + "', " +
+                                                                   " '" + modems_d.previous_rssi + "', " +
+                                                                   " '" + modems_d.station_id + "' " +
+                                                                   " )";
+                            // объект для выполнения SQL-запроса
+                            SqlCommand command4 = new SqlCommand(sql4, connection);
+                            command4.ExecuteNonQuery();
 
 
-                               MessageBox.Show(modems_d.id.ToString());
+
 
 
                         }
@@ -1039,6 +1132,18 @@ namespace fobos_w
                 }
             }
 
+
+            // запрос
+            string sql_V = "SELECT * " +
+                           "FROM [waviot_data].[dbo].[modems]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command_v = new SqlCommand(sql_V, connection);
+
+            command_v.ExecuteNonQuery();
+            System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command_v);
+            DataTable DT = new DataTable();
+            DA.Fill(DT);
+            dataGridView3.DataSource = DT;
             //закрываем и освобождаем ресурсы
             connection.Close();
             connection.Dispose();
