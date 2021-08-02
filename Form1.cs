@@ -40,18 +40,29 @@ namespace fobos_w
 
         private string getContent(string url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 
-            request.Method = "GET";
-            request.Accept = "application/json";
-            request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
+                request.Method = "GET";
+                request.Accept = "application/json";
+                request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
 
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            StreamReader reader = new StreamReader(response.GetResponseStream());
-            StringBuilder output = new StringBuilder();
-            output.Append(reader.ReadToEnd());
-            response.Close();
-            return output.ToString();
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                StringBuilder output = new StringBuilder();
+
+                output.Append(reader.ReadToEnd());
+                response.Close();
+                return output.ToString();
+            }
+            catch (WebException ex)
+            {
+                return null;
+
+            }
+            
         }
 
 
@@ -1331,30 +1342,255 @@ namespace fobos_w
                     // str1 = str1.Trim();
                     //  str1 = str1.Trim(new Char[] { '{','}' });
 
-                 //   str1 = "\"devices:\"" + str1;
+                    //   str1 = "\"devices:\"" + str1;
 
-
-
-                    var output = JsonConvert.DeserializeObject<Dictionary<string, Devices>>(str1);
-
-
-                    foreach (KeyValuePair<string, Devices> keyValue in output)
+                    if (str1 != "")
                     {
-                        MessageBox.Show(keyValue.Key + "---" + keyValue.Value.id);
-                        MessageBox.Show(keyValue.Key + "---" + keyValue.Value.device_sn);
-                        MessageBox.Show(keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
-                        
 
+                        var output = JsonConvert.DeserializeObject<Dictionary<string, Devices>>(str1);
+
+                        if (output != null)
+                        {
+
+                            foreach (KeyValuePair<string, Devices> keyValue in output)
+                            {
+                                //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.id);
+                                //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.device_sn);
+                                //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
+
+                                if (keyValue.Key != null && keyValue.Value.registrators.electro_ac_p_lsum_tsum != null)
+                                {
+                                    dataGridView4.Rows.Add(reader.GetInt32(0).ToString()+"----"+keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
+                                }
+
+                            }
+                        }
                     }
-                        
 
                     }
             }
 
 
+            connection.Close();
+            connection.Dispose();
+
+
+        }
 
 
 
+
+
+
+
+
+
+
+        /// <summary>
+        /// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// //////////////////////////////////////////////////////////////Получение основных данных о модеме
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+
+
+
+
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+
+
+
+            dataGridView5.Rows.Clear();
+
+            string connectionString = GetConnectionString();
+
+            SqlConnection connection = new SqlConnection();
+
+            connection.ConnectionString = connectionString;
+
+            connection.Open();
+
+
+            string sql = "SELECT [id_16hex] FROM [waviot_data].[dbo].[modems]";
+
+            SqlCommand command = new SqlCommand(sql, connection);
+            SqlDataReader reader = command.ExecuteReader();
+
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    
+                    string json = getContent("https://lk.curog.ru/api.modem/info/?id=" + reader.GetString(0) + "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                    Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+
+
+                   var str1 = resultObject["modem"].ToString();
+
+                    MessageBox.Show(str1);
+                    // str1 = str1.Trim();
+                    //  str1 = str1.Trim(new Char[] { '{','}' });
+
+                    //   str1 = "\"devices:\"" + str1;
+
+                    //if (str1 != "")
+                    //{
+
+                    //    var output = JsonConvert.DeserializeObject<Dictionary<string, Devices>>(str1);
+
+                    //    if (output != null)
+                    //    {
+
+                    //        foreach (KeyValuePair<string, Devices> keyValue in output)
+                    //        {
+                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.id);
+                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.device_sn);
+                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
+
+                    //            if (keyValue.Key != null && keyValue.Value.registrators.electro_ac_p_lsum_tsum != null)
+                    //            {
+                    //                dataGridView4.Rows.Add(reader.GetInt32(0).ToString() + "----" + keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
+                    //            }
+
+                    //        }
+                    //    }
+                    //}
+
+                }
+            }
+
+            connection.Close();
+            connection.Dispose();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            int sec_period = Convert.ToInt32(textBox5.Text)*60*60;
+            int unixTimestamp2 = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            int sec_from = unixTimestamp2 - sec_period;
+
+            dataGridView5.Rows.Clear();
+
+            string connectionString = GetConnectionString();
+
+            SqlConnection connection = new SqlConnection();
+
+            connection.ConnectionString = connectionString;
+
+            connection.Open();
+
+
+            string sql = "SELECT [id_16hex] FROM [waviot_data].[dbo].[modems]";
+
+            SqlCommand command = new SqlCommand(sql, connection);
+            SqlDataReader reader = command.ExecuteReader();
+
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+
+
+                    //перебор каналов учета
+                    string sql2 = "SELECT [id_channel] FROM [waviot_data].[dbo].[channels_list]";
+
+                    SqlCommand command2 = new SqlCommand(sql2, connection);
+                    SqlDataReader reader2 = command2.ExecuteReader();
+
+
+                    if (reader2.HasRows)
+                    {
+                        while (reader2.Read())
+                        {
+                            string json = getContent("https://lk.curog.ru/api.data/get_modem_channel_values/?modem_id=" + reader.GetString(0) + "&channel="+ reader2.GetString(0) + " " +
+                                " &from="+ sec_from + " " +
+                                " &to="+ unixTimestamp2 + " " +
+                                "  &key=9778a18d58d75bf6d569d31ef277c2cc");
+                            if (json != null)
+                            {
+                                Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+                                var str1 = resultObject["values"].ToString();
+                                if (str1 != null && str1 != "")
+                                {
+                                    MessageBox.Show(reader.GetString(0)+"----"+json);
+                                }
+                            }
+
+                        }
+                    }
+
+                   
+                    // str1 = str1.Trim();
+                    //  str1 = str1.Trim(new Char[] { '{','}' });
+
+                    //   str1 = "\"devices:\"" + str1;
+
+                    //if (str1 != "")
+                    //{
+
+                    //    var output = JsonConvert.DeserializeObject<Dictionary<string, Devices>>(str1);
+
+                    //    if (output != null)
+                    //    {
+
+                    //        foreach (KeyValuePair<string, Devices> keyValue in output)
+                    //        {
+                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.id);
+                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.device_sn);
+                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
+
+                    //            if (keyValue.Key != null && keyValue.Value.registrators.electro_ac_p_lsum_tsum != null)
+                    //            {
+                    //                dataGridView4.Rows.Add(reader.GetInt32(0).ToString() + "----" + keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
+                    //            }
+
+                    //        }
+                    //    }
+                    //}
+
+                }
+            }
+
+            connection.Close();
+            connection.Dispose();
+        }
+
+
+
+
+        internal static string UnixToDate(int Timestamp, string ConvertFormat)
+        {
+            DateTime ConvertedUnixTime = DateTimeOffset.FromUnixTimeSeconds(Timestamp).DateTime;
+            return ConvertedUnixTime.ToString(ConvertFormat);
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+          //  var timestamp = DateTime.Now.ToFileTime();
+            int unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            int unixTimestamp2 = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            MessageBox.Show(UnixToDate(unixTimestamp, "dd-MM-yyyy HH:mm:ss"));
+            MessageBox.Show(UnixToDate(unixTimestamp2, "dd-MM-yyyy HH:mm:ss"));
+            MessageBox.Show(unixTimestamp.ToString());
         }
     }
     }
