@@ -1187,6 +1187,116 @@ namespace fobos_w
             connection.Dispose();
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// /////////////////////////////получение данных об устройстве divices - канал модема
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
+        public class ElectroAcPLsumTsum
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string channel_id { get; set; }
+            public string unit_id { get; set; }
+            public string offset { get; set; }
+            public object modem_value { get; set; }
+            public string last_value { get; set; }
+            public string last_value_timestamp { get; set; }
+            public object billing_init_value { get; set; }
+            public object billing_init_timestamp { get; set; }
+        }
+
+        public class Event
+        {
+            public string timestamp { get; set; }
+            public string code { get; set; }
+        }
+
+        public class ElectroEventLog
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string channel_id { get; set; }
+            public string unit_id { get; set; }
+            public string offset { get; set; }
+            public object modem_value { get; set; }
+            public object last_value { get; set; }
+            public object last_value_timestamp { get; set; }
+            public object billing_init_value { get; set; }
+            public object billing_init_timestamp { get; set; }
+            public List<Event> events { get; set; }
+        }
+
+        public class Registrators
+        {
+            public ElectroAcPLsumTsum electro_ac_p_lsum_tsum { get; set; }
+            public ElectroEventLog electro_event_log { get; set; }
+        }
+
+        public class Devices
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string class_name { get; set; }
+            public string device_sn { get; set; }
+            public string modem_id { get; set; }
+            public object device_time { get; set; }
+            public string config_time { get; set; }
+            public string timezone { get; set; }
+            public Registrators registrators { get; set; }
+        }
+
+     
+
+        public class Root_devices
+        {
+            public string status { get; set; }
+            public List<Devices> devices { get; set; }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void button3_Click_1(object sender, EventArgs e)
         {
 
@@ -1215,9 +1325,30 @@ namespace fobos_w
                     string json = getContent("https://lk.curog.ru/api.data/get_full_element_info/?id=" + reader.GetInt32(0).ToString() + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                     Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
 
+
                     var str1 = resultObject["devices"].ToString();
-                    MessageBox.Show(str1.ToString());
-                }
+
+                    // str1 = str1.Trim();
+                    //  str1 = str1.Trim(new Char[] { '{','}' });
+
+                 //   str1 = "\"devices:\"" + str1;
+
+
+
+                    var output = JsonConvert.DeserializeObject<Dictionary<string, Devices>>(str1);
+
+
+                    foreach (KeyValuePair<string, Devices> keyValue in output)
+                    {
+                        MessageBox.Show(keyValue.Key + "---" + keyValue.Value.id);
+                        MessageBox.Show(keyValue.Key + "---" + keyValue.Value.device_sn);
+                        MessageBox.Show(keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
+                        
+
+                    }
+                        
+
+                    }
             }
 
 
