@@ -1478,6 +1478,29 @@ namespace fobos_w
 
 
 
+        /// <summary>
+        /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// ////////////////////////////////////показания счетчиков
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+
+
+
+
+        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
+        public class Values
+        {
+            public int timestamp_ { get; set; }
+            public string value_ { get; set; }
+        }
+
+        public class Metering
+        {
+            public Values values { get; set; }
+        }
+
 
 
 
@@ -1529,9 +1552,23 @@ namespace fobos_w
                             {
                                 Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
                                 var str1 = resultObject["values"].ToString();
+                                string str0 = resultObject["status"].ToString();
                                 if (str1 != null && str1 != "")
                                 {
-                                    MessageBox.Show(reader.GetString(0)+"----"+json);
+                                    if (str0 == "ok")
+                                    {
+
+                                        var output = JsonConvert.DeserializeObject<Dictionary<string, string>>(str1);
+
+                                        //if (output != null)
+                                        //{
+
+                                            foreach (KeyValuePair<string, string> keyValue in output)
+                                            {
+                                                MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
+                                            }
+                                        //}
+                                    }
                                 }
                             }
 
@@ -1573,6 +1610,37 @@ namespace fobos_w
             connection.Close();
             connection.Dispose();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
