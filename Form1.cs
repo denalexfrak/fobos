@@ -188,7 +188,7 @@ namespace fobos_w
             Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
             var str1 = resultObject["tree"].ToString();
             string str0 = resultObject["status"].ToString();
-            MessageBox.Show(str0.ToString());
+           // MessageBox.Show(str0.ToString());
 
             Dictionary<string, Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Tree>>(str1);
 
@@ -317,6 +317,7 @@ namespace fobos_w
                                 Dictionary<string, Tree4> values2 = JsonConvert.DeserializeObject<Dictionary<string, Tree4>>(str3);
                                 foreach (KeyValuePair<string, Tree4> keyValue2 in values2)
                                 {
+                                    Application.DoEvents();
                                     var str3_1 = resultObject2["tree"]?[keyValue2.Key].ToString();
                                     Tree4_1 account3 = JsonConvert.DeserializeObject<Tree4_1>(str3_1);
                                     //заполняем таблицу 2-го уровня древа
@@ -782,7 +783,7 @@ namespace fobos_w
                 while (reader.Read())
                 {
                     // MessageBox.Show(reader.GetInt32(0).ToString()+ " -- " +reader.GetString(1));
-
+                    Application.DoEvents();
                     string json = getContent("https://lk.curog.ru/api.tree/get_elements/?id=" + reader.GetInt32(0).ToString() + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                     Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
 
@@ -796,6 +797,7 @@ namespace fobos_w
                             Dictionary<string, Get_Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Get_Tree>>(str1);
                             foreach (KeyValuePair<string, Get_Tree> keyValue4 in values)
                             {
+                                Application.DoEvents();
                                 var str2 = resultObject["elements"]?[keyValue4.Key].ToString();
                                 if (str2 != "[]")
                                 {
@@ -1025,7 +1027,7 @@ namespace fobos_w
                 while (reader.Read())
                 {
 
-                    
+                    Application.DoEvents();
 
                     string json = getContent("https://lk.curog.ru/api.tree/get_modems/?id=" + reader.GetInt32(0).ToString() + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                     Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
@@ -1521,7 +1523,7 @@ namespace fobos_w
                 while (reader.Read())
                 {
 
-
+                    Application.DoEvents();
                     //перебор каналов учета
                     string sql2 = "SELECT [id_channel], [id] FROM [waviot_data].[dbo].[channels_list]";
 
@@ -1533,6 +1535,8 @@ namespace fobos_w
                     {
                         while (reader2.Read())
                         {
+                            textBox6.Text = "";
+                            Application.DoEvents();
                             string json = getContent("https://lk.curog.ru/api.data/get_modem_channel_values/?modem_id=" + reader.GetString(0) + "&channel="+ reader2.GetString(0) + " " +
                                 " &from="+ sec_from + " " +
                                 " &to="+ unixTimestamp2 + " " +
@@ -1552,29 +1556,47 @@ namespace fobos_w
                                         if (output != null)
                                         {
 
+                                            textBox6.Text = json;
+
                                             foreach (KeyValuePair<string, string> keyValue in output)
                                             {
+                                                Application.DoEvents();
                                                 //  MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
+                                                if (keyValue.Value != "0.0000")
+                                                {
+                                                    string id_2 = "";
+                                                    //проверка на существования повторных показаний
+                                                    string sql1_1 = "SELECT [id] FROM [waviot_data].[dbo].[metering] WHERE [timestamp_]='" + keyValue.Key + "' AND [value_]='" + keyValue.Value + "' AND [modem_id]='" + reader.GetInt32(1).ToString() + "' AND [chanel_id]='" + reader2.GetInt32(1).ToString() + "'";
+                                                    // объект для выполнения SQL-запроса
+                                                    SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
+                                                    // выполняем запрос и получаем ответ
+                                                    if (command1_1.ExecuteScalar() != null)
+                                                    {
+                                                        id_2 = command1_1.ExecuteScalar().ToString();
+                                                    }
+                                                    if (id_2 == "")
+                                                    {
+                                                        string sql4 = "INSERT INTO [waviot_data].[dbo].[metering] ( " +
+                                                                                    "  [modem_id] " +
+                                                                                    " ,[chanel_id] " +
+                                                                                    " ,[timestamp_] " +
+                                                                                    " ,[value_] " +
+                                                                                    " )" +
+                                                                                      " VALUES ( " +
+                                                                                      " '" + reader.GetInt32(1).ToString() + "', " +
+                                                                                      " '" + reader2.GetInt32(1).ToString() + "', " +
+                                                                                      " '" + keyValue.Key + "', " +
+                                                                                      " '" + keyValue.Value + "' " +
+                                                                                      " )";
 
-                                                string sql4 = "INSERT INTO [waviot_data].[dbo].[metering] ( " +
-                                                                            "  [modem_id] " +
-                                                                            " ,[chanel_id] " +
-                                                                            " ,[timestamp_] " +
-                                                                            " ,[value_] " +
-                                                                            " )" +
-                                                                              " VALUES ( " +
-                                                                              " '" + reader.GetInt32(1).ToString() + "', " +
-                                                                              " '" + reader2.GetInt32(1).ToString() + "', " +
-                                                                              " '" + keyValue.Key + "', " +
-                                                                              " '" + keyValue.Value + "' " +                                                                              
-                                                                              " )";
-                                                // объект для выполнения SQL-запроса
-                                                SqlCommand command4 = new SqlCommand(sql4, connection);
-                                                command4.ExecuteNonQuery();
-
-
+                                                        // объект для выполнения SQL-запроса
+                                                        SqlCommand command4 = new SqlCommand(sql4, connection);
+                                                        command4.ExecuteNonQuery();
+                                                    }
+                                                }
                                             }
                                         }
+                                        output.Clear();
                                     }
                                 }
                             }
@@ -1587,6 +1609,21 @@ namespace fobos_w
 
                 }
             }
+
+
+            // запрос
+            string sql_V = "SELECT * " +
+                           "FROM [waviot_data].[dbo].[metering]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command_v = new SqlCommand(sql_V, connection);
+
+            command_v.ExecuteNonQuery();
+            System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command_v);
+            DataTable DT = new DataTable();
+            DA.Fill(DT);
+            dataGridView5.DataSource = DT;
+            //закрываем и освобождаем ресурсы         
+
 
             connection.Close();
             connection.Dispose();
