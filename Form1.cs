@@ -1489,17 +1489,6 @@ namespace fobos_w
 
 
 
-        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
-        public class Values
-        {
-            public int timestamp_ { get; set; }
-            public string value_ { get; set; }
-        }
-
-        public class Metering
-        {
-            public Values values { get; set; }
-        }
 
 
 
@@ -1521,7 +1510,7 @@ namespace fobos_w
             connection.Open();
 
 
-            string sql = "SELECT [id_16hex] FROM [waviot_data].[dbo].[modems]";
+            string sql = "SELECT [id_16hex], [id]  FROM [waviot_data].[dbo].[modems]";
 
             SqlCommand command = new SqlCommand(sql, connection);
             SqlDataReader reader = command.ExecuteReader();
@@ -1534,7 +1523,7 @@ namespace fobos_w
 
 
                     //перебор каналов учета
-                    string sql2 = "SELECT [id_channel] FROM [waviot_data].[dbo].[channels_list]";
+                    string sql2 = "SELECT [id_channel], [id] FROM [waviot_data].[dbo].[channels_list]";
 
                     SqlCommand command2 = new SqlCommand(sql2, connection);
                     SqlDataReader reader2 = command2.ExecuteReader();
@@ -1560,14 +1549,32 @@ namespace fobos_w
 
                                         var output = JsonConvert.DeserializeObject<Dictionary<string, string>>(str1);
 
-                                        //if (output != null)
-                                        //{
+                                        if (output != null)
+                                        {
 
                                             foreach (KeyValuePair<string, string> keyValue in output)
                                             {
-                                                MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
+                                                //  MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
+
+                                                string sql4 = "INSERT INTO [waviot_data].[dbo].[metering] ( " +
+                                                                            "  [modem_id] " +
+                                                                            " ,[chanel_id] " +
+                                                                            " ,[timestamp_] " +
+                                                                            " ,[value_] " +
+                                                                            " )" +
+                                                                              " VALUES ( " +
+                                                                              " '" + reader.GetInt32(1).ToString() + "', " +
+                                                                              " '" + reader2.GetInt32(1).ToString() + "', " +
+                                                                              " '" + keyValue.Key + "', " +
+                                                                              " '" + keyValue.Value + "' " +                                                                              
+                                                                              " )";
+                                                // объект для выполнения SQL-запроса
+                                                SqlCommand command4 = new SqlCommand(sql4, connection);
+                                                command4.ExecuteNonQuery();
+
+
                                             }
-                                        //}
+                                        }
                                     }
                                 }
                             }
@@ -1576,33 +1583,7 @@ namespace fobos_w
                     }
 
                    
-                    // str1 = str1.Trim();
-                    //  str1 = str1.Trim(new Char[] { '{','}' });
-
-                    //   str1 = "\"devices:\"" + str1;
-
-                    //if (str1 != "")
-                    //{
-
-                    //    var output = JsonConvert.DeserializeObject<Dictionary<string, Devices>>(str1);
-
-                    //    if (output != null)
-                    //    {
-
-                    //        foreach (KeyValuePair<string, Devices> keyValue in output)
-                    //        {
-                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.id);
-                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.device_sn);
-                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
-
-                    //            if (keyValue.Key != null && keyValue.Value.registrators.electro_ac_p_lsum_tsum != null)
-                    //            {
-                    //                dataGridView4.Rows.Add(reader.GetInt32(0).ToString() + "----" + keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
-                    //            }
-
-                    //        }
-                    //    }
-                    //}
+                   
 
                 }
             }
