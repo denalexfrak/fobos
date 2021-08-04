@@ -1268,7 +1268,23 @@ namespace fobos_w
             public object last_value_timestamp { get; set; }
             public object billing_init_value { get; set; }
             public object billing_init_timestamp { get; set; }
-            public List<Event> events { get; set; }
+         //   public List<Event> events { get; set; }
+        }
+
+
+        public class Registr
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string channel_id { get; set; }
+            public string unit_id { get; set; }
+            public string offset { get; set; }
+            public object modem_value { get; set; }
+            public object last_value { get; set; }
+            public object last_value_timestamp { get; set; }
+            public object billing_init_value { get; set; }
+            public object billing_init_timestamp { get; set; }
+            //   public List<Event> events { get; set; }
         }
 
         public class Registrators
@@ -1287,7 +1303,7 @@ namespace fobos_w
             public object device_time { get; set; }
             public string config_time { get; set; }
             public string timezone { get; set; }
-            public Registrators registrators { get; set; }
+            public object registrators { get; set; }
         }
 
      
@@ -1360,9 +1376,16 @@ namespace fobos_w
                                 //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.device_sn);
                                 //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
 
-                                if (keyValue.Key != null && keyValue.Value.registrators.electro_ac_p_lsum_tsum != null)
+                                if (keyValue.Key != null && keyValue.Value.registrators != null)
                                 {
-                                    dataGridView4.Rows.Add(reader.GetInt32(0).ToString()+"----"+keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
+                                   // dataGridView4.Rows.Add(reader.GetInt32(0).ToString()+"----"+keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
+                                    MessageBox.Show(keyValue.Key + "---" + keyValue.Value.registrators.ToString());
+
+                                    var output2 = JsonConvert.DeserializeObject<Dictionary<string, Registr>>(keyValue.Value.registrators.ToString());
+                                    foreach (KeyValuePair<string, Registr> keyValue2 in output2)
+                                    {
+                                        MessageBox.Show(keyValue2.Key + "---" + keyValue2.Value.id);
+                                    }
                                 }
 
                             }
