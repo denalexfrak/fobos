@@ -35,6 +35,64 @@ namespace fobos_w
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = connectionString;
+            connection.Open();
+
+            // запрос
+            string sql_V = "SELECT [id]"+
+                              " ,[id_channel]"+
+                              " ,[short_name]" +
+                              " ,[obis_hex]" +
+                              " ,[obis_decimal]" +
+                              " ,[comments_]" +
+                              " ,[unit_measurement]" +
+                                " FROM[waviot_data].[dbo].[channels_list]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command_v = new SqlCommand(sql_V, connection);
+
+            command_v.ExecuteNonQuery();
+            System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command_v);
+            DataTable DT = new DataTable();
+            DA.Fill(DT);
+             dataGridView6.DataSource = DT;
+            dataGridView6.Columns[0].Width = 30;
+            dataGridView6.Columns[1].HeaderText = "№";                      dataGridView6.Columns[1].Width = 30;
+            dataGridView6.Columns[2].HeaderText = "Канал";                  dataGridView6.Columns[2].Width = 140;
+            dataGridView6.Columns[3].HeaderText = "Короткое наз.";          dataGridView6.Columns[3].Width = 50;
+            dataGridView6.Columns[4].HeaderText = "16HEX";                  dataGridView6.Columns[4].Width = 80;
+            dataGridView6.Columns[5].HeaderText = "DEC";                    dataGridView6.Columns[5].Width = 80;
+            dataGridView6.Columns[6].HeaderText = "Определение";            dataGridView6.Columns[6].Width = 180;
+            dataGridView6.Columns[7].HeaderText = "Измер.";                 dataGridView6.Columns[7].Width = 50;
+
+
+            
+            //закрываем и освобождаем ресурсы
+            connection.Close();
+            connection.Dispose();
+
+
+            //Загрузка данных по умолчанию
+            foreach (DataGridViewRow row in dataGridView6.Rows)
+            {
+                row.Cells[Column7.Name].Value = false;
+            }
+            dataGridView6[0, 0].Value = true;
+            dataGridView6[0, 1].Value = true;
+            dataGridView6[0, 4].Value = true;
+            dataGridView6[0, 5].Value = true;
+            dataGridView6[0, 6].Value = true;
+            dataGridView6[0, 9].Value = true;
+            dataGridView6[0, 10].Value = true;
+            dataGridView6[0, 11].Value = true;
+            dataGridView6[0, 14].Value = true;
+            dataGridView6[0, 15].Value = true;
+            dataGridView6[0, 16].Value = true;
+            dataGridView6[0, 19].Value = true;
+            dataGridView6[0, 48].Value = true;
+            dataGridView6[0, 52].Value = true;
+            dataGridView6[0, 57].Value = true;
 
         }
 
@@ -593,11 +651,13 @@ namespace fobos_w
                                                         command4.ExecuteNonQuery();
                                                     }
                                                 }
+                                                values4.Clear();
                                             }
 
 
 
                                         }
+                                        values3.Clear();
                                     }
 
 
@@ -607,6 +667,7 @@ namespace fobos_w
 
 
                                 }
+                                values2.Clear();
 
                             }
                         }
@@ -616,7 +677,7 @@ namespace fobos_w
                 }
 
             }
-
+            values.Clear();
             connection.Close();
             connection.Dispose();
 
@@ -829,6 +890,7 @@ namespace fobos_w
                                     //  dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account5.id.ToString());
                                 }
                             }
+                            values.Clear();
                         }
                     }
                 }
@@ -1386,10 +1448,12 @@ namespace fobos_w
                                     {
                                         MessageBox.Show(keyValue2.Key + "---" + keyValue2.Value.id);
                                     }
+                                    output2.Clear();
                                 }
 
                             }
                         }
+                        output.Clear();
                     }
 
                     }
@@ -1514,13 +1578,9 @@ namespace fobos_w
 
 
 
-
-
-
-
         private void button6_Click(object sender, EventArgs e)
         {
-            int sec_period = Convert.ToInt32(textBox5.Text)*60*60;
+            int sec_period = Convert.ToInt32(textBox5.Text) * 60 * 60;
             int unixTimestamp2 = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             int sec_from = unixTimestamp2 - sec_period;
 
@@ -1535,104 +1595,160 @@ namespace fobos_w
             connection.Open();
 
 
-            string sql = "SELECT [id_16hex], [id]  FROM [waviot_data].[dbo].[modems]";
-
-            SqlCommand command = new SqlCommand(sql, connection);
-            SqlDataReader reader = command.ExecuteReader();
 
 
-            if (reader.HasRows)
+
+            //////////////получение ссписка каналов из таблицы
+            string in_channels_select_id = "";
+            foreach (DataGridViewRow row in dataGridView6.Rows)
             {
-                while (reader.Read())
+                if (Convert.ToBoolean(row.Cells[Column7.Name].Value) == true && row.Cells[1].Value != null)
                 {
+                    in_channels_select_id = in_channels_select_id + "," + row.Cells[1].Value.ToString();
+                }
+            }
+            /////////////////////////////////////////////////////
 
-                    Application.DoEvents();
-                    //перебор каналов учета
-                    string sql2 = "SELECT [id_channel], [id] FROM [waviot_data].[dbo].[channels_list]";
+            if (in_channels_select_id != "")
+            {
+                string sql = "SELECT [id_16hex], [id]  FROM [waviot_data].[dbo].[modems]";
 
-                    SqlCommand command2 = new SqlCommand(sql2, connection);
-                    SqlDataReader reader2 = command2.ExecuteReader();
+                SqlCommand command = new SqlCommand(sql, connection);
+                SqlDataReader reader = command.ExecuteReader();
 
 
-                    if (reader2.HasRows)
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
                     {
-                        while (reader2.Read())
+
+                        Application.DoEvents();
+                        //перебор каналов учета
+                        string sql2 = "SELECT [id_channel], [id] FROM [waviot_data].[dbo].[channels_list] WHERE [id] IN (" + in_channels_select_id + ")";
+
+                        SqlCommand command2 = new SqlCommand(sql2, connection);
+                        SqlDataReader reader2 = command2.ExecuteReader();
+
+
+                        if (reader2.HasRows)
                         {
-                            textBox6.Text = "";
-                            Application.DoEvents();
-                            string json = getContent("https://lk.curog.ru/api.data/get_modem_channel_values/?modem_id=" + reader.GetString(0) + "&channel="+ reader2.GetString(0) + " " +
-                                " &from="+ sec_from + " " +
-                                " &to="+ unixTimestamp2 + " " +
-                                "  &key=9778a18d58d75bf6d569d31ef277c2cc");
-                            if (json != null)
+                            while (reader2.Read())
                             {
-                                Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
-                                var str1 = resultObject["values"].ToString();
-                                string str0 = resultObject["status"].ToString();
-                                if (str1 != null && str1 != "")
+                                textBox6.Text = "";
+                                Application.DoEvents();
+                                string json = getContent("https://lk.curog.ru/api.data/get_modem_channel_values/?modem_id=" + reader.GetString(0) + "&channel=" + reader2.GetString(0) + " " +
+                                    " &from=" + sec_from + " " +
+                                    " &to=" + unixTimestamp2 + " " +
+                                    "  &key=9778a18d58d75bf6d569d31ef277c2cc");
+                                if (json != null)
                                 {
-                                    if (str0 == "ok")
+                                    Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+                                    var str1 = resultObject["values"].ToString();
+                                    string str0 = resultObject["status"].ToString();
+                                    if (str1 != null && str1 != "")
                                     {
-
-                                        var output = JsonConvert.DeserializeObject<Dictionary<string, string>>(str1);
-
-                                        if (output != null)
+                                        if (str0 == "ok")
                                         {
 
-                                            textBox6.Text = json;
+                                            var output = JsonConvert.DeserializeObject<Dictionary<string, string>>(str1);
 
-                                            foreach (KeyValuePair<string, string> keyValue in output)
+                                            if (output != null)
                                             {
-                                                Application.DoEvents();
-                                                //  MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
-                                                if (keyValue.Value != "0.0000")
-                                                {
-                                                    string id_2 = "";
-                                                    //проверка на существования повторных показаний
-                                                    string sql1_1 = "SELECT [id] FROM [waviot_data].[dbo].[metering] WHERE [timestamp_]='" + keyValue.Key + "' AND [value_]='" + keyValue.Value + "' AND [modem_id]='" + reader.GetInt32(1).ToString() + "' AND [chanel_id]='" + reader2.GetInt32(1).ToString() + "'";
-                                                    // объект для выполнения SQL-запроса
-                                                    SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
-                                                    // выполняем запрос и получаем ответ
-                                                    if (command1_1.ExecuteScalar() != null)
-                                                    {
-                                                        id_2 = command1_1.ExecuteScalar().ToString();
-                                                    }
-                                                    if (id_2 == "")
-                                                    {
-                                                        string sql4 = "INSERT INTO [waviot_data].[dbo].[metering] ( " +
-                                                                                    "  [modem_id] " +
-                                                                                    " ,[chanel_id] " +
-                                                                                    " ,[timestamp_] " +
-                                                                                    " ,[value_] " +
-                                                                                    " )" +
-                                                                                      " VALUES ( " +
-                                                                                      " '" + reader.GetInt32(1).ToString() + "', " +
-                                                                                      " '" + reader2.GetInt32(1).ToString() + "', " +
-                                                                                      " '" + keyValue.Key + "', " +
-                                                                                      " '" + keyValue.Value + "' " +
-                                                                                      " )";
 
+                                                textBox6.Text = json;
+
+                                                foreach (KeyValuePair<string, string> keyValue in output)
+                                                {
+                                                    Application.DoEvents();
+                                                    //  MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
+                                                    // проверяем на нулевые значения разрешено или нет
+                                                    if (checkBox1.Checked == false)
+                                                    {
+                                                        if (keyValue.Value != "0.0000")
+                                                        {
+                                                            string id_2 = "";
+                                                            //проверка на существования повторных показаний
+                                                            string sql1_1 = "SELECT [id] FROM [waviot_data].[dbo].[metering] WHERE [timestamp_]='" + keyValue.Key + "' AND [value_]='" + keyValue.Value + "' AND [modem_id]='" + reader.GetInt32(1).ToString() + "' AND [chanel_id]='" + reader2.GetInt32(1).ToString() + "'";
+                                                            // объект для выполнения SQL-запроса
+                                                            SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
+                                                            // выполняем запрос и получаем ответ
+                                                            if (command1_1.ExecuteScalar() != null)
+                                                            {
+                                                                id_2 = command1_1.ExecuteScalar().ToString();
+                                                            }
+                                                            if (id_2 == "")
+                                                            {
+                                                                string sql4 = "INSERT INTO [waviot_data].[dbo].[metering] ( " +
+                                                                                            "  [modem_id] " +
+                                                                                            " ,[chanel_id] " +
+                                                                                            " ,[timestamp_] " +
+                                                                                            " ,[value_] " +
+                                                                                            " )" +
+                                                                                              " VALUES ( " +
+                                                                                              " '" + reader.GetInt32(1).ToString() + "', " +
+                                                                                              " '" + reader2.GetInt32(1).ToString() + "', " +
+                                                                                              " '" + keyValue.Key + "', " +
+                                                                                              " '" + keyValue.Value + "' " +
+                                                                                              " )";
+
+                                                                // объект для выполнения SQL-запроса
+                                                                SqlCommand command4 = new SqlCommand(sql4, connection);
+                                                                command4.ExecuteNonQuery();
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        string id_2 = "";
+                                                        //проверка на существования повторных показаний
+                                                        string sql1_1 = "SELECT [id] FROM [waviot_data].[dbo].[metering] WHERE [timestamp_]='" + keyValue.Key + "' AND [value_]='" + keyValue.Value + "' AND [modem_id]='" + reader.GetInt32(1).ToString() + "' AND [chanel_id]='" + reader2.GetInt32(1).ToString() + "'";
                                                         // объект для выполнения SQL-запроса
-                                                        SqlCommand command4 = new SqlCommand(sql4, connection);
-                                                        command4.ExecuteNonQuery();
+                                                        SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
+                                                        // выполняем запрос и получаем ответ
+                                                        if (command1_1.ExecuteScalar() != null)
+                                                        {
+                                                            id_2 = command1_1.ExecuteScalar().ToString();
+                                                        }
+                                                        if (id_2 == "")
+                                                        {
+                                                            string sql4 = "INSERT INTO [waviot_data].[dbo].[metering] ( " +
+                                                                                        "  [modem_id] " +
+                                                                                        " ,[chanel_id] " +
+                                                                                        " ,[timestamp_] " +
+                                                                                        " ,[value_] " +
+                                                                                        " )" +
+                                                                                          " VALUES ( " +
+                                                                                          " '" + reader.GetInt32(1).ToString() + "', " +
+                                                                                          " '" + reader2.GetInt32(1).ToString() + "', " +
+                                                                                          " '" + keyValue.Key + "', " +
+                                                                                          " '" + keyValue.Value + "' " +
+                                                                                          " )";
+
+                                                            // объект для выполнения SQL-запроса
+                                                            SqlCommand command4 = new SqlCommand(sql4, connection);
+                                                            command4.ExecuteNonQuery();
+                                                        }
                                                     }
                                                 }
                                             }
+                                            output.Clear();
                                         }
-                                        output.Clear();
                                     }
                                 }
+
                             }
-
                         }
+
+
+
+
                     }
-
-                   
-                   
-
                 }
             }
-
+            else
+            {
+                textBox6.Text = "Необходимо выбрать хоть один канал.";
+            }
 
             // запрос
             string sql_V = "SELECT * " +
@@ -1700,6 +1816,66 @@ namespace fobos_w
             MessageBox.Show(UnixToDate(unixTimestamp, "dd-MM-yyyy HH:mm:ss"));
             MessageBox.Show(UnixToDate(unixTimestamp2, "dd-MM-yyyy HH:mm:ss"));
             MessageBox.Show(unixTimestamp.ToString());
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            //записывам 
+           
+            foreach (DataGridViewRow row in dataGridView6.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells[Column7.Name].Value) == true && row.Cells[1].Value!=null)
+                {
+                   textBox6.Text = textBox6.Text + row.Cells[1].Value.ToString();
+                }
+            }
+            
+           
+
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridView6.Rows)
+            {
+                row.Cells[Column7.Name].Value = true;
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridView6.Rows)
+            {
+                row.Cells[Column7.Name].Value = false;
+            }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridView6.Rows)
+            {
+                row.Cells[Column7.Name].Value = false;
+            }
+            dataGridView6[0, 0].Value = true;
+            dataGridView6[0, 1].Value = true;
+            dataGridView6[0, 4].Value = true;
+            dataGridView6[0, 5].Value = true;
+            dataGridView6[0, 6].Value = true;
+            dataGridView6[0, 9].Value = true;
+            dataGridView6[0, 10].Value = true;
+            dataGridView6[0, 11].Value = true;
+            dataGridView6[0, 14].Value = true;
+            dataGridView6[0, 15].Value = true;
+            dataGridView6[0, 16].Value = true;
+            dataGridView6[0, 19].Value = true;
+            dataGridView6[0, 48].Value = true;
+            dataGridView6[0, 52].Value = true;
+            dataGridView6[0, 57].Value = true;
         }
     }
     }
