@@ -1084,8 +1084,7 @@ namespace fobos_w
                         if (str1 != "[]" && str1 != null)
                         {
                             //  str1 = str1.Trim(new Char[] { '[', ']' });
-                            str1 = "\"modems:\"" + str1;
-                          //  MessageBox.Show(json);
+                            str1 = "\"modems:\"" + str1;                          
                             ModemList ss = JsonConvert.DeserializeObject<ModemList>(json);
                             // записываем данные в таблицу по модемам modems
                             foreach (var obj in ss.modems)
@@ -1369,82 +1368,167 @@ namespace fobos_w
                     string json = getContent("https://lk.curog.ru/api.data/get_full_element_info/?id=" + reader.GetInt32(0).ToString() + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                     Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
 
-
+                    var str0 = resultObject["status"].ToString();
                     var str1 = resultObject["devices"].ToString();
 
-                    // str1 = str1.Trim();
-                    //  str1 = str1.Trim(new Char[] { '{','}' });
-
-                    //   str1 = "\"devices:\"" + str1;
-
-                    if (str1 != "")
+                    
+                    if (str0 == "ok")
                     {
-
-                        var output = JsonConvert.DeserializeObject<Dictionary<string, Devices>>(str1);
-
-                        if (output != null)
+                        if (str1 != "")
                         {
 
-                            foreach (KeyValuePair<string, Devices> keyValue in output)
+                            var output = JsonConvert.DeserializeObject<Dictionary<string, Devices>>(str1);
+
+                            if (output != null)
                             {
-                                //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.id);
-                                //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.device_sn);
-                                //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
 
-                                if (keyValue.Key != null && keyValue.Value.registrators != null)
+                                foreach (KeyValuePair<string, Devices> keyValue in output)
                                 {
-                                  
-                                    var output2 = JsonConvert.DeserializeObject<Dictionary<string, Registr>>(keyValue.Value.registrators.ToString());
-                                    foreach (KeyValuePair<string, Registr> keyValue2 in output2)
+                                    
+                                    //запись в базу devices
+                                    Application.DoEvents();
+
+                                    string sql4 = "" +
+                                         "INSERT INTO [waviot_data].[dbo].[devices] ( " +
+                                                                          " [device_id] " +
+                                                                          " ,[name] " +
+                                                                          " ,[class_name] " +
+                                                                          " ,[device_sn] " +
+                                                                          " ,[modem_id] " +
+                                                                          " ,[device_time] " +
+                                                                          " ,[config_time] " +
+                                                                          " ,[timezone] ) " +
+                                                                           " VALUES ( " +
+                                                                           " '" + keyValue.Value.id + "', " +
+                                                                           " '" + keyValue.Value.name + "', " +
+                                                                           " '" + keyValue.Value.class_name + "', " +
+                                                                           " '" + keyValue.Value.device_sn + "', " +
+                                                                           " '" + keyValue.Value.modem_id + "', " +
+                                                                           " '" + keyValue.Value.device_time + "', " +
+                                                                           " '" + keyValue.Value.config_time + "', " +
+                                                                           " '" + keyValue.Value.timezone + "' " +
+                                                                           " )";
+                                     //" ON CONFLICT ([device_id]) DO UPDATE SET " +
+                                     //" [name]='" + keyValue.Value.name + "' " +
+                                     //" ,[class_name]='" + keyValue.Value.class_name + "' " +
+                                     //" ,[device_sn]='" + keyValue.Value.device_sn + "' " +
+                                     //" ,[modem_id]='" + keyValue.Value.modem_id + "' " +
+                                     //" ,[device_time]='" + keyValue.Value.device_time + "' " +
+                                     //" ,[config_time]='" + keyValue.Value.config_time + "' " +
+                                     //" ,[timezone]='" + keyValue.Value.timezone + "'  ";
+                                    // объект для выполнения SQL-запроса
+                                    SqlCommand command4 = new SqlCommand(sql4, connection);
+                                    command4.ExecuteNonQuery();
+                                    //////////////////////////////////////////////////////////////////
+                                    if (keyValue.Key != null && keyValue.Value.registrators != null)
                                     {
-                                     //   MessageBox.Show(keyValue2.Key + "---" + keyValue2.Value.id);
-                                        
 
-                                        if (keyValue2.Value.events != "" && keyValue2.Value.events != "[]" && keyValue2.Value.events != null)
+                                        var output2 = JsonConvert.DeserializeObject<Dictionary<string, Registr>>(keyValue.Value.registrators.ToString());
+                                        foreach (KeyValuePair<string, Registr> keyValue2 in output2)
                                         {
-                                            
-                                            string str1events = keyValue2.Value.events.ToString();
-                                            ////последний массив вложенный массив данных в events
+                                            //   MessageBox.Show(keyValue2.Key + "---" + keyValue2.Value.id);
+
+                                            //запись в базу registrators
+                                            Application.DoEvents();
+
+                                            string sql5 = "INSERT INTO [waviot_data].[dbo].[registrators] ( " +                                                                                     
+                                                                                      "[device_id] " +
+                                                                                      ",[channel] ) " +
+                                                                                   " VALUES ( " +
+                                                                                   " '" + keyValue.Value.id + "', " +
+                                                                                   " '" + keyValue2.Value.channel_id + "' " +                                                                                   
+                                                                                   " )";
+                                            // объект для выполнения SQL-запроса
+                                            SqlCommand command5 = new SqlCommand(sql5, connection);
+                                            command5.ExecuteNonQuery();
+                                            //////////////////////////////////////////////////////////////////
                                             ///
-                                           
-                                            MessageBox.Show(str1events);
-                                            //EventList ss = JsonConvert.DeserializeObject<EventList>(str1events);
-                                            List<Event> list = JsonConvert.DeserializeObject<List<Event>>(str1events);
-                                            // Newtonsoft.Json.Linq.JObject resultObject3 = Newtonsoft.Json.Linq.JObject.Parse(keyValue2.Value.events.ToString());
+                                            //запись в базу registrators_channel                                           
 
-                                            //var str1 = resultObject["modems"].ToString();
+                                            string sql6 = "INSERT INTO [waviot_data].[dbo].[registrators_channel] ( " +
+                                                                                        " [device_id] " +
+                                                                                        "  ,[id_registrators] " +
+                                                                                        "  ,[name] " +
+                                                                                        "  ,[channel_id] " +
+                                                                                        "  ,[unit_id] " +
+                                                                                        "  ,[offset] " +
+                                                                                        "  ,[modem_value] " +
+                                                                                        "  ,[last_value] " +
+                                                                                        "  ,[last_value_timestamp] " +
+                                                                                        "  ,[billing_init_value] " +
+                                                                                        "  ,[billing_init_timestamp] " +
+                                                                                        ") " +
+                                                                                   " VALUES ( " +
+                                                                                   " '" + keyValue.Value.id + "', " +
+                                                                                   " '" + keyValue2.Value.id + "', " +
+                                                                                   " '" + keyValue2.Value.name + "', " +
+                                                                                   " '" + keyValue2.Value.channel_id + "', " +
+                                                                                   " '" + keyValue2.Value.unit_id + "', " +
+                                                                                   " '" + keyValue2.Value.offset + "', " +
+                                                                                   " '" + keyValue2.Value.modem_value + "', " +
+                                                                                   " '" + keyValue2.Value.last_value + "', " +
+                                                                                   " '" + keyValue2.Value.last_value_timestamp + "', " +
+                                                                                   " '" + keyValue2.Value.billing_init_value + "', " +
+                                                                                   " '" + keyValue2.Value.billing_init_timestamp + "' " +                                                                                  
+                                                                                   " )";
+                                            // объект для выполнения SQL-запроса
+                                            SqlCommand command6 = new SqlCommand(sql6, connection);
+                                            command6.ExecuteNonQuery();
+                                            //////////////////////////////////////////////////////////////////
+
+                                            if (keyValue2.Value.events != "" && keyValue2.Value.events != "[]" && keyValue2.Value.events != null)
+                                            {
+
+                                                string str1events = keyValue2.Value.events.ToString();
+                                                ////последний массив вложенный массив данных в events
+                                                ///
+
+                                              
+
+                                                List<Event> list = JsonConvert.DeserializeObject<List<Event>>(str1events);
 
 
-                                            //string str0 = resultObject["status"].ToString();
-                                            //if (str0 == "ok")
-                                            //{
-                                            //    if (str1 != "[]" && str1 != null)
-                                            //    {
-                                            //        //  str1 = str1.Trim(new Char[] { '[', ']' });
-                                            //        str1 = "\"events:\"" + keyValue2.Value.events.ToString();
+                                                foreach (var obj in list)
+                                                {
+                                                   // MessageBox.Show(obj.timestamp.ToString() + "----" + obj.code.ToString());
 
-                                            //EventList ss = JsonConvert.DeserializeObject<EventList>(keyValue2.Value.events.ToString());
-                                            ////        // записываем данные в таблицу по модемам modems
-                                            
-                                                   foreach (var obj in list)
-                                                    {
-                                                        MessageBox.Show(obj.timestamp.ToString() + "----" + obj.code.ToString());
-                                                    }
-                                            //    }
-                                            //}
+                                                    //запись в базу registrators_events                                          
+
+                                                    string sql7 = "INSERT INTO [waviot_data].[dbo].[registrators_events] ( " +
+                                                                                                " [device_id] " +
+                                                                                                " ,[registrators_id] "+
+                                                                                                " ,[channel] " +
+                                                                                                " ,[timestamp] " +
+                                                                                                " ,[code] " +
+                                                                                                ") " +
+                                                                                           " VALUES ( " +
+                                                                                           " '" + keyValue.Value.id + "', " +
+                                                                                           " '" + keyValue2.Value.id + "', " +                                                                                           
+                                                                                           " '" + keyValue2.Value.channel_id + "', " +
+                                                                                           " '" + obj.timestamp + "', " +
+                                                                                           " '" + obj.code + "' " +                                                                                           
+                                                                                           " )";
+                                                    // объект для выполнения SQL-запроса
+                                                    SqlCommand command7 = new SqlCommand(sql7, connection);
+                                                    command7.ExecuteNonQuery();
+                                                    //////////////////////////////////////////////////////////////////
+
+                                                }
+                                                list.Clear();
+
+                                            }
                                         }
+                                        output2.Clear();
                                     }
-                                    output2.Clear();
+
                                 }
-
                             }
+                            output.Clear();
                         }
-                        output.Clear();
-                    }
 
                     }
+                }
             }
-
 
             connection.Close();
             connection.Dispose();
