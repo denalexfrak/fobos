@@ -72,6 +72,8 @@
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -164,6 +166,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Location = new System.Drawing.Point(0, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -172,6 +175,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.textBox7);
             this.tabPage3.Controls.Add(this.textBox4);
             this.tabPage3.Controls.Add(this.textBox3);
             this.tabPage3.Controls.Add(this.textBox2);
@@ -214,7 +218,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(223, 20);
             this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "SKH400475\\SQLEXPRESS";
+            this.textBox1.Text = "172.26.95.149";
             // 
             // tabPage1
             // 
@@ -525,6 +529,25 @@
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(237, 6);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(241, 20);
+            this.textBox7.TabIndex = 4;
+            this.textBox7.Text = "SKH400475\\SQLEXPRESS";
+            this.textBox7.Visible = false;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(1224, 561);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "Автозапуск";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -607,6 +630,8 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TabPage tabPage6;
     }
 }
 

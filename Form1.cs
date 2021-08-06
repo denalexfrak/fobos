@@ -73,26 +73,7 @@ namespace fobos_w
             connection.Dispose();
 
 
-            //Загрузка данных по умолчанию
-            foreach (DataGridViewRow row in dataGridView6.Rows)
-            {
-                row.Cells[Column7.Name].Value = false;
-            }
-            dataGridView6[0, 0].Value = true;
-            dataGridView6[0, 1].Value = true;
-            dataGridView6[0, 4].Value = true;
-            dataGridView6[0, 5].Value = true;
-            dataGridView6[0, 6].Value = true;
-            dataGridView6[0, 9].Value = true;
-            dataGridView6[0, 10].Value = true;
-            dataGridView6[0, 11].Value = true;
-            dataGridView6[0, 14].Value = true;
-            dataGridView6[0, 15].Value = true;
-            dataGridView6[0, 16].Value = true;
-            dataGridView6[0, 19].Value = true;
-            dataGridView6[0, 48].Value = true;
-            dataGridView6[0, 52].Value = true;
-            dataGridView6[0, 57].Value = true;
+           
 
         }
 
@@ -1104,7 +1085,7 @@ namespace fobos_w
                         {
                             //  str1 = str1.Trim(new Char[] { '[', ']' });
                             str1 = "\"modems:\"" + str1;
-                           
+                          //  MessageBox.Show(json);
                             ModemList ss = JsonConvert.DeserializeObject<ModemList>(json);
                             // записываем данные в таблицу по модемам modems
                             foreach (var obj in ss.modems)
@@ -1297,20 +1278,7 @@ namespace fobos_w
 
 
 
-        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
-        public class ElectroAcPLsumTsum
-        {
-            public string id { get; set; }
-            public string name { get; set; }
-            public string channel_id { get; set; }
-            public string unit_id { get; set; }
-            public string offset { get; set; }
-            public object modem_value { get; set; }
-            public string last_value { get; set; }
-            public string last_value_timestamp { get; set; }
-            public object billing_init_value { get; set; }
-            public object billing_init_timestamp { get; set; }
-        }
+       
 
         public class Event
         {
@@ -1318,21 +1286,11 @@ namespace fobos_w
             public string code { get; set; }
         }
 
-        public class ElectroEventLog
-        {
-            public string id { get; set; }
-            public string name { get; set; }
-            public string channel_id { get; set; }
-            public string unit_id { get; set; }
-            public string offset { get; set; }
-            public object modem_value { get; set; }
-            public object last_value { get; set; }
-            public object last_value_timestamp { get; set; }
-            public object billing_init_value { get; set; }
-            public object billing_init_timestamp { get; set; }
-         //   public List<Event> events { get; set; }
-        }
 
+        //public class EventList
+        //{
+        //    public List<Event> events { get; set; }
+        //}
 
         public class Registr
         {
@@ -1346,15 +1304,10 @@ namespace fobos_w
             public object last_value_timestamp { get; set; }
             public object billing_init_value { get; set; }
             public object billing_init_timestamp { get; set; }
-            //   public List<Event> events { get; set; }
+            public object events { get; set; }
         }
 
-        public class Registrators
-        {
-            public ElectroAcPLsumTsum electro_ac_p_lsum_tsum { get; set; }
-            public ElectroEventLog electro_event_log { get; set; }
-        }
-
+       
         public class Devices
         {
             public string id { get; set; }
@@ -1440,13 +1393,46 @@ namespace fobos_w
 
                                 if (keyValue.Key != null && keyValue.Value.registrators != null)
                                 {
-                                   // dataGridView4.Rows.Add(reader.GetInt32(0).ToString()+"----"+keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
-                                    MessageBox.Show(keyValue.Key + "---" + keyValue.Value.registrators.ToString());
-
+                                  
                                     var output2 = JsonConvert.DeserializeObject<Dictionary<string, Registr>>(keyValue.Value.registrators.ToString());
                                     foreach (KeyValuePair<string, Registr> keyValue2 in output2)
                                     {
-                                        MessageBox.Show(keyValue2.Key + "---" + keyValue2.Value.id);
+                                     //   MessageBox.Show(keyValue2.Key + "---" + keyValue2.Value.id);
+                                        
+
+                                        if (keyValue2.Value.events != "" && keyValue2.Value.events != "[]" && keyValue2.Value.events != null)
+                                        {
+                                            
+                                            string str1events = keyValue2.Value.events.ToString();
+                                            ////последний массив вложенный массив данных в events
+                                            ///
+                                           
+                                            MessageBox.Show(str1events);
+                                            //EventList ss = JsonConvert.DeserializeObject<EventList>(str1events);
+                                            List<Event> list = JsonConvert.DeserializeObject<List<Event>>(str1events);
+                                            // Newtonsoft.Json.Linq.JObject resultObject3 = Newtonsoft.Json.Linq.JObject.Parse(keyValue2.Value.events.ToString());
+
+                                            //var str1 = resultObject["modems"].ToString();
+
+
+                                            //string str0 = resultObject["status"].ToString();
+                                            //if (str0 == "ok")
+                                            //{
+                                            //    if (str1 != "[]" && str1 != null)
+                                            //    {
+                                            //        //  str1 = str1.Trim(new Char[] { '[', ']' });
+                                            //        str1 = "\"events:\"" + keyValue2.Value.events.ToString();
+
+                                            //EventList ss = JsonConvert.DeserializeObject<EventList>(keyValue2.Value.events.ToString());
+                                            ////        // записываем данные в таблицу по модемам modems
+                                            
+                                                   foreach (var obj in list)
+                                                    {
+                                                        MessageBox.Show(obj.timestamp.ToString() + "----" + obj.code.ToString());
+                                                    }
+                                            //    }
+                                            //}
+                                        }
                                     }
                                     output2.Clear();
                                 }
@@ -1607,6 +1593,7 @@ namespace fobos_w
                     in_channels_select_id = in_channels_select_id + "," + row.Cells[1].Value.ToString();
                 }
             }
+            in_channels_select_id = in_channels_select_id.Trim(new Char[] { ' ', ',' });
             /////////////////////////////////////////////////////
 
             if (in_channels_select_id != "")
