@@ -1747,34 +1747,7 @@ namespace fobos_w
             public string company_name { get; set; }
         }
 
-        public class Modem_info
-        {
-            public string id { get; set; }
-            public string modem_type { get; set; }
-            public string protocol_id { get; set; }
-            public string last_station_time { get; set; }
-            public object last_config_time { get; set; }
-            public object hw_version { get; set; }
-            public object sw_version { get; set; }
-            public object latitude { get; set; }
-            public object longitude { get; set; }
-            public object temperature { get; set; }
-            public object battery { get; set; }
-            public object battery_type { get; set; }
-            public object is_balance { get; set; }
-            public object last_info_message { get; set; }
-            public string dl_change_timestamp { get; set; }
-            public string last_station_time_date { get; set; }
-            public PhobosData phobos_data { get; set; }
-            public List<PhobosSyncData> phobos_sync_data { get; set; }
-        }
-
-        public class Root_modem
-        {
-            public string status { get; set; }
-            public Modem_info modem_info { get; set; }
-        }
-
+        
 
 
 
@@ -1803,14 +1776,123 @@ namespace fobos_w
             {
                 while (reader.Read())
                 {
-                    
+                    Application.DoEvents();
                     string json = getContent("https://lk.curog.ru/api.modem/info/?id=" + reader.GetString(0) + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                     Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+                    var str0 = resultObject["status"].ToString();                   
+                    //  Root_modem output = JsonConvert.DeserializeObject<Root_modem>(json);
+
+                    if (str0 == "ok")
+                    {
+
+                       
+                            var str1 = resultObject["modem"]?["id"].ToString();
+                            MessageBox.Show(str1);
+
+                        //     MessageBox.Show(output.status);
+                        //  MessageBox.Show(output.modem_info.id);
+                        //  MessageBox.Show(output.modem_info.phobos_data.hw_version);
+                        //  MessageBox.Show(output.modem_info.phobos_data.load_profile.saving_interval.ToString());
+                        //  MessageBox.Show(output.status);
 
 
-                   
+                        string sql7 = "INSERT INTO [waviot_data].[dbo].[registrators_events] ( " +
+                                                                                              " [modem_id] " +
+                                                                                              " ,[modem_type] " +
+                                                                                              " ,[protocol_id] " +
+                                                                                              " ,[last_station_time] " +
+                                                                                              " ,[last_config_time] " +
+                                                                                              " ,[hw_version] " +
+                                                                                              " ,[sw_version] " +
+                                                                                              " ,[latitude] " +
+                                                                                              " ,[longitude] " +
+                                                                                              " ,[temperature] " +
+                                                                                              " ,[battery] " +
+                                                                                              " ,[battery_type] " +
+                                                                                              " ,[is_balance] " +
+                                                                                              " ,[last_info_message] " +
+                                                                                              " ,[dl_change_timestamp] " +
+                                                                                              " ,[last_station_time_date] " +
+                                                                                              " ,[phobos_data_model] " +
+                                                                                              " ,[phobos_data_hw_version] " +
+                                                                                              " ,[phobos_data_sw_version] " +
+                                                                                              " ,[phobos_data_load_profile_saving_interval] " +
+                                                                                              " ,[phobos_data_load_profile_value_alignment] " +
+                                                                                              " ,[phobos_data_load_profile_send_profile] " +
+                                                                                              " ,[phobos_data_load_profile_p1_c] " +
+                                                                                              " ,[phobos_data_load_profile_p1_p] " +
+                                                                                              " ,[phobos_data_load_profile_p1_t] " +
+                                                                                              " ,[phobos_data_load_profile_p2_c] " +
+                                                                                              " ,[phobos_data_load_profile_p2_p] " +
+                                                                                              " ,[phobos_data_load_profile_p2_t] " +
+                                                                                              " ,[phobos_data_load_profile_p3_c] " +
+                                                                                              " ,[phobos_data_load_profile_p3_p] " +
+                                                                                              " ,[phobos_data_load_profile_p3_t] " +
+                                                                                              " ,[phobos_data_load_profile_p4_c] " +
+                                                                                              " ,[phobos_data_load_profile_p4_p] " +
+                                                                                              " ,[phobos_data_load_profile_p4_t] " +
+                                                                                              " ,[phobos_data_tariffs_holidays] " +
+                                                                                              " ,[phobos_data_tariffs_special1] " +
+                                                                                              " ,[phobos_data_tariffs_special2] " +
+                                                                                              " ,[phobos_data_tariffs_tables_workdays] " +
+                                                                                              " ,[phobos_data_tariffs_tables_holidays] " +
+                                                                                              " ,[phobos_data_tariffs_tables_special1] " +
+                                                                                              " ,[phobos_data_tariffs_tables_special2] " +
+                                                                                              " ,[phobos_data_events_filter] " +
+                                                                                              " ,[phobos_data_remote_display] " +
+                                                                                              " ,[phobos_data_meter_state] " +
+                                                                                              " ,[phobos_data_load_limit] " +
+                                                                                               ") " +
+                                                                                          " VALUES ( " +
+                                                                                          " '" + resultObject["modem"]?["id"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["modem_type"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["protocol_id"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["last_station_time"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["last_config_time"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["hw_version"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["sw_version"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["latitude"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["longitude"].ToString() + "', " +                                                                                          
+                                                                                          " '" + resultObject["modem"]?["temperature"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["battery"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["battery_type"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["is_balance"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["last_info_message"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["dl_change_timestamp"].ToString() + "', " +
+                                                                                          " '" + resultObject["modem"]?["last_station_time_date"].ToString() + "', " +
 
-                   
+                                                                                          " '" + output.modem_info.phobos_data.model + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.hw_version + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.sw_version + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.saving_interval + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.value_alignment + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.send_profile + "', " +
+
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p1_c + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p1_p + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p1_t + "', " +
+
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p2_c + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p2_p + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p2_t + "', " +
+
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p3_c + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p3_p + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p3_t + "', " +
+
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p4_c + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p4_p + "', " +
+                                                                                          " '" + output.modem_info.phobos_data.load_profile.p4_t + "', " +
+
+                                                                                          " )";
+                        // объект для выполнения SQL-запроса
+                        SqlCommand command7 = new SqlCommand(sql7, connection);
+                        command7.ExecuteNonQuery();
+
+                    }
+
+
+
 
                 }
             }
