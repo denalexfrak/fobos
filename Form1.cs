@@ -1684,6 +1684,97 @@ namespace fobos_w
         /// <param name="e"></param>
 
 
+        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
+        public class LoadProfile
+        {
+            public int saving_interval { get; set; }
+            public int value_alignment { get; set; }
+            public int send_profile { get; set; }
+            public int p1_c { get; set; }
+            public int p1_p { get; set; }
+            public int p1_t { get; set; }
+            public int p2_c { get; set; }
+            public int p2_p { get; set; }
+            public int p2_t { get; set; }
+            public int p3_c { get; set; }
+            public int p3_p { get; set; }
+            public int p3_t { get; set; }
+            public int p4_c { get; set; }
+            public int p4_p { get; set; }
+            public int p4_t { get; set; }
+        }
+
+        public class Tables
+        {
+            public List<int> workdays { get; set; }
+            public List<object> holidays { get; set; }
+            public List<object> special1 { get; set; }
+            public List<object> special2 { get; set; }
+        }
+
+        public class Tariffs
+        {
+            public List<object> holidays { get; set; }
+            public List<object> special1 { get; set; }
+            public List<object> special2 { get; set; }
+            public Tables tables { get; set; }
+        }
+
+        public class PhobosData
+        {
+            public object model { get; set; }
+            public string hw_version { get; set; }
+            public string sw_version { get; set; }
+            public LoadProfile load_profile { get; set; }
+            public Tariffs tariffs { get; set; }
+            public List<int> events_filter { get; set; }
+            public object remote_display { get; set; }
+            public string meter_state { get; set; }
+            public object load_limit { get; set; }
+        }
+
+        public class PhobosSyncData
+        {
+            public string modem_id { get; set; }
+            public string sync_subject { get; set; }
+            public string sync_timestamp { get; set; }
+            public string request_status { get; set; }
+            public string user_id { get; set; }
+            public string username { get; set; }
+            public string display_name { get; set; }
+            public string role { get; set; }
+            public string company_id { get; set; }
+            public string company_name { get; set; }
+        }
+
+        public class Modem_info
+        {
+            public string id { get; set; }
+            public string modem_type { get; set; }
+            public string protocol_id { get; set; }
+            public string last_station_time { get; set; }
+            public object last_config_time { get; set; }
+            public object hw_version { get; set; }
+            public object sw_version { get; set; }
+            public object latitude { get; set; }
+            public object longitude { get; set; }
+            public object temperature { get; set; }
+            public object battery { get; set; }
+            public object battery_type { get; set; }
+            public object is_balance { get; set; }
+            public object last_info_message { get; set; }
+            public string dl_change_timestamp { get; set; }
+            public string last_station_time_date { get; set; }
+            public PhobosData phobos_data { get; set; }
+            public List<PhobosSyncData> phobos_sync_data { get; set; }
+        }
+
+        public class Root_modem
+        {
+            public string status { get; set; }
+            public Modem_info modem_info { get; set; }
+        }
+
 
 
 
@@ -1692,9 +1783,6 @@ namespace fobos_w
         {
 
 
-
-
-            dataGridView5.Rows.Clear();
 
             string connectionString = GetConnectionString();
 
@@ -1720,36 +1808,9 @@ namespace fobos_w
                     Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
 
 
-                   var str1 = resultObject["modem"].ToString();
+                   
 
-                    MessageBox.Show(str1);
-                    // str1 = str1.Trim();
-                    //  str1 = str1.Trim(new Char[] { '{','}' });
-
-                    //   str1 = "\"devices:\"" + str1;
-
-                    //if (str1 != "")
-                    //{
-
-                    //    var output = JsonConvert.DeserializeObject<Dictionary<string, Devices>>(str1);
-
-                    //    if (output != null)
-                    //    {
-
-                    //        foreach (KeyValuePair<string, Devices> keyValue in output)
-                    //        {
-                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.id);
-                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.device_sn);
-                    //            //  MessageBox.Show(keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
-
-                    //            if (keyValue.Key != null && keyValue.Value.registrators.electro_ac_p_lsum_tsum != null)
-                    //            {
-                    //                dataGridView4.Rows.Add(reader.GetInt32(0).ToString() + "----" + keyValue.Key + "---" + keyValue.Value.registrators.electro_ac_p_lsum_tsum.channel_id);
-                    //            }
-
-                    //        }
-                    //    }
-                    //}
+                   
 
                 }
             }
