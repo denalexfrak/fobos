@@ -97,6 +97,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.toolStripStatusLabel8 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel9 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.button13 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -560,6 +561,7 @@
             // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.button13);
             this.tabPage6.Controls.Add(this.label5);
             this.tabPage6.Controls.Add(this.label4);
             this.tabPage6.Controls.Add(this.label3);
@@ -776,7 +778,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(173, 41);
+            this.label3.Location = new System.Drawing.Point(449, 63);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(13, 13);
             this.label3.TabIndex = 2;
@@ -811,6 +813,16 @@
             this.toolStripStatusLabel9.Name = "toolStripStatusLabel9";
             this.toolStripStatusLabel9.Size = new System.Drawing.Size(13, 17);
             this.toolStripStatusLabel9.Text = "0";
+            // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(159, 6);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(149, 53);
+            this.button13.TabIndex = 5;
+            this.button13.Text = "Стоп";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
             // Form1
             // 
@@ -940,6 +952,7 @@
         private System.Windows.Forms.Timer timer1_sbor;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel8;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel9;
+        private System.Windows.Forms.Button button13;
     }
 }
 
