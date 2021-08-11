@@ -663,6 +663,7 @@ namespace fobos_w
             connection.Dispose();
 
             toolStripStatusLabel1.Text = "1";
+            toolStripStatusLabel9.Text = "0";
 
         }
 
@@ -916,6 +917,7 @@ namespace fobos_w
 
 
             toolStripStatusLabel2.Text = "1";
+            toolStripStatusLabel9.Text = "0";
         }
 
 
@@ -1247,6 +1249,7 @@ namespace fobos_w
 
 
             toolStripStatusLabel3.Text = "1";
+            toolStripStatusLabel9.Text = "0";
         }
 
 
@@ -1672,6 +1675,7 @@ namespace fobos_w
             connection.Dispose();
 
             toolStripStatusLabel4.Text = "1";
+            toolStripStatusLabel9.Text = "0";
         }
 
 
@@ -2118,6 +2122,7 @@ namespace fobos_w
 
 
             toolStripStatusLabel5.Text = "1";
+            toolStripStatusLabel9.Text = "0";
         }
 
 
@@ -2332,6 +2337,7 @@ namespace fobos_w
             connection.Dispose();
 
             toolStripStatusLabel6.Text = "1";
+            toolStripStatusLabel9.Text = "0";
         }
 
 
@@ -2446,34 +2452,56 @@ namespace fobos_w
 
         private void button12_Click(object sender, EventArgs e)
         {
-            button4.PerformClick();
-            if (toolStripStatusLabel1.Text == "1")
+            timer1_sbor.Enabled = true;
+
+            if (toolStripStatusLabel1.Text == "0" && toolStripStatusLabel2.Text == "0" && toolStripStatusLabel3.Text == "0" && toolStripStatusLabel4.Text == "0" && toolStripStatusLabel5.Text == "0" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
             {
+                toolStripStatusLabel8.Text = "Построение древа. Шаг 1";
+                toolStripStatusLabel9.Text = "1";
+                button4.PerformClick();
+            }
+
+            if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "0" && toolStripStatusLabel3.Text == "0" && toolStripStatusLabel4.Text == "0" && toolStripStatusLabel5.Text == "0" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
+            {
+                toolStripStatusLabel8.Text = "Построение древа. Шаг 2";
+                toolStripStatusLabel9.Text = "1";
                 button1.PerformClick();
             }
 
-            if (toolStripStatusLabel2.Text == "1")
+            if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "0" && toolStripStatusLabel4.Text == "0" && toolStripStatusLabel5.Text == "0" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
             {
+                toolStripStatusLabel8.Text = "Модемы";
+                toolStripStatusLabel9.Text = "1";
                 button2.PerformClick();
             }
 
-            if (toolStripStatusLabel3.Text == "1")
+            if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "0" && toolStripStatusLabel5.Text == "0" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
             {
+                toolStripStatusLabel8.Text = "Устройства";
+                toolStripStatusLabel9.Text = "1";
                 button3.PerformClick();
             }
 
-            if (toolStripStatusLabel4.Text == "1")
+            if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "0" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
             {
+                toolStripStatusLabel8.Text = "Информация о модеме";
+                toolStripStatusLabel9.Text = "1";
                 button5.PerformClick();
             }
 
-            if (toolStripStatusLabel5.Text == "1")
+            if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
             {
+                toolStripStatusLabel8.Text = "Показания";
+                toolStripStatusLabel9.Text = "1";
                 button6.PerformClick();
             }
 
-            if (toolStripStatusLabel6.Text == "1")
+            if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "1" && toolStripStatusLabel9.Text == "0")
             {
+                toolStripStatusLabel8.Text = "Все данные скачаны. Завршено.";
+
+                toolStripStatusLabel9.Text = "1";
+
                 toolStripStatusLabel1.Text = "0";
                 toolStripStatusLabel2.Text = "0";
                 toolStripStatusLabel3.Text = "0";
@@ -2481,8 +2509,7 @@ namespace fobos_w
                 toolStripStatusLabel5.Text = "0";
                 toolStripStatusLabel6.Text = "0";
             }
-
-
+            
         }
 
         private void timer1_sbor_Tick(object sender, EventArgs e)
@@ -2491,9 +2518,19 @@ namespace fobos_w
             label3.Text = Convert.ToString(i_timer_sbor);
             if (Convert.ToInt32(label3.Text)>=Convert.ToInt32(textBox8.Text))
             {
-                i_timer_sbor = 0;
-                button12.PerformClick();
+                if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "1")
+                {
+                    i_timer_sbor = 0;
+                    toolStripStatusLabel9.Text = "0";
+                    button12.PerformClick();
+
+                }
             }
+
+            button12.PerformClick();
+            toolStripStatusLabel9.Text = "1";
+            
+
         }
     }
     }
