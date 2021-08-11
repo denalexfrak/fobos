@@ -24,7 +24,7 @@ namespace fobos_w
             InitializeComponent();
         }
 
-
+        int i_timer_sbor;
 
         public string GetConnectionString()
         {
@@ -662,6 +662,8 @@ namespace fobos_w
             connection.Close();
             connection.Dispose();
 
+            toolStripStatusLabel1.Text = "1";
+
         }
 
 
@@ -912,6 +914,8 @@ namespace fobos_w
             connection.Close();
             connection.Dispose();
 
+
+            toolStripStatusLabel2.Text = "1";
         }
 
 
@@ -1240,6 +1244,9 @@ namespace fobos_w
             //закрываем и освобождаем ресурсы
             connection.Close();
             connection.Dispose();
+
+
+            toolStripStatusLabel3.Text = "1";
         }
 
 
@@ -1664,7 +1671,7 @@ namespace fobos_w
             connection.Close();
             connection.Dispose();
 
-
+            toolStripStatusLabel4.Text = "1";
         }
 
 
@@ -1757,21 +1764,15 @@ namespace fobos_w
                     Application.DoEvents();
                     string json = getContent("https://lk.curog.ru/api.modem/info/?id=" + reader.GetString(0) + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                     Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
-                    var str0 = resultObject["status"].ToString();                   
+                    var str0 = resultObject["status"].ToString();
                     //  Root_modem output = JsonConvert.DeserializeObject<Root_modem>(json);
 
                     if (str0 == "ok")
                     {
                         textBox6.Text = json;
-                       
-                            var str1 = resultObject["modem"]?["id"].ToString();
-                            MessageBox.Show(str1);
 
-                        //    MessageBox.Show(resultObject["modem"]?["phobos_data"]?["load_profile"]?["saving_interval"].ToString());
-                        //    MessageBox.Show(resultObject["modem"]?["last_station_time_date"].ToString());
-                        //  MessageBox.Show(output.modem_info.phobos_data.hw_version);
-                        //  MessageBox.Show(output.modem_info.phobos_data.load_profile.saving_interval.ToString());
-                        //  MessageBox.Show(output.status);
+                        var str1 = resultObject["modem"]?["id"].ToString();
+                       
 
                         string saving_interval = "";
 
@@ -1796,41 +1797,55 @@ namespace fobos_w
 
 
                         string tariffs = "";
-                        
+
 
                         if (resultObject["modem"]?["phobos_data"]?["load_profile"].ToString() != "")
                         {
-                             saving_interval = resultObject["modem"]?["phobos_data"]?["load_profile"]?["saving_interval"].ToString();
+                            saving_interval = resultObject["modem"]?["phobos_data"]?["load_profile"]?["saving_interval"].ToString();
 
-                             value_alignment = resultObject["modem"]?["phobos_data"]?["load_profile"]?["value_alignment"].ToString();
-                             send_profile = resultObject["modem"]?["phobos_data"]?["load_profile"]?["send_profile"].ToString();
+                            value_alignment = resultObject["modem"]?["phobos_data"]?["load_profile"]?["value_alignment"].ToString();
+                            send_profile = resultObject["modem"]?["phobos_data"]?["load_profile"]?["send_profile"].ToString();
 
-                             p1_c = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p1_c"].ToString();
-                             p1_p = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p1_p"].ToString();
-                             p1_t = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p1_t"].ToString();
+                            p1_c = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p1_c"].ToString();
+                            p1_p = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p1_p"].ToString();
+                            p1_t = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p1_t"].ToString();
 
-                             p2_c = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p2_c"].ToString();
-                             p2_p = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p2_p"].ToString();
-                             p2_t = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p2_t"].ToString();
+                            p2_c = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p2_c"].ToString();
+                            p2_p = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p2_p"].ToString();
+                            p2_t = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p2_t"].ToString();
 
-                             p3_c = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p3_c"].ToString();
-                             p3_p = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p3_p"].ToString();
-                             p3_t = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p3_t"].ToString();
+                            p3_c = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p3_c"].ToString();
+                            p3_p = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p3_p"].ToString();
+                            p3_t = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p3_t"].ToString();
 
-                             p4_c = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p4_c"].ToString();
-                             p4_p = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p4_p"].ToString();
-                             p4_t = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p4_t"].ToString();
+                            p4_c = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p4_c"].ToString();
+                            p4_p = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p4_p"].ToString();
+                            p4_t = resultObject["modem"]?["phobos_data"]?["load_profile"]?["p4_t"].ToString();
 
                         }
                         if (resultObject["modem"]?["phobos_data"]?["tariffs"].ToString() != "")
                         {
-                           
+
 
                             tariffs = resultObject["modem"]?["phobos_data"]?["tariffs"].ToString();
-                          
+
                         }
 
-                        string sql7 = "INSERT INTO [waviot_data].[dbo].[modem_info] ( " +
+                        //проверка на существования повторных показаний
+                        string id_2 = "";
+                        string sql1_1 = "SELECT [id] FROM [waviot_data].[dbo].[modem_info] WHERE [modem_id]='" + resultObject["modem"]?["id"].ToString() + "' ";
+                        // объект для выполнения SQL-запроса
+                        SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
+                        // выполняем запрос и получаем ответ
+                        if (command1_1.ExecuteScalar() != null)
+                        {
+                            id_2 = command1_1.ExecuteScalar().ToString();
+                        }
+                        if (id_2 == "")
+                        {
+
+
+                            string sql7 = "INSERT INTO [waviot_data].[dbo].[modem_info] ( " +
                                                                                               " [modem_id] " +
                                                                                               " ,[modem_type] " +
                                                                                               " ,[protocol_id] " +
@@ -1865,7 +1880,7 @@ namespace fobos_w
                                                                                               " ,[phobos_data_load_profile_p4_c] " +
                                                                                               " ,[phobos_data_load_profile_p4_p] " +
                                                                                               " ,[phobos_data_load_profile_p4_t] " +
-                                                                                              " ,[phobos_data_tariffs] " +                                                                                             
+                                                                                              " ,[phobos_data_tariffs] " +
                                                                                               " ,[phobos_data_events_filter] " +
                                                                                               " ,[phobos_data_remote_display] " +
                                                                                               " ,[phobos_data_meter_state] " +
@@ -1915,7 +1930,7 @@ namespace fobos_w
                                                                                             " '" + p4_t + "', " +
 
                                                                                             " '" + tariffs + "', " +
-                                                                                           
+
 
                                                                                           " '" + resultObject["modem"]?["phobos_data"]?["events_filter"].ToString() + "', " +
                                                                                           " '" + resultObject["modem"]?["phobos_data"]?["remote_display"].ToString() + "', " +
@@ -1923,64 +1938,186 @@ namespace fobos_w
                                                                                           " '" + resultObject["modem"]?["phobos_data"]?["load_limit"].ToString() + "' " +
 
                                                                                           " )";
-                        // объект для выполнения SQL-запроса
-                        SqlCommand command7 = new SqlCommand(sql7, connection);
-                        command7.ExecuteNonQuery();
+                            // объект для выполнения SQL-запроса
+                            SqlCommand command7 = new SqlCommand(sql7, connection);
+                            command7.ExecuteNonQuery();
 
 
-
-                       
-
-                        // var output = JsonConvert.DeserializeObject<Dictionary<string, PhobosSyncData>>(resultObject["modem"]?["phobos_data"].ToString());
-                       // MessageBox.Show(resultObject["modem"].ToString());
-                        PhobosSyncData_list ss = JsonConvert.DeserializeObject<PhobosSyncData_list>(resultObject["modem"].ToString());
-                        if (ss != null)
-                        {
-
-                           
-
-                            foreach (var obj in ss.phobos_sync_data)
+                            PhobosSyncData_list ss = JsonConvert.DeserializeObject<PhobosSyncData_list>(resultObject["modem"].ToString());
+                            if (ss != null)
                             {
-                                string sql8 = "INSERT INTO [waviot_data].[dbo].[modem_phobos_sync_data] ( " +
-                                                                                                     "  [modem_id] " +
-                                                                                                     "  ,[sync_subject] " +
-                                                                                                     "  ,[sync_timestamp] " +
-                                                                                                     "  ,[request_status] " +
-                                                                                                     "  ,[user_id] " +
-                                                                                                     "  ,[username] " +
-                                                                                                     "  ,[display_name] " +
-                                                                                                     "  ,[role] " +
-                                                                                                     "  ,[company_id] " +
-                                                                                                     "  ,[company_name] " +
-                                                                                                       ") " +
-                                                                                                  " VALUES ( " +
-                                                                                                  " '" + resultObject["modem"]?["id"].ToString() + "', " +
-                                                                                                  " '" + obj.sync_subject + "', " +
-                                                                                                  " '" + obj.sync_timestamp + "', " +
-                                                                                                  " '" + obj.request_status + "', " +
-                                                                                                  " '" + obj.user_id + "', " +
-                                                                                                  " '" + obj.username + "', " +
-                                                                                                  " '" + obj.display_name + "', " +
-                                                                                                  " '" + obj.role + "', " +
-                                                                                                  " '" + obj.company_id + "', " +
-                                                                                                  " '" + obj.company_name + "' " +
-                                                                                                  " )";
-                                // объект для выполнения SQL-запроса
-                                SqlCommand command8 = new SqlCommand(sql8, connection);
-                                command8.ExecuteNonQuery();
+
+                                if (ss.phobos_sync_data != null)
+                                {
+
+                                    foreach (var obj in ss.phobos_sync_data)
+                                    {
+                                        Application.DoEvents();
+                                        string sql8 = "INSERT INTO [waviot_data].[dbo].[modem_phobos_sync_data] ( " +
+                                                                                                             "  [modem_id] " +
+                                                                                                             "  ,[sync_subject] " +
+                                                                                                             "  ,[sync_timestamp] " +
+                                                                                                             "  ,[request_status] " +
+                                                                                                             "  ,[user_id] " +
+                                                                                                             "  ,[username] " +
+                                                                                                             "  ,[display_name] " +
+                                                                                                             "  ,[role] " +
+                                                                                                             "  ,[company_id] " +
+                                                                                                             "  ,[company_name] " +
+                                                                                                               ") " +
+                                                                                                          " VALUES ( " +
+                                                                                                          " '" + resultObject["modem"]?["id"].ToString() + "', " +
+                                                                                                          " '" + obj.sync_subject + "', " +
+                                                                                                          " '" + obj.sync_timestamp + "', " +
+                                                                                                          " '" + obj.request_status + "', " +
+                                                                                                          " '" + obj.user_id + "', " +
+                                                                                                          " '" + obj.username + "', " +
+                                                                                                          " '" + obj.display_name + "', " +
+                                                                                                          " '" + obj.role + "', " +
+                                                                                                          " '" + obj.company_id + "', " +
+                                                                                                          " '" + obj.company_name + "' " +
+                                                                                                          " )";
+                                        // объект для выполнения SQL-запроса
+                                        SqlCommand command8 = new SqlCommand(sql8, connection);
+                                        command8.ExecuteNonQuery();
+                                    }
+                                }
                             }
+                            ss.phobos_sync_data.Clear();
+
+                        } else
+                        {
+                            string sql7_0u = "UPDATE [waviot_data].[dbo].[modem_info] " +
+                                                                          "  SET    " +                                                                        
+
+
+                                                                                "[modem_type]= '" + resultObject["modem"]?["modem_type"].ToString() + "', " +
+                                                                                "[protocol_id]= '" + resultObject["modem"]?["protocol_id"].ToString() + "', " +
+                                                                                "[last_station_time]= '" + resultObject["modem"]?["last_station_time"].ToString() + "', " +
+                                                                                "[last_config_time]= '" + resultObject["modem"]?["last_config_time"].ToString() + "', " +
+                                                                                "[hw_version]= '" + resultObject["modem"]?["hw_version"].ToString() + "', " +
+                                                                                "[sw_version]= '" + resultObject["modem"]?["sw_version"].ToString() + "', " +
+                                                                                "[latitude]= '" + resultObject["modem"]?["latitude"].ToString() + "', " +
+                                                                                "[longitude]= '" + resultObject["modem"]?["longitude"].ToString() + "', " +
+                                                                                "[temperature]= '" + resultObject["modem"]?["temperature"].ToString() + "', " +
+                                                                                "[battery]= '" + resultObject["modem"]?["battery"].ToString() + "', " +
+                                                                                "[battery_type]= '" + resultObject["modem"]?["battery_type"].ToString() + "', " +
+                                                                                "[is_balance]= '" + resultObject["modem"]?["is_balance"].ToString() + "', " +
+                                                                                "[last_info_message]= '" + resultObject["modem"]?["last_info_message"].ToString() + "', " +
+                                                                                "[dl_change_timestamp]= '" + resultObject["modem"]?["dl_change_timestamp"].ToString() + "', " +
+                                                                                "[last_station_time_date]= '" + resultObject["modem"]?["last_station_time_date"].ToString() + "', " +
+
+                                                                                "[phobos_data_model]= '" + resultObject["modem"]?["phobos_data"]?["model"].ToString() + "', " +
+                                                                                "[phobos_data_hw_version]= '" + resultObject["modem"]?["phobos_data"]?["hw_version"].ToString() + "', " +
+                                                                                "[phobos_data_sw_version]= '" + resultObject["modem"]?["phobos_data"]?["sw_version"].ToString() + "', " +
+
+                                                                                "[phobos_data_load_profile_saving_interval]= '" + saving_interval + "', " +
+                                                                                "[phobos_data_load_profile_value_alignment]= '" + value_alignment + "', " +
+                                                                                "[phobos_data_load_profile_send_profile]= '" + send_profile + "', " +
+
+                                                                                "[phobos_data_load_profile_p1_c]= '" + p1_c + "', " +
+                                                                                "[phobos_data_load_profile_p1_p]= '" + p1_p + "', " +
+                                                                                "[phobos_data_load_profile_p1_t]= '" + p1_t + "', " +
+
+                                                                                "[phobos_data_load_profile_p2_c]= '" + p2_c + "', " +
+                                                                                "[phobos_data_load_profile_p2_p]= '" + p2_p + "', " +
+                                                                                "[phobos_data_load_profile_p2_t]= '" + p2_t + "', " +
+
+                                                                                "[phobos_data_load_profile_p3_c]= '" + p3_c + "', " +
+                                                                                "[phobos_data_load_profile_p3_p]= '" + p3_p + "', " +
+                                                                                "[phobos_data_load_profile_p3_t]= '" + p3_t + "', " +
+
+                                                                                "[phobos_data_load_profile_p4_c]= '" + p4_c + "', " +
+                                                                                "[phobos_data_load_profile_p4_p]= '" + p4_p + "', " +
+                                                                                "[phobos_data_load_profile_p4_t]= '" + p4_t + "', " +
+
+                                                                                "[phobos_data_tariffs]= '" + tariffs + "', " +
+
+
+                                                                                "[phobos_data_events_filter]= '" + resultObject["modem"]?["phobos_data"]?["events_filter"].ToString() + "', " +
+                                                                                "[phobos_data_remote_display]= '" + resultObject["modem"]?["phobos_data"]?["remote_display"].ToString() + "', " +
+                                                                                "[phobos_data_meter_state]= '" + resultObject["modem"]?["phobos_data"]?["meter_state"].ToString() + "', " +
+                                                                                "[phobos_data_load_limit]= '" + resultObject["modem"]?["phobos_data"]?["load_limit"].ToString() + "' " +
+
+
+                                                      " WHERE  " +
+                                                                          "     [modem_id] = '" + resultObject["modem"]?["id"].ToString() + "' " +
+                                                                          " ";
+                            // объект для выполнения SQL-запроса
+                            SqlCommand command7_0u = new SqlCommand(sql7_0u, connection);
+                            command7_0u.ExecuteNonQuery();
+
+
+
+                            PhobosSyncData_list ss = JsonConvert.DeserializeObject<PhobosSyncData_list>(resultObject["modem"].ToString());
+                            if (ss != null)
+                            {
+
+                                if (ss.phobos_sync_data != null)
+                                {
+
+                                    foreach (var obj in ss.phobos_sync_data)
+                                    {
+
+
+                                        Application.DoEvents();
+                                        string sql7_1u = "UPDATE [waviot_data].[dbo].[modem_phobos_sync_data] " +
+                                                                         "  SET    " +
+                                                                                        "[sync_subject]= '" + obj.sync_subject + "', " +
+                                                                                        "[sync_timestamp]= '" + obj.sync_timestamp + "', " +
+                                                                                        "[request_status]= '" + obj.request_status + "', " +
+                                                                                        "[user_id]= '" + obj.user_id + "', " +
+                                                                                        "[username]= '" + obj.username + "', " +
+                                                                                        "[display_name]= '" + obj.display_name + "', " +
+                                                                                        "[role]= '" + obj.role + "', " +
+                                                                                        "[company_id]= '" + obj.company_id + "', " +
+                                                                                        "[company_name]= '" + obj.company_name + "' " +
+
+
+
+                                                     " WHERE  " +
+                                                                         "     [modem_id] = '" + resultObject["modem"]?["id"].ToString() + "' " +
+                                                                         " ";
+                                        // объект для выполнения SQL-запроса
+                                        SqlCommand command7_1u = new SqlCommand(sql7_1u, connection);
+                                        command7_1u.ExecuteNonQuery();
+
+                                    }
+                                }
+                            }
+                            ss.phobos_sync_data.Clear();
+
                         }
 
+
                     }
-
-
-
 
                 }
             }
 
+
+
+
+            dataGridView10.Rows.Clear();
+            // запрос
+            string sql_V = "SELECT * " +
+                           "FROM [waviot_data].[dbo].[modem_info]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command_v = new SqlCommand(sql_V, connection);
+
+            command_v.ExecuteNonQuery();
+            System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command_v);
+            DataTable DT = new DataTable();
+            DA.Fill(DT);
+            dataGridView10.DataSource = DT;
+            //закрываем и освобождаем ресурсы         
+
+
             connection.Close();
             connection.Dispose();
+
+
+            toolStripStatusLabel5.Text = "1";
         }
 
 
@@ -2061,7 +2198,7 @@ namespace fobos_w
                         {
                             while (reader2.Read())
                             {
-                                textBox6.Text = "";
+                                
                                 Application.DoEvents();
                                 string json = getContent("https://lk.curog.ru/api.data/get_modem_channel_values/?modem_id=" + reader.GetString(0) + "&channel=" + reader2.GetString(0) + " " +
                                     " &from=" + sec_from + " " +
@@ -2193,6 +2330,8 @@ namespace fobos_w
 
             connection.Close();
             connection.Dispose();
+
+            toolStripStatusLabel6.Text = "1";
         }
 
 
@@ -2303,6 +2442,58 @@ namespace fobos_w
             dataGridView6[0, 48].Value = true;
             dataGridView6[0, 52].Value = true;
             dataGridView6[0, 57].Value = true;
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            button4.PerformClick();
+            if (toolStripStatusLabel1.Text == "1")
+            {
+                button1.PerformClick();
+            }
+
+            if (toolStripStatusLabel2.Text == "1")
+            {
+                button2.PerformClick();
+            }
+
+            if (toolStripStatusLabel3.Text == "1")
+            {
+                button3.PerformClick();
+            }
+
+            if (toolStripStatusLabel4.Text == "1")
+            {
+                button5.PerformClick();
+            }
+
+            if (toolStripStatusLabel5.Text == "1")
+            {
+                button6.PerformClick();
+            }
+
+            if (toolStripStatusLabel6.Text == "1")
+            {
+                toolStripStatusLabel1.Text = "0";
+                toolStripStatusLabel2.Text = "0";
+                toolStripStatusLabel3.Text = "0";
+                toolStripStatusLabel4.Text = "0";
+                toolStripStatusLabel5.Text = "0";
+                toolStripStatusLabel6.Text = "0";
+            }
+
+
+        }
+
+        private void timer1_sbor_Tick(object sender, EventArgs e)
+        {
+            i_timer_sbor++;
+            label3.Text = Convert.ToString(i_timer_sbor);
+            if (Convert.ToInt32(label3.Text)>=Convert.ToInt32(textBox8.Text))
+            {
+                i_timer_sbor = 0;
+                button12.PerformClick();
+            }
         }
     }
     }
