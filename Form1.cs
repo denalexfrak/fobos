@@ -221,6 +221,11 @@ namespace fobos_w
 
         private void button4_Click(object sender, EventArgs e)
         {
+            button4_Cl();
+        }
+
+        void button4_Cl()
+        {
             dataGridView1.Rows.Clear();
 
             string json = getContent("https://lk.curog.ru/api.tree/get_tree/?id=17236&key=9778a18d58d75bf6d569d31ef277c2cc");
@@ -804,7 +809,15 @@ namespace fobos_w
 
         }
 
+
         private void button1_Click_2(object sender, EventArgs e)
+        {
+            button1_Cl();
+
+        }
+
+
+           void button1_Cl()
         {
             dataGridView1.Rows.Clear();
             dataGridView2.Rows.Clear();
@@ -1046,8 +1059,11 @@ namespace fobos_w
             public List<Modems_data> modems;
         }
 
-
         private void button2_Click_3(object sender, EventArgs e)
+        {
+            button2_Cl();
+        }
+        void button2_Cl()
         {
 
 
@@ -1345,13 +1361,16 @@ namespace fobos_w
 
 
 
-
-
-
-
-
-
         private void button3_Click_1(object sender, EventArgs e)
+        {
+            button3_Cl();
+        }
+
+
+
+
+
+           void button3_Cl()
         {
 
 
@@ -1743,6 +1762,11 @@ namespace fobos_w
 
 
         private void button5_Click(object sender, EventArgs e)
+        {
+            button5_Cl();
+        }
+
+            void button5_Cl()
         {
 
 
@@ -2144,10 +2168,14 @@ namespace fobos_w
         /// <param name="e"></param>
 
 
-
-
-
         private void button6_Click(object sender, EventArgs e)
+        {
+            button11_Cl();
+            button6_Cl();
+        }
+
+
+        void button6_Cl()
         {
             int sec_period = Convert.ToInt32(textBox5.Text) * 60 * 60;
             int unixTimestamp2 = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -2428,7 +2456,12 @@ namespace fobos_w
             }
         }
 
+
         private void button11_Click(object sender, EventArgs e)
+        {
+            button11_Cl();
+        }
+            void button11_Cl()
         {
             foreach (DataGridViewRow row in dataGridView6.Rows)
             {
@@ -2468,8 +2501,7 @@ namespace fobos_w
                 if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "1")
                 {
                     i_timer_sbor = 0;
-                    toolStripStatusLabel9.Text = "0";
-                    button12.PerformClick();
+                    toolStripStatusLabel9.Text = "0";                    
 
                 }
             }
@@ -2480,42 +2512,44 @@ namespace fobos_w
             {
                 toolStripStatusLabel8.Text = "Построение древа. Шаг 1";
                 toolStripStatusLabel9.Text = "1";
-                button4.PerformClick();
+                // button4.PerformClick();
+                button4_Cl();
             }
 
             if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "0" && toolStripStatusLabel3.Text == "0" && toolStripStatusLabel4.Text == "0" && toolStripStatusLabel5.Text == "0" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
             {
                 toolStripStatusLabel8.Text = "Построение древа. Шаг 2";
                 toolStripStatusLabel9.Text = "1";
-                button1.PerformClick();
+                button1_Cl();
             }
 
             if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "0" && toolStripStatusLabel4.Text == "0" && toolStripStatusLabel5.Text == "0" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
             {
                 toolStripStatusLabel8.Text = "Модемы";
                 toolStripStatusLabel9.Text = "1";
-                button2.PerformClick();
+                button2_Cl();
             }
 
             if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "0" && toolStripStatusLabel5.Text == "0" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
             {
                 toolStripStatusLabel8.Text = "Устройства";
                 toolStripStatusLabel9.Text = "1";
-                button3.PerformClick();
+                button3_Cl();
             }
 
             if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "0" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
             {
                 toolStripStatusLabel8.Text = "Информация о модеме";
                 toolStripStatusLabel9.Text = "1";
-                button5.PerformClick();
+                button5_Cl();
             }
 
             if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
             {
                 toolStripStatusLabel8.Text = "Показания";
                 toolStripStatusLabel9.Text = "1";
-                button6.PerformClick();
+                button11_Cl();
+                button6_Cl();
             }
 
             if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "1" && toolStripStatusLabel9.Text == "0")
