@@ -2012,7 +2012,7 @@ namespace fobos_w
                                     }
                                 }
                             }
-                            ss.phobos_sync_data.Clear();
+                          //  ss.phobos_sync_data.Clear();
 
                         } else
                         {
@@ -2114,7 +2114,7 @@ namespace fobos_w
                                     }
                                 }
                             }
-                            ss.phobos_sync_data.Clear();
+                          //  ss.phobos_sync_data.Clear();
 
                         }
 
@@ -2548,7 +2548,10 @@ namespace fobos_w
             {
                 toolStripStatusLabel8.Text = "Показания";
                 toolStripStatusLabel9.Text = "1";
-                button11_Cl();
+                if (checkBox2.Checked == false)
+                {
+                    button11_Cl();
+                }
                 button6_Cl();
             }
 
