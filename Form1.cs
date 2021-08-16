@@ -43,13 +43,13 @@ namespace fobos_w
 
             // запрос
             string sql_V = "SELECT [id]"+
-                              " ,[id_channel]"+
+                              " ,[title]"+
                               " ,[short_name]" +
                               " ,[obis_hex]" +
                               " ,[obis_decimal]" +
-                              " ,[comments_]" +
+                              " ,[text]" +
                               " ,[unit_measurement]" +
-                                " FROM[waviot_data].[dbo].[channels_list]";
+                                " FROM [waviot_prod].[dbo].[registrators]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v = new SqlCommand(sql_V, connection);
 
@@ -278,7 +278,7 @@ namespace fobos_w
                             //запрос на существование id в базе
                             // запрос
                             string id_tree_el = "";
-                            string sql1_1 = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] WHERE [id_tree_el]='" + account2.id.ToString() + "'";
+                            string sql1_1 = "SELECT [id] FROM [waviot_prod].[dbo].[tree_elements] WHERE [id]='" + account2.id.ToString() + "'";
                             // объект для выполнения SQL-запроса
                             SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
                             // выполняем запрос и получаем ответ
@@ -288,15 +288,16 @@ namespace fobos_w
                             }
 
 
+
                             if (id_tree_el == account2.id.ToString())
                             {
                                 // запрос
-                                string sql1_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
+                                string sql1_0 = "UPDATE [waviot_prod].[dbo].[tree_elements] " +
                                                     "  SET    " +
-                                                    "     [name] = '" + account2.name.ToString() + "' " +
+                                                    "     [element_name] = '" + account2.name.ToString() + "' " +
                                                     "    ,[type] = '" + account2.type.ToString() + "' " +
                                                     " WHERE  " +
-                                                    "     [id_tree_el] = '" + account2.id.ToString() + "' " +
+                                                    "     [id] = '" + account2.id.ToString() + "' " +
                                                     " ";
                                 // объект для выполнения SQL-запроса
                                 SqlCommand command1_0 = new SqlCommand(sql1_0, connection);
@@ -305,12 +306,12 @@ namespace fobos_w
                             else
                             {
                                 // запрос
-                                string sql1 = "INSERT INTO [waviot_data].[dbo].[tree_elements] ( " +
+                                string sql1 = "INSERT INTO [waviot_prod].[dbo].[tree_elements] ( " +
                                                     "      " +
-                                                    "     [id_tree_el] " +
-                                                    "     ,[name] " +
+                                                    "     [id] " +
+                                                    "     ,[element_name] " +
                                                     "     ,[type] " +
-                                                    "     ,[parent_id_tree_el] " +
+                                                    "     ,[parent_id] " +
                                                     "     ,[deleted] " +
                                                     "     ,[lastname] " +
                                                     "     ,[firstname] " +
@@ -324,11 +325,15 @@ namespace fobos_w
                                                     "     ,[entrance] " +
                                                     "     ,[account] " +
                                                     "     ,[vm_code] " +
-                                                    "     ,[ovm_code]) " +
+                                                    "     ,[ovm_code] " +
+                                                    "     ,[is_deleted] " +
+                                                    ") " +
+                                                    " " +
                                                     " VALUES ( " +
                                                     " '" + account2.id.ToString() + "', " +
                                                     " '" + account2.name.ToString() + "', " +
                                                     " '" + account2.type.ToString() + "', " +
+                                                    " NULL, " +
                                                     " '', " +
                                                     " '', " +
                                                     " '', " +
@@ -343,7 +348,7 @@ namespace fobos_w
                                                     " '', " +
                                                     " '', " +
                                                     " '', " +
-                                                    " '' " +
+                                                    " '0' " +
                                                     " )";
                                 // объект для выполнения SQL-запроса
                                 SqlCommand command1 = new SqlCommand(sql1, connection);
@@ -376,7 +381,7 @@ namespace fobos_w
                                     //запрос на существование id в базе
                                     // запрос
                                     string id_tree_el_3 = "";
-                                    string sql3_1 = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] WHERE [id_tree_el]='" + account3.id.ToString() + "'";
+                                    string sql3_1 = "SELECT [id] FROM [waviot_prod].[dbo].[tree_elements] WHERE [id]='" + account3.id.ToString() + "'";
                                     // объект для выполнения SQL-запроса
                                     SqlCommand command3_1 = new SqlCommand(sql3_1, connection);
                                     // выполняем запрос и получаем ответ
@@ -385,17 +390,19 @@ namespace fobos_w
                                         id_tree_el_3 = command3_1.ExecuteScalar().ToString();
                                     }
 
+                                    string parent_id_ = account2.id.ToString();
+                                    if (parent_id_ == "0") { parent_id_ = ""; }
 
                                     if (id_tree_el_3 == account3.id.ToString())
                                     {
                                         // запрос
-                                        string sql2_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
+                                        string sql2_0 = "UPDATE [waviot_prod].[dbo].[tree_elements] " +
                                                             "  SET    " +
-                                                            "     [name] = '" + account3.name.ToString() + "' " +
+                                                            "     [element_name] = '" + account3.name.ToString() + "' " +
                                                             "    ,[type] = '" + account3.type.ToString() + "' " +
-                                                            "    ,[parent_id_tree_el] = '" + account2.id.ToString() + "' " +
+                                                            "    ,[parent_id] = '" + parent_id_ + "' " +
                                                             " WHERE  " +
-                                                            "     [id_tree_el] = '" + account3.id.ToString() + "' " +
+                                                            "     [id] = '" + account3.id.ToString() + "' " +
                                                             " ";
                                         // объект для выполнения SQL-запроса
                                         SqlCommand command3_0 = new SqlCommand(sql2_0, connection);
@@ -404,12 +411,12 @@ namespace fobos_w
                                     else
                                     {
                                         // запрос
-                                        string sql2 = "INSERT INTO [waviot_data].[dbo].[tree_elements] ( " +
+                                        string sql2 = "INSERT INTO [waviot_prod].[dbo].[tree_elements] ( " +
                                                         "      " +
-                                                        "     [id_tree_el] " +
-                                                        "     ,[name] " +
+                                                        "     [id] " +
+                                                        "     ,[element_name] " +
                                                         "     ,[type] " +
-                                                        "     ,[parent_id_tree_el] " +
+                                                        "     ,[parent_id] " +
                                                         "     ,[deleted] " +
                                                         "     ,[lastname] " +
                                                         "     ,[firstname] " +
@@ -423,12 +430,15 @@ namespace fobos_w
                                                         "     ,[entrance] " +
                                                         "     ,[account] " +
                                                         "     ,[vm_code] " +
-                                                        "     ,[ovm_code]) " +
+                                                        "     ,[ovm_code] " +
+                                                        "     ,[is_deleted] " +
+                                                        ") " +
                                                         " VALUES ( " +
                                                         " '" + account3.id.ToString() + "', " +
                                                         " '" + account3.name.ToString() + "', " +
                                                         " '" + account3.type.ToString() + "', " +
-                                                        " '" + account2.id.ToString() + "', " +
+                                                        " '" + parent_id_ + "', " +
+                                                        " '', " +
                                                         " '', " +
                                                         " '', " +
                                                         " '', " +
@@ -470,7 +480,7 @@ namespace fobos_w
                                             //запрос на существование id в базе
                                             // запрос
                                             string id_tree_el_4 = "";
-                                            string sql4_1 = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] WHERE [id_tree_el]='" + account4.id.ToString() + "'";
+                                            string sql4_1 = "SELECT [id] FROM [waviot_prod].[dbo].[tree_elements] WHERE [id]='" + account4.id.ToString() + "'";
                                             // объект для выполнения SQL-запроса
                                             SqlCommand command4_1 = new SqlCommand(sql4_1, connection);
                                             // выполняем запрос и получаем ответ
@@ -483,13 +493,13 @@ namespace fobos_w
                                             if (id_tree_el_4 == account4.id.ToString())
                                             {
                                                 // запрос
-                                                string sql3_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
+                                                string sql3_0 = "UPDATE [waviot_prod].[dbo].[tree_elements] " +
                                                                     "  SET    " +
-                                                                    "     [name] = '" + account4.name.ToString() + "' " +
+                                                                    "     [element_name] = '" + account4.name.ToString() + "' " +
                                                                     "    ,[type] = '" + account4.type.ToString() + "' " +
-                                                                    "    ,[parent_id_tree_el] = '" + account3.id.ToString() + "' " +
+                                                                    "    ,[parent_id] = '" + account3.id.ToString() + "' " +
                                                                     " WHERE  " +
-                                                                    "     [id_tree_el] = '" + account4.id.ToString() + "' " +
+                                                                    "     [id] = '" + account4.id.ToString() + "' " +
                                                                     " ";
                                                 // объект для выполнения SQL-запроса
                                                 SqlCommand command4_0 = new SqlCommand(sql3_0, connection);
@@ -498,12 +508,12 @@ namespace fobos_w
                                             else
                                             {
                                                 // запрос
-                                                string sql3 = "INSERT INTO [waviot_data].[dbo].[tree_elements] ( " +
+                                                string sql3 = "INSERT INTO [waviot_prod].[dbo].[tree_elements] ( " +
                                                             "      " +
-                                                            "     [id_tree_el] " +
-                                                            "     ,[name] " +
+                                                            "     [id] " +
+                                                            "     ,[element_name] " +
                                                             "     ,[type] " +
-                                                            "     ,[parent_id_tree_el] " +
+                                                            "     ,[parent_id] " +
                                                             "     ,[deleted] " +
                                                             "     ,[lastname] " +
                                                             "     ,[firstname] " +
@@ -517,12 +527,15 @@ namespace fobos_w
                                                             "     ,[entrance] " +
                                                             "     ,[account] " +
                                                             "     ,[vm_code] " +
-                                                            "     ,[ovm_code]) " +
+                                                            "     ,[ovm_code] " +
+                                                            "     ,[is_deleted] " +
+                                                            ") " +
                                                             " VALUES ( " +
                                                             " '" + account4.id.ToString() + "', " +
                                                             " '" + account4.name.ToString() + "', " +
                                                             " '" + account4.type.ToString() + "', " +
                                                             " '" + account3.id.ToString() + "', " +
+                                                            " '', " +
                                                             " '', " +
                                                             " '', " +
                                                             " '', " +
@@ -565,7 +578,7 @@ namespace fobos_w
                                                     //запрос на существование id в базе
                                                     // запрос
                                                     string id_tree_el_5 = "";
-                                                    string sql5_1 = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] WHERE [id_tree_el]='" + account5.id.ToString() + "'";
+                                                    string sql5_1 = "SELECT [id] FROM [waviot_prod].[dbo].[tree_elements] WHERE [id]='" + account5.id.ToString() + "'";
                                                     // объект для выполнения SQL-запроса
                                                     SqlCommand command5_1 = new SqlCommand(sql5_1, connection);
                                                     // выполняем запрос и получаем ответ
@@ -578,13 +591,13 @@ namespace fobos_w
                                                     if (id_tree_el_5 == account5.id.ToString())
                                                     {
                                                         // запрос
-                                                        string sql4_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
+                                                        string sql4_0 = "UPDATE [waviot_prod].[dbo].[tree_elements] " +
                                                                             "  SET    " +
-                                                                            "     [name] = '" + account5.name.ToString() + "' " +
+                                                                            "     [element_name] = '" + account5.name.ToString() + "' " +
                                                                             "    ,[type] = '" + account5.type.ToString() + "' " +
-                                                                            "    ,[parent_id_tree_el] = '" + account4.id.ToString() + "' " +
+                                                                            "    ,[parent_id] = '" + account4.id.ToString() + "' " +
                                                                             " WHERE  " +
-                                                                            "     [id_tree_el] = '" + account5.id.ToString() + "' " +
+                                                                            "     [id] = '" + account5.id.ToString() + "' " +
                                                                             " ";
                                                         // объект для выполнения SQL-запроса
                                                         SqlCommand command5_0 = new SqlCommand(sql4_0, connection);
@@ -593,12 +606,12 @@ namespace fobos_w
                                                     else
                                                     {
                                                         // запрос
-                                                        string sql4 = "INSERT INTO [waviot_data].[dbo].[tree_elements] ( " +
+                                                        string sql4 = "INSERT INTO [waviot_prod].[dbo].[tree_elements] ( " +
                                                                     "      " +
-                                                                    "     [id_tree_el] " +
-                                                                    "     ,[name] " +
+                                                                    "     [id] " +
+                                                                    "     ,[element_name] " +
                                                                     "     ,[type] " +
-                                                                    "     ,[parent_id_tree_el] " +
+                                                                    "     ,[parent_id] " +
                                                                     "     ,[deleted] " +
                                                                     "     ,[lastname] " +
                                                                     "     ,[firstname] " +
@@ -612,7 +625,9 @@ namespace fobos_w
                                                                     "     ,[entrance] " +
                                                                     "     ,[account] " +
                                                                     "     ,[vm_code] " +
-                                                                    "     ,[ovm_code]) " +
+                                                                    "     ,[ovm_code] " +
+                                                                    "     ,[is_deleted] " +
+                                                                    ") " +
                                                                     " VALUES ( " +
                                                                     " '" + account5.id.ToString() + "', " +
                                                                     " '" + account5.name.ToString() + "', " +
@@ -631,6 +646,7 @@ namespace fobos_w
                                                                     " '', " +
                                                                     " '', " +
                                                                     " '', " +
+                                                                    " ''," +
                                                                     " '' " +
                                                                     " )";
                                                         // объект для выполнения SQL-запроса
@@ -831,7 +847,7 @@ namespace fobos_w
             connection.Open();
 
 
-            string sql = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements] ORDER BY [id]";
+            string sql = "SELECT [id] FROM [waviot_prod].[dbo].[tree_elements] ORDER BY [id]";
 
             SqlCommand command = new SqlCommand(sql, connection);
             SqlDataReader reader = command.ExecuteReader();
@@ -863,7 +879,7 @@ namespace fobos_w
                                     Get_Tree account5 = JsonConvert.DeserializeObject<Get_Tree>(str2);
 
                                     // запрос -  дозаполняем таблицу ovm_code
-                                    string sql4_0 = "UPDATE [waviot_data].[dbo].[tree_elements] " +
+                                    string sql4_0 = "UPDATE [waviot_prod].[dbo].[tree_elements] " +
                                                         "  SET    " +
                                                         "     [deleted] = '" + account5.deleted.ToString() + "' " +
                                                         "    ,[lastname] = '" + account5.lastname.ToString() + "' " +
@@ -880,7 +896,7 @@ namespace fobos_w
                                                         "    ,[vm_code] = '" + account5.vm_code + "' " +
                                                         "    ,[ovm_code] = '" + account5.ovm_code + "' " +
                                                         " WHERE  " +
-                                                        "     [id_tree_el] = '" + keyValue4.Key + "' " +
+                                                        "     [id] = '" + keyValue4.Key + "' " +
                                                         " ";
                                     // объект для выполнения SQL-запроса
                                     SqlCommand command5_0 = new SqlCommand(sql4_0, connection);
@@ -908,10 +924,10 @@ namespace fobos_w
 
 
             // запрос
-            string sql_V = "SELECT [id], [id_tree_el], [name], [type], " +
-                           "  [parent_id_tree_el] [deleted], [lastname], [firstname], [middlename], [appartment], [city], [district], [street] " +
-                           " ,[locality], [building], [entrance], [account], [vm_code], [ovm_code] " +
-                           "FROM [waviot_data].[dbo].[tree_elements]";
+            string sql_V = "SELECT [id_tree], [id], [element_name], [type], " +
+                           "  [parent_id] [deleted], [lastname], [firstname], [middlename], [appartment], [city], [district], [street] " +
+                           " ,[locality], [building], [entrance], [account], [vm_code], [ovm_code], [is_deleted] " +
+                           "FROM [waviot_prod].[dbo].[tree_elements]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v = new SqlCommand(sql_V, connection);
 
@@ -1082,7 +1098,7 @@ namespace fobos_w
             connection.Open();
 
 
-            string sql = "SELECT [id_tree_el] FROM [waviot_data].[dbo].[tree_elements]";
+            string sql = "SELECT [id] FROM [waviot_prod].[dbo].[tree_elements]";
 
             SqlCommand command = new SqlCommand(sql, connection);
             SqlDataReader reader = command.ExecuteReader();
@@ -1116,7 +1132,7 @@ namespace fobos_w
                                 //запрос на существование id в базе
                                 // запрос
                                 string id_modem_5 = "";
-                                string sql5_1 = "SELECT [id_16hex] FROM [waviot_data].[dbo].[modems] WHERE [id_16hex]='" + obj.id + "'";
+                                string sql5_1 = "SELECT [id_16hex] FROM [waviot_prod].[dbo].[modems] WHERE [id_16hex]='" + obj.id + "'";
                                 // объект для выполнения SQL-запроса
                                 SqlCommand command5_1 = new SqlCommand(sql5_1, connection);
                                 // выполняем запрос и получаем ответ
@@ -1129,10 +1145,10 @@ namespace fobos_w
                                 if (id_modem_5 == obj.id)
                                 {
                                     // запрос
-                                    string sql4_0 = "UPDATE [waviot_data].[dbo].[modems] " +
+                                    string sql4_0 = "UPDATE [waviot_prod].[dbo].[modems] " +
                                                         "  SET    " +
 
-                                                                         "  [id_tree_el] = '" + reader.GetInt32(0).ToString() + "'" +
+                                                                         "  [tree_element_id] = '" + reader.GetInt32(0).ToString() + "'" +
                                                                          " ,[modem_type] = '" + obj.modem_type + "' " +
                                                                          " ,[modem_full_type] = '" + obj.modem_full_type + "' " +
                                                                          " ,[modem_modification] = '" + obj.modem_modification + "' " +
@@ -1174,8 +1190,8 @@ namespace fobos_w
 
                                     Application.DoEvents();
 
-                                    string sql4 = "INSERT INTO [waviot_data].[dbo].[modems] ( " +
-                                                                         "  [id_tree_el] " +
+                                    string sql4 = "INSERT INTO [waviot_prod].[dbo].[modems] ( " +
+                                                                         "  [tree_element_id] " +
                                                                          " ,[id_16hex] " +
                                                                          " ,[modem_type] " +
                                                                          " ,[modem_full_type] " +
@@ -1251,7 +1267,7 @@ namespace fobos_w
 
             // запрос
             string sql_V = "SELECT * " +
-                           "FROM [waviot_data].[dbo].[modems]";
+                           "FROM [waviot_prod].[dbo].[modems]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v = new SqlCommand(sql_V, connection);
 
@@ -1385,7 +1401,7 @@ namespace fobos_w
             connection.Open();
 
 
-            string sql = "SELECT DISTINCT [id_tree_el] FROM [waviot_data].[dbo].[modems]";
+            string sql = "SELECT DISTINCT [tree_element_id] FROM [waviot_prod].[dbo].[modems]";
 
             SqlCommand command = new SqlCommand(sql, connection);
             SqlDataReader reader = command.ExecuteReader();
@@ -1420,7 +1436,7 @@ namespace fobos_w
                                     //запрос на существование id в базе
                                     // запрос
                                     string device_id_4 = "";
-                                    string sql4_1 = "SELECT [device_id] FROM [waviot_data].[dbo].[devices] WHERE [device_id]='" + keyValue.Value.id + "'";
+                                    string sql4_1 = "SELECT [device_id] FROM [waviot_prod].[dbo].[devices] WHERE [device_id]='" + keyValue.Value.id + "'";
                                     // объект для выполнения SQL-запроса
                                     SqlCommand command4_1 = new SqlCommand(sql4_1, connection);
                                     // выполняем запрос и получаем ответ
@@ -1429,19 +1445,29 @@ namespace fobos_w
                                         device_id_4 = command4_1.ExecuteScalar().ToString();
                                     }
 
+                                    string modem_id_4 = "";
+                                    string sql4_2 = "SELECT [id] FROM [waviot_prod].[dbo].[modems] WHERE [id_16hex]='" + keyValue.Value.modem_id + "'";
+                                    // объект для выполнения SQL-запроса
+                                    SqlCommand command4_2 = new SqlCommand(sql4_2, connection);
+                                    // выполняем запрос и получаем ответ
+                                    if (command4_2.ExecuteScalar() != null)
+                                    {
+                                        modem_id_4 = command4_2.ExecuteScalar().ToString();
+                                    }
 
                                     if (device_id_4 == keyValue.Value.id)
                                     {
                                         // запрос
-                                        string sql4_0 = "UPDATE [waviot_data].[dbo].[devices] " +
+                                        string sql4_0 = "UPDATE [waviot_prod].[dbo].[devices] " +
                                                             "  SET    " +
                                                             " [name]='" + keyValue.Value.name + "' " +
                                                             " ,[class_name]='" + keyValue.Value.class_name + "' " +
                                                             " ,[device_sn]='" + keyValue.Value.device_sn + "' " +
-                                                            " ,[modem_id]='" + keyValue.Value.modem_id + "' " +
+                                                            " ,[modem_16hex_id]='" + keyValue.Value.modem_id + "' " +
                                                             " ,[device_time]='" + keyValue.Value.device_time + "' " +
                                                             " ,[config_time]='" + keyValue.Value.config_time + "' " +
                                                             " ,[timezone]='" + keyValue.Value.timezone + "' "+
+                                                            " ,[modem_id]='" + modem_id_4 + "' " +
                                         " WHERE  " +
                                                             "     [device_id] = '" + keyValue.Value.id + "' " +
                                                             " ";
@@ -1452,15 +1478,18 @@ namespace fobos_w
                                     else
                                     {
                                         string sql4 = "" +
-                                         "INSERT INTO [waviot_data].[dbo].[devices] ( " +
+                                         "INSERT INTO [waviot_prod].[dbo].[devices] ( " +
                                                                           " [device_id] " +
                                                                           " ,[name] " +
                                                                           " ,[class_name] " +
                                                                           " ,[device_sn] " +
-                                                                          " ,[modem_id] " +
+                                                                          " ,[modem_16hex_id] " +
                                                                           " ,[device_time] " +
                                                                           " ,[config_time] " +
-                                                                          " ,[timezone] ) " +
+                                                                          " ,[timezone] " +
+                                                                          " ,[modem_id] " +
+                                                                          " ,[is_deleted]" +
+                                                                          " ) " +
                                                                            " VALUES ( " +
                                                                            " '" + keyValue.Value.id + "', " +
                                                                            " '" + keyValue.Value.name + "', " +
@@ -1469,7 +1498,9 @@ namespace fobos_w
                                                                            " '" + keyValue.Value.modem_id + "', " +
                                                                            " '" + keyValue.Value.device_time + "', " +
                                                                            " '" + keyValue.Value.config_time + "', " +
-                                                                           " '" + keyValue.Value.timezone + "' " +
+                                                                           " '" + keyValue.Value.timezone + "', " +
+                                                                           " '" + modem_id_4 + "', " +
+                                                                           " '0' " +
                                                                            " )";
                                        
                                         SqlCommand command4 = new SqlCommand(sql4, connection);
@@ -1489,7 +1520,7 @@ namespace fobos_w
                                             if (device_id_4 == keyValue.Value.id)
                                             {
                                                 // запрос
-                                                string sql5_0 = "UPDATE [waviot_data].[dbo].[registrators] " +
+                                                string sql5_0 = "UPDATE [waviot_prod].[dbo].[modem_registrators] " +
                                                                     "  SET    " +
                                                                     " [channel]='" + keyValue2.Value.channel_id + "' " +                                                                                                                                     
                                                 " WHERE  " +
@@ -1500,7 +1531,7 @@ namespace fobos_w
                                                 command5_0.ExecuteNonQuery();
 
                                                 // запрос
-                                                string sql6_0 = "UPDATE [waviot_data].[dbo].[registrators_channel] " +
+                                                string sql6_0 = "UPDATE [waviot_prod].[dbo].[registrators_channel] " +
                                                                     "  SET    " +
                                                                     " [id_registrators]             ='" + keyValue2.Value.id + "' " +
                                                                     " ,[name]                       ='" + keyValue2.Value.name + "' " +
@@ -1521,7 +1552,7 @@ namespace fobos_w
                                             }
                                             else
                                             {
-                                                string sql5 = "INSERT INTO [waviot_data].[dbo].[registrators] ( " +
+                                                string sql5 = "INSERT INTO [waviot_prod].[dbo].[modem_registrators] ( " +
                                                                                       "[device_id] " +
                                                                                       ",[channel] ) " +
                                                                                    " VALUES ( " +
@@ -1535,7 +1566,7 @@ namespace fobos_w
                                                 ///
                                                 //запись в базу registrators_channel                                           
 
-                                                string sql6 = "INSERT INTO [waviot_data].[dbo].[registrators_channel] ( " +
+                                                string sql6 = "INSERT INTO [waviot_prod].[dbo].[registrators_channel] ( " +
                                                                                             " [device_id] " +
                                                                                             "  ,[id_registrators] " +
                                                                                             "  ,[name] " +
@@ -1587,7 +1618,7 @@ namespace fobos_w
                                                     if (device_id_4 == keyValue.Value.id)
                                                     {
                                                         // запрос
-                                                        string sql7_0 = "UPDATE [waviot_data].[dbo].[registrators_events] " +
+                                                        string sql7_0 = "UPDATE [waviot_prod].[dbo].[registrators_events] " +
                                                                             "  SET    " +
                                                                             " [registrators_id]='" + keyValue2.Value.id + "' " +
                                                                             " ,[channel]='" + keyValue2.Value.channel_id + "' " +
@@ -1602,7 +1633,7 @@ namespace fobos_w
                                                     }
                                                     else
                                                     {
-                                                        string sql7 = "INSERT INTO [waviot_data].[dbo].[registrators_events] ( " +
+                                                        string sql7 = "INSERT INTO [waviot_prod].[dbo].[registrators_events] ( " +
                                                                                                 " [device_id] " +
                                                                                                 " ,[registrators_id] " +
                                                                                                 " ,[channel] " +
@@ -1645,7 +1676,7 @@ namespace fobos_w
             dataGridView9.Rows.Clear();
             //запрос
             string sql_V = "SELECT * " +
-                           "FROM [waviot_data].[dbo].[modems]";
+                           "FROM [waviot_prod].[dbo].[modems]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v = new SqlCommand(sql_V, connection);
 
@@ -1657,7 +1688,7 @@ namespace fobos_w
 
             //запрос
             string sql_V_1 = "SELECT * " +
-                           "FROM [waviot_data].[dbo].[modems]";
+                           "FROM [waviot_prod].[dbo].[modems]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v_1 = new SqlCommand(sql_V_1, connection);
 
@@ -1669,7 +1700,7 @@ namespace fobos_w
 
             //запрос
             string sql_V_2 = "SELECT * " +
-                           "FROM [waviot_data].[dbo].[modems]";
+                           "FROM [waviot_prod].[dbo].[modems]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v_2 = new SqlCommand(sql_V_2, connection);
 
@@ -1681,7 +1712,7 @@ namespace fobos_w
 
             //запрос
             string sql_V_3 = "SELECT * " +
-                           "FROM [waviot_data].[dbo].[modems]";
+                           "FROM [waviot_prod].[dbo].[modems]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v_3 = new SqlCommand(sql_V_3, connection);
 
@@ -1780,7 +1811,7 @@ namespace fobos_w
             connection.Open();
 
 
-            string sql = "SELECT [id_16hex] FROM [waviot_data].[dbo].[modems]";
+            string sql = "SELECT [id_16hex] FROM [waviot_prod].[dbo].[modems]";
 
             SqlCommand command = new SqlCommand(sql, connection);
             SqlDataReader reader = command.ExecuteReader();
@@ -1862,7 +1893,7 @@ namespace fobos_w
 
                         //проверка на существования повторных показаний
                         string id_2 = "";
-                        string sql1_1 = "SELECT [id] FROM [waviot_data].[dbo].[modem_info] WHERE [modem_id]='" + resultObject["modem"]?["id"].ToString() + "' ";
+                        string sql1_1 = "SELECT [id] FROM [waviot_prod].[dbo].[modem_info] WHERE [modem_id]='" + resultObject["modem"]?["id"].ToString() + "' ";
                         // объект для выполнения SQL-запроса
                         SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
                         // выполняем запрос и получаем ответ
@@ -1874,7 +1905,7 @@ namespace fobos_w
                         {
 
 
-                            string sql7 = "INSERT INTO [waviot_data].[dbo].[modem_info] ( " +
+                            string sql7 = "INSERT INTO [waviot_prod].[dbo].[modem_info] ( " +
                                                                                               " [modem_id] " +
                                                                                               " ,[modem_type] " +
                                                                                               " ,[protocol_id] " +
@@ -1982,7 +2013,7 @@ namespace fobos_w
                                     foreach (var obj in ss.phobos_sync_data)
                                     {
                                         Application.DoEvents();
-                                        string sql8 = "INSERT INTO [waviot_data].[dbo].[modem_phobos_sync_data] ( " +
+                                        string sql8 = "INSERT INTO [waviot_prod].[dbo].[modem_phobos_sync_data] ( " +
                                                                                                              "  [modem_id] " +
                                                                                                              "  ,[sync_subject] " +
                                                                                                              "  ,[sync_timestamp] " +
@@ -2016,7 +2047,7 @@ namespace fobos_w
 
                         } else
                         {
-                            string sql7_0u = "UPDATE [waviot_data].[dbo].[modem_info] " +
+                            string sql7_0u = "UPDATE [waviot_prod].[dbo].[modem_info] " +
                                                                           "  SET    " +                                                                        
 
 
@@ -2090,7 +2121,7 @@ namespace fobos_w
 
 
                                         Application.DoEvents();
-                                        string sql7_1u = "UPDATE [waviot_data].[dbo].[modem_phobos_sync_data] " +
+                                        string sql7_1u = "UPDATE [waviot_prod].[dbo].[modem_phobos_sync_data] " +
                                                                          "  SET    " +
                                                                                         "[sync_subject]= '" + obj.sync_subject + "', " +
                                                                                         "[sync_timestamp]= '" + obj.sync_timestamp + "', " +
@@ -2130,7 +2161,7 @@ namespace fobos_w
             dataGridView10.Rows.Clear();
             // запрос
             string sql_V = "SELECT * " +
-                           "FROM [waviot_data].[dbo].[modem_info]";
+                           "FROM [waviot_prod].[dbo].[modem_info]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v = new SqlCommand(sql_V, connection);
 
@@ -2209,7 +2240,7 @@ namespace fobos_w
 
             if (in_channels_select_id != "")
             {
-                string sql = "SELECT [id_16hex], [id]  FROM [waviot_data].[dbo].[modems]";
+                string sql = "SELECT [id_16hex], [id]  FROM [waviot_prod].[dbo].[modems]";
 
                 SqlCommand command = new SqlCommand(sql, connection);
                 SqlDataReader reader = command.ExecuteReader();
@@ -2222,7 +2253,7 @@ namespace fobos_w
 
                         Application.DoEvents();
                         //перебор каналов учета
-                        string sql2 = "SELECT [id_channel], [id] FROM [waviot_data].[dbo].[channels_list] WHERE [id] IN (" + in_channels_select_id + ")";
+                        string sql2 = "SELECT [title], [id] FROM [waviot_prod].[dbo].[registrators] WHERE [id] IN (" + in_channels_select_id + ")";
 
                         SqlCommand command2 = new SqlCommand(sql2, connection);
                         SqlDataReader reader2 = command2.ExecuteReader();
@@ -2260,13 +2291,18 @@ namespace fobos_w
                                                     Application.DoEvents();
                                                     //  MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
                                                     // проверяем на нулевые значения разрешено или нет
+
+
+                                                                                             
+                                                    string dev_value_convert = UnixToDate(Convert.ToInt32(keyValue.Key), "yyyy-MM-dd HH:mm:ss");
+
                                                     if (checkBox1.Checked == false)
                                                     {
                                                         if (keyValue.Value != "0.0000")
                                                         {
                                                             string id_2 = "";
                                                             //проверка на существования повторных показаний
-                                                            string sql1_1 = "SELECT [id] FROM [waviot_data].[dbo].[metering] WHERE [timestamp_]='" + keyValue.Key + "' AND [value_]='" + keyValue.Value + "' AND [modem_id]='" + reader.GetInt32(1).ToString() + "' AND [chanel_id]='" + reader2.GetInt32(1).ToString() + "'";
+                                                            string sql1_1 = "SELECT [id] FROM [waviot_prod].[dbo].[element_values] WHERE [timestamp_]='" + keyValue.Key + "' AND [dev_value]='" + keyValue.Value + "' AND [modem_id]='" + reader.GetInt32(1).ToString() + "' AND [registrator_id]='" + reader2.GetInt32(1).ToString() + "'";
                                                             // объект для выполнения SQL-запроса
                                                             SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
                                                             // выполняем запрос и получаем ответ
@@ -2276,17 +2312,19 @@ namespace fobos_w
                                                             }
                                                             if (id_2 == "")
                                                             {
-                                                                string sql4 = "INSERT INTO [waviot_data].[dbo].[metering] ( " +
+                                                                string sql4 = "INSERT INTO [waviot_prod].[dbo].[element_values] ( " +
                                                                                             "  [modem_id] " +
-                                                                                            " ,[chanel_id] " +
+                                                                                            " ,[registrator_id] " +
                                                                                             " ,[timestamp_] " +
-                                                                                            " ,[value_] " +
+                                                                                            " ,[dev_value] " +
+                                                                                            " ,[val_date] " +
                                                                                             " )" +
                                                                                               " VALUES ( " +
                                                                                               " '" + reader.GetInt32(1).ToString() + "', " +
                                                                                               " '" + reader2.GetInt32(1).ToString() + "', " +
                                                                                               " '" + keyValue.Key + "', " +
-                                                                                              " '" + keyValue.Value + "' " +
+                                                                                              " '" + keyValue.Value + "', " +
+                                                                                              " '" + dev_value_convert + "' " +
                                                                                               " )";
 
                                                                 // объект для выполнения SQL-запроса
@@ -2299,7 +2337,7 @@ namespace fobos_w
                                                     {
                                                         string id_2 = "";
                                                         //проверка на существования повторных показаний
-                                                        string sql1_1 = "SELECT [id] FROM [waviot_data].[dbo].[metering] WHERE [timestamp_]='" + keyValue.Key + "' AND [value_]='" + keyValue.Value + "' AND [modem_id]='" + reader.GetInt32(1).ToString() + "' AND [chanel_id]='" + reader2.GetInt32(1).ToString() + "'";
+                                                        string sql1_1 = "SELECT [id] FROM [waviot_prod].[dbo].[element_values] WHERE [timestamp_]='" + keyValue.Key + "' AND [dev_value]='" + keyValue.Value + "' AND [modem_id]='" + reader.GetInt32(1).ToString() + "' AND [registrator_id]='" + reader2.GetInt32(1).ToString() + "'";
                                                         // объект для выполнения SQL-запроса
                                                         SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
                                                         // выполняем запрос и получаем ответ
@@ -2309,18 +2347,20 @@ namespace fobos_w
                                                         }
                                                         if (id_2 == "")
                                                         {
-                                                            string sql4 = "INSERT INTO [waviot_data].[dbo].[metering] ( " +
-                                                                                        "  [modem_id] " +
-                                                                                        " ,[chanel_id] " +
-                                                                                        " ,[timestamp_] " +
-                                                                                        " ,[value_] " +
-                                                                                        " )" +
-                                                                                          " VALUES ( " +
-                                                                                          " '" + reader.GetInt32(1).ToString() + "', " +
-                                                                                          " '" + reader2.GetInt32(1).ToString() + "', " +
-                                                                                          " '" + keyValue.Key + "', " +
-                                                                                          " '" + keyValue.Value + "' " +
-                                                                                          " )";
+                                                            string sql4 = "INSERT INTO [waviot_prod].[dbo].[element_values] ( " +
+                                                                                            "  [modem_id] " +
+                                                                                            " ,[registrator_id] " +
+                                                                                            " ,[timestamp_] " +
+                                                                                            " ,[dev_value] " +
+                                                                                            " ,[val_date] " +
+                                                                                            " )" +
+                                                                                              " VALUES ( " +
+                                                                                              " '" + reader.GetInt32(1).ToString() + "', " +
+                                                                                              " '" + reader2.GetInt32(1).ToString() + "', " +
+                                                                                              " '" + keyValue.Key + "', " +
+                                                                                              " '" + keyValue.Value + "', " +
+                                                                                              " '" + dev_value_convert + "' " +
+                                                                                              " )";
 
                                                             // объект для выполнения SQL-запроса
                                                             SqlCommand command4 = new SqlCommand(sql4, connection);
@@ -2350,7 +2390,7 @@ namespace fobos_w
 
             // запрос
             string sql_V = "SELECT * " +
-                           "FROM [waviot_data].[dbo].[metering]";
+                           "FROM [waviot_prod].[dbo].[element_values]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v = new SqlCommand(sql_V, connection);
 
@@ -2498,12 +2538,11 @@ namespace fobos_w
             label3.Text = Convert.ToString(i_timer_sbor);
             if (Convert.ToInt32(label3.Text)>=Convert.ToInt32(textBox8.Text))
             {
-                if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "1")
-                {
+                
                     i_timer_sbor = 0;
                     toolStripStatusLabel9.Text = "0";                    
 
-                }
+                
             }
 
            
@@ -2544,14 +2583,18 @@ namespace fobos_w
                 button5_Cl();
             }
 
-            if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0")
+            if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0" && checkBox2.Checked == false)
             {
-                toolStripStatusLabel8.Text = "Показания";
-                toolStripStatusLabel9.Text = "1";
-                if (checkBox2.Checked == false)
-                {
-                    button11_Cl();
-                }
+                toolStripStatusLabel8.Text = "Показания (fl)";
+                toolStripStatusLabel9.Text = "1";               
+                button11_Cl();               
+                button6_Cl();
+            }
+
+            if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0" && checkBox2.Checked == true)
+            {
+                toolStripStatusLabel8.Text = "Показания (tr)";
+                toolStripStatusLabel9.Text = "1";               
                 button6_Cl();
             }
 
