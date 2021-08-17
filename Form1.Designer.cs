@@ -39,6 +39,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.textBox9 = new System.Windows.Forms.TextBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -51,6 +52,8 @@
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.textBox10 = new System.Windows.Forms.TextBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -99,7 +102,6 @@
             this.toolStripStatusLabel8 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel9 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1_sbor = new System.Windows.Forms.Timer(this.components);
-            this.textBox9 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -236,6 +238,14 @@
             this.tabPage3.Text = "Подключение";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(484, 6);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(223, 20);
+            this.textBox9.TabIndex = 5;
+            this.textBox9.Text = "172.19.4.22";
+            // 
             // textBox7
             // 
             this.textBox7.Location = new System.Drawing.Point(237, 6);
@@ -275,7 +285,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(223, 20);
             this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "172.19.4.22";
+            this.textBox1.Text = "SKH400475\\SQLEXPRESS";
             // 
             // tabPage1
             // 
@@ -352,6 +362,8 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.textBox11);
+            this.tabPage4.Controls.Add(this.textBox10);
             this.tabPage4.Controls.Add(this.splitContainer2);
             this.tabPage4.Controls.Add(this.button3);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
@@ -361,6 +373,22 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Настройки устройства";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(587, 330);
+            this.textBox11.Multiline = true;
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(629, 163);
+            this.textBox11.TabIndex = 4;
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(3, 330);
+            this.textBox10.Multiline = true;
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(578, 163);
+            this.textBox10.TabIndex = 3;
             // 
             // splitContainer2
             // 
@@ -378,7 +406,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer2.Size = new System.Drawing.Size(1218, 487);
+            this.splitContainer2.Size = new System.Drawing.Size(1218, 318);
             this.splitContainer2.SplitterDistance = 336;
             this.splitContainer2.TabIndex = 2;
             // 
@@ -388,7 +416,7 @@
             this.dataGridView4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView4.Location = new System.Drawing.Point(0, 0);
             this.dataGridView4.Name = "dataGridView4";
-            this.dataGridView4.Size = new System.Drawing.Size(332, 483);
+            this.dataGridView4.Size = new System.Drawing.Size(332, 314);
             this.dataGridView4.TabIndex = 0;
             // 
             // splitContainer3
@@ -405,7 +433,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer3.Size = new System.Drawing.Size(878, 487);
+            this.splitContainer3.Size = new System.Drawing.Size(878, 318);
             this.splitContainer3.SplitterDistance = 317;
             this.splitContainer3.TabIndex = 0;
             // 
@@ -415,7 +443,7 @@
             this.dataGridView7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView7.Location = new System.Drawing.Point(0, 0);
             this.dataGridView7.Name = "dataGridView7";
-            this.dataGridView7.Size = new System.Drawing.Size(313, 483);
+            this.dataGridView7.Size = new System.Drawing.Size(313, 314);
             this.dataGridView7.TabIndex = 0;
             // 
             // splitContainer4
@@ -432,7 +460,7 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.dataGridView9);
-            this.splitContainer4.Size = new System.Drawing.Size(557, 487);
+            this.splitContainer4.Size = new System.Drawing.Size(557, 318);
             this.splitContainer4.SplitterDistance = 286;
             this.splitContainer4.TabIndex = 0;
             // 
@@ -442,7 +470,7 @@
             this.dataGridView8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView8.Location = new System.Drawing.Point(0, 0);
             this.dataGridView8.Name = "dataGridView8";
-            this.dataGridView8.Size = new System.Drawing.Size(282, 483);
+            this.dataGridView8.Size = new System.Drawing.Size(282, 314);
             this.dataGridView8.TabIndex = 0;
             // 
             // dataGridView9
@@ -451,7 +479,7 @@
             this.dataGridView9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView9.Location = new System.Drawing.Point(0, 0);
             this.dataGridView9.Name = "dataGridView9";
-            this.dataGridView9.Size = new System.Drawing.Size(263, 483);
+            this.dataGridView9.Size = new System.Drawing.Size(263, 314);
             this.dataGridView9.TabIndex = 0;
             // 
             // button3
@@ -838,14 +866,6 @@
             this.timer1_sbor.Interval = 1000;
             this.timer1_sbor.Tick += new System.EventHandler(this.timer1_sbor_Tick);
             // 
-            // textBox9
-            // 
-            this.textBox9.Location = new System.Drawing.Point(484, 6);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(223, 20);
-            this.textBox9.TabIndex = 5;
-            this.textBox9.Text = "172.19.4.22";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -869,6 +889,7 @@
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
@@ -977,6 +998,8 @@
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.TextBox textBox11;
     }
 }
 
