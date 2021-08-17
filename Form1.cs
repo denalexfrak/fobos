@@ -1823,16 +1823,19 @@ namespace fobos_w
                 {
                     Application.DoEvents();
                     string json = getContent("https://lk.curog.ru/api.modem/info/?id=" + reader.GetString(0) + "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                    
+                    if (json != "" && json != null)
+                    { 
                     Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
                     var str0 = resultObject["status"].ToString();
                     //  Root_modem output = JsonConvert.DeserializeObject<Root_modem>(json);
 
+
                     if (str0 == "ok")
                     {
-                        textBox6.Text = json;
+                            textBox6.Text = json;
+                            var str1 = resultObject["modem"]?["id"].ToString();
 
-                        var str1 = resultObject["modem"]?["id"].ToString();
-                       
 
                         string saving_interval = "";
 
@@ -2043,12 +2046,13 @@ namespace fobos_w
                                     }
                                 }
                             }
-                          //  ss.phobos_sync_data.Clear();
+                            //  ss.phobos_sync_data.Clear();
 
-                        } else
+                        }
+                        else
                         {
                             string sql7_0u = "UPDATE [waviot_prod].[dbo].[modem_info] " +
-                                                                          "  SET    " +                                                                        
+                                                                          "  SET    " +
 
 
                                                                                 "[modem_type]= '" + resultObject["modem"]?["modem_type"].ToString() + "', " +
@@ -2145,12 +2149,13 @@ namespace fobos_w
                                     }
                                 }
                             }
-                          //  ss.phobos_sync_data.Clear();
+                            //  ss.phobos_sync_data.Clear();
 
                         }
 
 
                     }
+                }
 
                 }
             }
