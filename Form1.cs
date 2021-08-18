@@ -860,51 +860,54 @@ namespace fobos_w
                     // MessageBox.Show(reader.GetInt32(0).ToString()+ " -- " +reader.GetString(1));
                     Application.DoEvents();
                     string json = getContent("https://lk.curog.ru/api.tree/get_elements/?id=" + reader.GetInt32(0).ToString() + "&key=9778a18d58d75bf6d569d31ef277c2cc");
-                    Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
-
-                    var str1 = resultObject["elements"].ToString();
-                    string str0 = resultObject["status"].ToString();
-                    if (str0 == "ok")
+                    if (json != "" && json != null)
                     {
-                        if (str1 != "[]" && str1 != null)
+                        Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+
+                        var str1 = resultObject["elements"].ToString();
+                        string str0 = resultObject["status"].ToString();
+                        if (str0 == "ok")
                         {
-
-                            Dictionary<string, Get_Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Get_Tree>>(str1);
-                            foreach (KeyValuePair<string, Get_Tree> keyValue4 in values)
+                            if (str1 != "[]" && str1 != null)
                             {
-                                Application.DoEvents();
-                                var str2 = resultObject["elements"]?[keyValue4.Key].ToString();
-                                if (str2 != "[]")
-                                {
-                                    Get_Tree account5 = JsonConvert.DeserializeObject<Get_Tree>(str2);
 
-                                    // запрос -  дозаполняем таблицу ovm_code
-                                    string sql4_0 = "UPDATE [waviot_prod].[dbo].[tree_elements] " +
-                                                        "  SET    " +
-                                                        "     [deleted] = '" + account5.deleted.ToString() + "' " +
-                                                        "    ,[lastname] = '" + account5.lastname.ToString() + "' " +
-                                                        "    ,[firstname] = '" + account5.firstname.ToString() + "' " +
-                                                        "    ,[middlename] = '" + account5.middlename.ToString() + "' " +
-                                                        "    ,[appartment] = '" + account5.appartment.ToString() + "' " +
-                                                        "    ,[city] = '" + account5.city.ToString() + "' " +
-                                                        "    ,[district] = '" + account5.district + "' " +
-                                                        "    ,[street] = '" + account5.street.ToString() + "' " +
-                                                        "    ,[locality] = '" + account5.locality + "' " +
-                                                        "    ,[building] = '" + account5.building.ToString() + "' " +
-                                                        "    ,[entrance] = '" + account5.entrance.ToString() + "' " +
-                                                        "    ,[account]= '" + account5.account.ToString() + "' " +
-                                                        "    ,[vm_code] = '" + account5.vm_code + "' " +
-                                                        "    ,[ovm_code] = '" + account5.ovm_code + "' " +
-                                                        " WHERE  " +
-                                                        "     [id] = '" + keyValue4.Key + "' " +
-                                                        " ";
-                                    // объект для выполнения SQL-запроса
-                                    SqlCommand command5_0 = new SqlCommand(sql4_0, connection);
-                                    command5_0.ExecuteNonQuery();
-                                    //  dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account5.id.ToString());
+                                Dictionary<string, Get_Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Get_Tree>>(str1);
+                                foreach (KeyValuePair<string, Get_Tree> keyValue4 in values)
+                                {
+                                    Application.DoEvents();
+                                    var str2 = resultObject["elements"]?[keyValue4.Key].ToString();
+                                    if (str2 != "[]")
+                                    {
+                                        Get_Tree account5 = JsonConvert.DeserializeObject<Get_Tree>(str2);
+
+                                        // запрос -  дозаполняем таблицу ovm_code
+                                        string sql4_0 = "UPDATE [waviot_prod].[dbo].[tree_elements] " +
+                                                            "  SET    " +
+                                                            "     [deleted] = '" + account5.deleted.ToString() + "' " +
+                                                            "    ,[lastname] = '" + account5.lastname.ToString() + "' " +
+                                                            "    ,[firstname] = '" + account5.firstname.ToString() + "' " +
+                                                            "    ,[middlename] = '" + account5.middlename.ToString() + "' " +
+                                                            "    ,[appartment] = '" + account5.appartment.ToString() + "' " +
+                                                            "    ,[city] = '" + account5.city.ToString() + "' " +
+                                                            "    ,[district] = '" + account5.district + "' " +
+                                                            "    ,[street] = '" + account5.street.ToString() + "' " +
+                                                            "    ,[locality] = '" + account5.locality + "' " +
+                                                            "    ,[building] = '" + account5.building.ToString() + "' " +
+                                                            "    ,[entrance] = '" + account5.entrance.ToString() + "' " +
+                                                            "    ,[account]= '" + account5.account.ToString() + "' " +
+                                                            "    ,[vm_code] = '" + account5.vm_code + "' " +
+                                                            "    ,[ovm_code] = '" + account5.ovm_code + "' " +
+                                                            " WHERE  " +
+                                                            "     [id] = '" + keyValue4.Key + "' " +
+                                                            " ";
+                                        // объект для выполнения SQL-запроса
+                                        SqlCommand command5_0 = new SqlCommand(sql4_0, connection);
+                                        command5_0.ExecuteNonQuery();
+                                        //  dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account5.id.ToString());
+                                    }
                                 }
+                                values.Clear();
                             }
-                            values.Clear();
                         }
                     }
                 }
@@ -925,7 +928,7 @@ namespace fobos_w
 
             // запрос
             string sql_V = "SELECT [id_tree], [id], [element_name], [type], " +
-                           "  [parent_id] [deleted], [lastname], [firstname], [middlename], [appartment], [city], [district], [street] " +
+                           "  [parent_id], [deleted], [lastname], [firstname], [middlename], [appartment], [city], [district], [street] " +
                            " ,[locality], [building], [entrance], [account], [vm_code], [ovm_code], [is_deleted] " +
                            "FROM [waviot_prod].[dbo].[tree_elements]";
             // объект для выполнения SQL-запроса
@@ -1101,6 +1104,7 @@ namespace fobos_w
             string sql = "SELECT [id] FROM [waviot_prod].[dbo].[tree_elements]";
 
             SqlCommand command = new SqlCommand(sql, connection);
+            command.CommandTimeout = 0;
             SqlDataReader reader = command.ExecuteReader();
 
 
@@ -1112,153 +1116,159 @@ namespace fobos_w
                     Application.DoEvents();
 
                     string json = getContent("https://lk.curog.ru/api.tree/get_modems/?id=" + reader.GetInt32(0).ToString() + "&key=9778a18d58d75bf6d569d31ef277c2cc");
-                    Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
-
-                    var str1 = resultObject["modems"].ToString();
-                    
-
-                    string str0 = resultObject["status"].ToString();
-                    if (str0 == "ok")
+                    if (json != "" && json != null)
                     {
-                        if (str1 != "[]" && str1 != null)
+                        Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+
+                        var str1 = resultObject["modems"].ToString();
+
+
+                        string str0 = resultObject["status"].ToString();
+                        if (str0 == "ok")
                         {
-                            //  str1 = str1.Trim(new Char[] { '[', ']' });
-                            str1 = "\"modems:\"" + str1;                          
-                            ModemList ss = JsonConvert.DeserializeObject<ModemList>(json);
-                            // записываем данные в таблицу по модемам modems
-                            foreach (var obj in ss.modems)
+                            if (str1 != "[]" && str1 != null)
                             {
-
-                                //запрос на существование id в базе
-                                // запрос
-                                string id_modem_5 = "";
-                                string sql5_1 = "SELECT [id_16hex] FROM [waviot_prod].[dbo].[modems] WHERE [id_16hex]='" + obj.id + "'";
-                                // объект для выполнения SQL-запроса
-                                SqlCommand command5_1 = new SqlCommand(sql5_1, connection);
-                                // выполняем запрос и получаем ответ
-                                if (command5_1.ExecuteScalar() != null)
+                                //  str1 = str1.Trim(new Char[] { '[', ']' });
+                                str1 = "\"modems:\"" + str1;
+                                ModemList ss = JsonConvert.DeserializeObject<ModemList>(json);
+                                // записываем данные в таблицу по модемам modems
+                                foreach (var obj in ss.modems)
                                 {
-                                    id_modem_5 = command5_1.ExecuteScalar().ToString();
-                                }
 
-
-                                if (id_modem_5 == obj.id)
-                                {
+                                    //запрос на существование id в базе
                                     // запрос
-                                    string sql4_0 = "UPDATE [waviot_prod].[dbo].[modems] " +
-                                                        "  SET    " +
-
-                                                                         "  [tree_element_id] = '" + reader.GetInt32(0).ToString() + "'" +
-                                                                         " ,[modem_type] = '" + obj.modem_type + "' " +
-                                                                         " ,[modem_full_type] = '" + obj.modem_full_type + "' " +
-                                                                         " ,[modem_modification] = '" + obj.modem_modification + "' " +
-                                                                         " ,[protocol_id] = '" + obj.protocol_id + "' " +
-                                                                         " ,[flavor_id] = '" + obj.flavor_id + "' " +
-                                                                         " ,[last_station_time] = '" + obj.last_station_time + "' " +
-                                                                         " ,[last_config_time] = '" + obj.last_config_time + "' " +
-                                                                         " ,[hw_version] = '" + obj.hw_version + "' " +
-                                                                         " ,[sw_version] = '" + obj.sw_version + "' " +
-                                                                         " ,[latitude] = '" + obj.latitude + "' " +
-                                                                         " ,[longitude] = '" + obj.longitude + "' " +
-                                                                         " ,[reg_way] = '" + obj.reg_way + "' " +
-                                                                         " ,[reg_date] = '" + obj.reg_date + "' " +
-                                                                         " ,[disabled] = '" + obj.disabled + "' " +
-                                                                         " ,[temperature] = '" + obj.temperature + "' " +
-                                                                         " ,[battery] = '" + obj.battery + "' " +
-                                                                         " ,[battery_type] = '" + obj.battery_type + "' " +
-                                                                         " ,[last_info_message] = '" + obj.last_info_message + "' " +
-                                                                         " ,[value_formats] = '" + obj.value_formats + "' " +
-                                                                         " ,[is_balance] = '" + obj.is_balance + "' " +
-                                                                         " ,[dl_enabled] = '" + obj.dl_enabled + "' " +
-                                                                         " ,[dl_change_timestamp] = '" + obj.dl_change_timestamp + "' " +
-                                                                         " ,[last_snr] = '" + obj.last_snr + "' " +
-                                                                         " ,[previous_snr] = '" + obj.previous_snr + "' " +
-                                                                         " ,[last_rssi] = '" + obj.last_rssi + "' " +
-                                                                         " ,[previous_rssi] = '" + obj.previous_rssi + "' " +
-                                                                         " ,[station_id] = '" + obj.station_id + "' " +
-
-                                                        " WHERE  " +
-                                                        "     [id_16hex] = '" + obj.id + "' " +
-                                                        " ";
+                                    string id_modem_5 = "";
+                                    string sql5_1 = "SELECT [id_16hex] FROM [waviot_prod].[dbo].[modems] WHERE [id_16hex]='" + obj.id + "'";
                                     // объект для выполнения SQL-запроса
-                                    SqlCommand command5_0 = new SqlCommand(sql4_0, connection);
-                                    command5_0.ExecuteNonQuery();
+                                    SqlCommand command5_1 = new SqlCommand(sql5_1, connection);
+                                    command5_1.CommandTimeout = 0;
+                                    // выполняем запрос и получаем ответ
+                                    if (command5_1.ExecuteScalar() != null)
+                                    {
+                                        id_modem_5 = command5_1.ExecuteScalar().ToString();
+                                    }
+
+
+                                    if (id_modem_5 == obj.id)
+                                    {
+                                        // запрос
+                                        string sql4_0 = "UPDATE [waviot_prod].[dbo].[modems] " +
+                                                            "  SET    " +
+
+                                                                             "  [tree_element_id] = '" + reader.GetInt32(0).ToString() + "'" +
+                                                                             " ,[modem_type] = '" + obj.modem_type + "' " +
+                                                                             " ,[modem_full_type] = '" + obj.modem_full_type + "' " +
+                                                                             " ,[modem_modification] = '" + obj.modem_modification + "' " +
+                                                                             " ,[protocol_id] = '" + obj.protocol_id + "' " +
+                                                                             " ,[flavor_id] = '" + obj.flavor_id + "' " +
+                                                                             " ,[last_station_time] = '" + obj.last_station_time + "' " +
+                                                                             " ,[last_config_time] = '" + obj.last_config_time + "' " +
+                                                                             " ,[hw_version] = '" + obj.hw_version + "' " +
+                                                                             " ,[sw_version] = '" + obj.sw_version + "' " +
+                                                                             " ,[latitude] = '" + obj.latitude + "' " +
+                                                                             " ,[longitude] = '" + obj.longitude + "' " +
+                                                                             " ,[reg_way] = '" + obj.reg_way + "' " +
+                                                                             " ,[reg_date] = '" + obj.reg_date + "' " +
+                                                                             " ,[disabled] = '" + obj.disabled + "' " +
+                                                                             " ,[temperature] = '" + obj.temperature + "' " +
+                                                                             " ,[battery] = '" + obj.battery + "' " +
+                                                                             " ,[battery_type] = '" + obj.battery_type + "' " +
+                                                                             " ,[last_info_message] = '" + obj.last_info_message + "' " +
+                                                                             " ,[value_formats] = '" + obj.value_formats + "' " +
+                                                                             " ,[is_balance] = '" + obj.is_balance + "' " +
+                                                                             " ,[dl_enabled] = '" + obj.dl_enabled + "' " +
+                                                                             " ,[dl_change_timestamp] = '" + obj.dl_change_timestamp + "' " +
+                                                                             " ,[last_snr] = '" + obj.last_snr + "' " +
+                                                                             " ,[previous_snr] = '" + obj.previous_snr + "' " +
+                                                                             " ,[last_rssi] = '" + obj.last_rssi + "' " +
+                                                                             " ,[previous_rssi] = '" + obj.previous_rssi + "' " +
+                                                                             " ,[station_id] = '" + obj.station_id + "' " +
+
+                                                            " WHERE  " +
+                                                            "     [id_16hex] = '" + obj.id + "' " +
+                                                            " ";
+                                        // объект для выполнения SQL-запроса
+                                        SqlCommand command5_0 = new SqlCommand(sql4_0, connection);
+                                        command5_0.CommandTimeout = 0;
+                                        command5_0.ExecuteNonQuery();
+                                    }
+                                    else
+                                    {
+
+
+                                        Application.DoEvents();
+
+                                        string sql4 = "INSERT INTO [waviot_prod].[dbo].[modems] ( " +
+                                                                             "  [tree_element_id] " +
+                                                                             " ,[id_16hex] " +
+                                                                             " ,[modem_type] " +
+                                                                             " ,[modem_full_type] " +
+                                                                             " ,[modem_modification] " +
+                                                                             " ,[protocol_id] " +
+                                                                             " ,[flavor_id] " +
+                                                                             " ,[last_station_time] " +
+                                                                             " ,[last_config_time] " +
+                                                                             " ,[hw_version] " +
+                                                                             " ,[sw_version] " +
+                                                                             " ,[latitude] " +
+                                                                             " ,[longitude] " +
+                                                                             " ,[reg_way] " +
+                                                                             " ,[reg_date] " +
+                                                                             " ,[disabled] " +
+                                                                             " ,[temperature] " +
+                                                                             " ,[battery] " +
+                                                                             " ,[battery_type] " +
+                                                                             " ,[last_info_message] " +
+                                                                             " ,[value_formats] " +
+                                                                             " ,[is_balance] " +
+                                                                             " ,[dl_enabled] " +
+                                                                             " ,[dl_change_timestamp] " +
+                                                                             " ,[last_snr] " +
+                                                                             " ,[previous_snr] " +
+                                                                             " ,[last_rssi] " +
+                                                                             " ,[previous_rssi] " +
+                                                                             " ,[station_id] )" +
+                                                                               " VALUES ( " +
+                                                                               " '" + reader.GetInt32(0).ToString() + "', " +
+                                                                               " '" + obj.id + "', " +
+                                                                               " '" + obj.modem_type + "', " +
+                                                                               " '" + obj.modem_full_type + "', " +
+                                                                               " '" + obj.modem_modification + "', " +
+                                                                               " '" + obj.protocol_id + "', " +
+                                                                               " '" + obj.flavor_id + "', " +
+                                                                               " '" + obj.last_station_time + "', " +
+                                                                               " '" + obj.last_config_time + "', " +
+                                                                               " '" + obj.hw_version + "', " +
+                                                                               " '" + obj.sw_version + "', " +
+                                                                               " '" + obj.latitude + "', " +
+                                                                               " '" + obj.longitude + "', " +
+                                                                               " '" + obj.reg_way + "', " +
+                                                                               " '" + obj.reg_date + "', " +
+                                                                               " '" + obj.disabled + "', " +
+                                                                               " '" + obj.temperature + "', " +
+                                                                               " '" + obj.battery + "', " +
+                                                                               " '" + obj.battery_type + "', " +
+                                                                               " '" + obj.last_info_message + "', " +
+                                                                               " '" + obj.value_formats + "', " +
+                                                                               " '" + obj.is_balance + "', " +
+                                                                               " '" + obj.dl_enabled + "', " +
+                                                                               " '" + obj.dl_change_timestamp + "', " +
+                                                                               " '" + obj.last_snr + "', " +
+                                                                               " '" + obj.previous_snr + "', " +
+                                                                               " '" + obj.last_rssi + "', " +
+                                                                               " '" + obj.previous_rssi + "', " +
+                                                                               " '" + obj.station_id + "' " +
+                                                                               " )";
+                                        // объект для выполнения SQL-запроса
+                                        SqlCommand command4 = new SqlCommand(sql4, connection);
+                                        command4.CommandTimeout = 0;
+                                        command4.ExecuteNonQuery();
+
+
+                                    }
                                 }
-                                else
-                                {
 
-
-                                    Application.DoEvents();
-
-                                    string sql4 = "INSERT INTO [waviot_prod].[dbo].[modems] ( " +
-                                                                         "  [tree_element_id] " +
-                                                                         " ,[id_16hex] " +
-                                                                         " ,[modem_type] " +
-                                                                         " ,[modem_full_type] " +
-                                                                         " ,[modem_modification] " +
-                                                                         " ,[protocol_id] " +
-                                                                         " ,[flavor_id] " +
-                                                                         " ,[last_station_time] " +
-                                                                         " ,[last_config_time] " +
-                                                                         " ,[hw_version] " +
-                                                                         " ,[sw_version] " +
-                                                                         " ,[latitude] " +
-                                                                         " ,[longitude] " +
-                                                                         " ,[reg_way] " +
-                                                                         " ,[reg_date] " +
-                                                                         " ,[disabled] " +
-                                                                         " ,[temperature] " +
-                                                                         " ,[battery] " +
-                                                                         " ,[battery_type] " +
-                                                                         " ,[last_info_message] " +
-                                                                         " ,[value_formats] " +
-                                                                         " ,[is_balance] " +
-                                                                         " ,[dl_enabled] " +
-                                                                         " ,[dl_change_timestamp] " +
-                                                                         " ,[last_snr] " +
-                                                                         " ,[previous_snr] " +
-                                                                         " ,[last_rssi] " +
-                                                                         " ,[previous_rssi] " +
-                                                                         " ,[station_id] )" +
-                                                                           " VALUES ( " +
-                                                                           " '" + reader.GetInt32(0).ToString() + "', " +
-                                                                           " '" + obj.id + "', " +
-                                                                           " '" + obj.modem_type + "', " +
-                                                                           " '" + obj.modem_full_type + "', " +
-                                                                           " '" + obj.modem_modification + "', " +
-                                                                           " '" + obj.protocol_id + "', " +
-                                                                           " '" + obj.flavor_id + "', " +
-                                                                           " '" + obj.last_station_time + "', " +
-                                                                           " '" + obj.last_config_time + "', " +
-                                                                           " '" + obj.hw_version + "', " +
-                                                                           " '" + obj.sw_version + "', " +
-                                                                           " '" + obj.latitude + "', " +
-                                                                           " '" + obj.longitude + "', " +
-                                                                           " '" + obj.reg_way + "', " +
-                                                                           " '" + obj.reg_date + "', " +
-                                                                           " '" + obj.disabled + "', " +
-                                                                           " '" + obj.temperature + "', " +
-                                                                           " '" + obj.battery + "', " +
-                                                                           " '" + obj.battery_type + "', " +
-                                                                           " '" + obj.last_info_message + "', " +
-                                                                           " '" + obj.value_formats + "', " +
-                                                                           " '" + obj.is_balance + "', " +
-                                                                           " '" + obj.dl_enabled + "', " +
-                                                                           " '" + obj.dl_change_timestamp + "', " +
-                                                                           " '" + obj.last_snr + "', " +
-                                                                           " '" + obj.previous_snr + "', " +
-                                                                           " '" + obj.last_rssi + "', " +
-                                                                           " '" + obj.previous_rssi + "', " +
-                                                                           " '" + obj.station_id + "' " +
-                                                                           " )";
-                                    // объект для выполнения SQL-запроса
-                                    SqlCommand command4 = new SqlCommand(sql4, connection);
-                                    command4.ExecuteNonQuery();
-
-
-                                }
                             }
-
                         }
                     }
                 }
