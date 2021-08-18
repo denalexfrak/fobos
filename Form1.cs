@@ -1515,9 +1515,9 @@ namespace fobos_w
                                             foreach (KeyValuePair<string, Registr> keyValue2 in output2)
                                             {
                                                 //   MessageBox.Show(keyValue2.Key + "---" + keyValue2.Value.id);
-
-                                                //запись в базу registrators
                                                 Application.DoEvents();
+                                                //запись в базу registrators
+
                                                 if (device_id_4 == keyValue.Value.id)
                                                 {
                                                    
@@ -1540,6 +1540,7 @@ namespace fobos_w
                                                                         " ";
                                                     // объект для выполнения SQL-запроса
                                                     SqlCommand command6_0 = new SqlCommand(sql6_0, connection);
+                                                    command6_0.CommandTimeout = 0;
                                                     command6_0.ExecuteNonQuery();
                                                 }
                                                 else
@@ -1575,6 +1576,7 @@ namespace fobos_w
                                                                                            " )";
                                                     // объект для выполнения SQL-запроса
                                                     SqlCommand command6 = new SqlCommand(sql6, connection);
+                                                    command6.CommandTimeout = 0;
                                                     command6.ExecuteNonQuery();
                                                 }
                                                 //////////////////////////////////////////////////////////////////
@@ -1610,6 +1612,7 @@ namespace fobos_w
                                                                                 " ";
                                                             // объект для выполнения SQL-запроса
                                                             SqlCommand command7_0 = new SqlCommand(sql7_0, connection);
+                                                            command7_0.CommandTimeout = 0;
                                                             command7_0.ExecuteNonQuery();
                                                         }
                                                         else
@@ -1630,6 +1633,7 @@ namespace fobos_w
                                                                                                " )";
                                                             // объект для выполнения SQL-запроса
                                                             SqlCommand command7 = new SqlCommand(sql7, connection);
+                                                            command7.CommandTimeout = 0;
                                                             command7.ExecuteNonQuery();
                                                         }
                                                         //////////////////////////////////////////////////////////////////
