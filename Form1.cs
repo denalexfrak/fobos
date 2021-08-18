@@ -1449,15 +1449,7 @@ namespace fobos_w
                                             device_id_4 = command4_1.ExecuteScalar().ToString();
                                         }
 
-                                        //string modem_id_4 = "";
-                                        //string sql4_2 = "SELECT [id] FROM [waviot_prod].[dbo].[modems] WHERE [id_16hex]='" + keyValue.Value.modem_id + "'";
-                                        //// объект для выполнения SQL-запроса
-                                        //SqlCommand command4_2 = new SqlCommand(sql4_2, connection);
-                                        //// выполняем запрос и получаем ответ
-                                        //if (command4_2.ExecuteScalar() != null)
-                                        //{
-                                        //    modem_id_4 = command4_2.ExecuteScalar().ToString();
-                                        //}
+                                        
 
                                         if (device_id_4 == keyValue.Value.id)
                                         {
@@ -1528,16 +1520,7 @@ namespace fobos_w
                                                 Application.DoEvents();
                                                 if (device_id_4 == keyValue.Value.id)
                                                 {
-                                                    // запрос
-                                                    string sql5_0 = "UPDATE [waviot_prod].[dbo].[modem_registrators] " +
-                                                                        "  SET    " +
-                                                                        " [channel]='" + keyValue2.Value.channel_id + "' " +
-                                                    " WHERE  " +
-                                                                        "     [device_id] = '" + keyValue.Value.id + "' " +
-                                                                        " ";
-                                                    // объект для выполнения SQL-запроса
-                                                    SqlCommand command5_0 = new SqlCommand(sql5_0, connection);
-                                                    command5_0.ExecuteNonQuery();
+                                                   
 
                                                     // запрос
                                                     string sql6_0 = "UPDATE [waviot_prod].[dbo].[registrators_channel] " +
@@ -1561,18 +1544,7 @@ namespace fobos_w
                                                 }
                                                 else
                                                 {
-                                                    string sql5 = "INSERT INTO [waviot_prod].[dbo].[modem_registrators] ( " +
-                                                                                          "[device_id] " +
-                                                                                          ",[channel] ) " +
-                                                                                       " VALUES ( " +
-                                                                                       " '" + keyValue.Value.id + "', " +
-                                                                                       " '" + keyValue2.Value.channel_id + "' " +
-                                                                                       " )";
-                                                    // объект для выполнения SQL-запроса
-                                                    SqlCommand command5 = new SqlCommand(sql5, connection);
-                                                    command5.ExecuteNonQuery();
-                                                    //////////////////////////////////////////////////////////////////
-                                                    ///
+                                                    
                                                     //запись в базу registrators_channel                                           
 
                                                     string sql6 = "INSERT INTO [waviot_prod].[dbo].[registrators_channel] ( " +
@@ -1622,7 +1594,7 @@ namespace fobos_w
                                                     foreach (var obj in list)
                                                     {
                                                         // MessageBox.Show(obj.timestamp.ToString() + "----" + obj.code.ToString());
-
+                                                        Application.DoEvents();
                                                         //запись в базу registrators_events                                          
                                                         if (device_id_4 == keyValue.Value.id)
                                                         {
@@ -1683,10 +1655,10 @@ namespace fobos_w
             dataGridView4.Rows.Clear();
             dataGridView7.Rows.Clear();
             dataGridView8.Rows.Clear();
-            dataGridView9.Rows.Clear();
+            
             //запрос
             string sql_V = "SELECT * " +
-                           "FROM [waviot_prod].[dbo].[modems]";
+                           "FROM [waviot_prod].[dbo].[devices]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v = new SqlCommand(sql_V, connection);
 
@@ -1698,7 +1670,7 @@ namespace fobos_w
 
             //запрос
             string sql_V_1 = "SELECT * " +
-                           "FROM [waviot_prod].[dbo].[modems]";
+                           "FROM [waviot_prod].[dbo].[registrators_channel]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v_1 = new SqlCommand(sql_V_1, connection);
 
@@ -1710,7 +1682,7 @@ namespace fobos_w
 
             //запрос
             string sql_V_2 = "SELECT * " +
-                           "FROM [waviot_prod].[dbo].[modems]";
+                           "FROM [waviot_prod].[dbo].[registrators_events]";
             // объект для выполнения SQL-запроса
             SqlCommand command_v_2 = new SqlCommand(sql_V_2, connection);
 
@@ -1720,17 +1692,7 @@ namespace fobos_w
             DA.Fill(DT_2);
             dataGridView8.DataSource = DT_2;
 
-            //запрос
-            string sql_V_3 = "SELECT * " +
-                           "FROM [waviot_prod].[dbo].[modems]";
-            // объект для выполнения SQL-запроса
-            SqlCommand command_v_3 = new SqlCommand(sql_V_3, connection);
-
-            command_v_3.ExecuteNonQuery();
-            System.Data.SqlClient.SqlDataAdapter DA_3 = new System.Data.SqlClient.SqlDataAdapter(command_v_3);
-            DataTable DT_3 = new DataTable();
-            DA_3.Fill(DT_3);
-            dataGridView9.DataSource = DT_3;
+          
 
             connection.Close();
             connection.Dispose();

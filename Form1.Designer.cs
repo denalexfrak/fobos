@@ -58,9 +58,7 @@
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.dataGridView7 = new System.Windows.Forms.DataGridView();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.dataGridView8 = new System.Windows.Forms.DataGridView();
-            this.dataGridView9 = new System.Windows.Forms.DataGridView();
             this.button3 = new System.Windows.Forms.Button();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
@@ -124,12 +122,7 @@
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
-            this.splitContainer4.Panel1.SuspendLayout();
-            this.splitContainer4.Panel2.SuspendLayout();
-            this.splitContainer4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView9)).BeginInit();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
             this.splitContainer5.Panel1.SuspendLayout();
@@ -285,7 +278,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(223, 20);
             this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "SKH400475\\SQLEXPRESS";
+            this.textBox1.Text = "172.19.4.22";
             // 
             // tabPage1
             // 
@@ -432,7 +425,7 @@
             // 
             // splitContainer3.Panel2
             // 
-            this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
+            this.splitContainer3.Panel2.Controls.Add(this.dataGridView8);
             this.splitContainer3.Size = new System.Drawing.Size(878, 318);
             this.splitContainer3.SplitterDistance = 317;
             this.splitContainer3.TabIndex = 0;
@@ -446,41 +439,14 @@
             this.dataGridView7.Size = new System.Drawing.Size(313, 314);
             this.dataGridView7.TabIndex = 0;
             // 
-            // splitContainer4
-            // 
-            this.splitContainer4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Name = "splitContainer4";
-            // 
-            // splitContainer4.Panel1
-            // 
-            this.splitContainer4.Panel1.Controls.Add(this.dataGridView8);
-            // 
-            // splitContainer4.Panel2
-            // 
-            this.splitContainer4.Panel2.Controls.Add(this.dataGridView9);
-            this.splitContainer4.Size = new System.Drawing.Size(557, 318);
-            this.splitContainer4.SplitterDistance = 286;
-            this.splitContainer4.TabIndex = 0;
-            // 
             // dataGridView8
             // 
             this.dataGridView8.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView8.Location = new System.Drawing.Point(0, 0);
             this.dataGridView8.Name = "dataGridView8";
-            this.dataGridView8.Size = new System.Drawing.Size(282, 314);
+            this.dataGridView8.Size = new System.Drawing.Size(553, 314);
             this.dataGridView8.TabIndex = 0;
-            // 
-            // dataGridView9
-            // 
-            this.dataGridView9.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView9.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView9.Name = "dataGridView9";
-            this.dataGridView9.Size = new System.Drawing.Size(263, 314);
-            this.dataGridView9.TabIndex = 0;
             // 
             // button3
             // 
@@ -900,12 +866,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView7)).EndInit();
-            this.splitContainer4.Panel1.ResumeLayout(false);
-            this.splitContainer4.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
-            this.splitContainer4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView9)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             this.splitContainer5.Panel1.ResumeLayout(false);
@@ -975,9 +936,7 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.DataGridView dataGridView7;
-        private System.Windows.Forms.SplitContainer splitContainer4;
         private System.Windows.Forms.DataGridView dataGridView8;
-        private System.Windows.Forms.DataGridView dataGridView9;
         private System.Windows.Forms.Button button12;
         private System.Windows.Forms.SplitContainer splitContainer5;
         private System.Windows.Forms.DataGridView dataGridView10;
