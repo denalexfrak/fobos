@@ -226,7 +226,7 @@ namespace fobos_w
 
         void button4_Cl()
         {
-            dataGridView1.Rows.Clear();
+          //  dataGridView1.Rows.Clear();
 
             string json = getContent("https://lk.curog.ru/api.tree/get_tree/?id=17236&key=9778a18d58d75bf6d569d31ef277c2cc");
 
@@ -251,6 +251,7 @@ namespace fobos_w
             int i_1 = 0;
             if (str1 != "[]" && str0 == "ok")
             {
+                textBox12.Text = json;
                 foreach (KeyValuePair<string, Tree> keyValue in values)
                 {
                     //1-я итерация самый верхний уровень
@@ -267,12 +268,7 @@ namespace fobos_w
                         {
                             Tree3 account2 = JsonConvert.DeserializeObject<Tree3>(str2);
 
-                            //заполняем таблицу 1-го уровня древа
-                            dataGridView1.Rows.Add();
-                            dataGridView1.Rows[i_1].Cells[0].Value = Convert.ToString(i_1 + 1);
-                            dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account2.id.ToString());
-                            dataGridView1.Rows[i_1].Cells[2].Value = Convert.ToString(account2.name.ToString());
-                            dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account2.type.ToString());
+                            
                             i_1++;
 
                             //запрос на существование id в базе
@@ -363,20 +359,14 @@ namespace fobos_w
                             var str3 = resultObject2["tree"].ToString();
                             if (str3 != "[]")
                             {
-
+                                textBox12.Text = json2;
                                 Dictionary<string, Tree4> values2 = JsonConvert.DeserializeObject<Dictionary<string, Tree4>>(str3);
                                 foreach (KeyValuePair<string, Tree4> keyValue2 in values2)
                                 {
                                     Application.DoEvents();
                                     var str3_1 = resultObject2["tree"]?[keyValue2.Key].ToString();
                                     Tree4_1 account3 = JsonConvert.DeserializeObject<Tree4_1>(str3_1);
-                                    //заполняем таблицу 2-го уровня древа
-                                    dataGridView1.Rows.Add();
-                                    dataGridView1.Rows[i_1].Cells[0].Value = Convert.ToString(i_1);
-                                    dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account3.id.ToString());
-                                    dataGridView1.Rows[i_1].Cells[2].Value = Convert.ToString(account3.name.ToString());
-                                    dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account3.type.ToString());
-                                    dataGridView1.Rows[i_1].Cells[4].Value = Convert.ToString(account2.id.ToString());
+                                   
                                     i_1++;
                                     //запрос на существование id в базе
                                     // запрос
@@ -464,18 +454,13 @@ namespace fobos_w
                                     var str4 = resultObject3["tree"].ToString();
                                     if (str4 != "[]")
                                     {
+                                        textBox12.Text = json3;
                                         Dictionary<string, Tree5> values3 = JsonConvert.DeserializeObject<Dictionary<string, Tree5>>(str4);
                                         foreach (KeyValuePair<string, Tree5> keyValue3 in values3)
                                         {
                                             var str4_1 = resultObject3["tree"]?[keyValue3.Key].ToString();
                                             Tree5_1 account4 = JsonConvert.DeserializeObject<Tree5_1>(str4_1);
-                                            //заполняем таблицу 2-го уровня древа
-                                            dataGridView1.Rows.Add();
-                                            dataGridView1.Rows[i_1].Cells[0].Value = Convert.ToString(i_1);
-                                            dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account4.id.ToString());
-                                            dataGridView1.Rows[i_1].Cells[2].Value = Convert.ToString(account4.name.ToString());
-                                            dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account4.type.ToString());
-                                            dataGridView1.Rows[i_1].Cells[4].Value = Convert.ToString(account3.id.ToString());
+                                           
                                             i_1++;
                                             //запрос на существование id в базе
                                             // запрос
@@ -561,18 +546,13 @@ namespace fobos_w
                                             var str5 = resultObject4["tree"].ToString();
                                             if (str5 != "[]")
                                             {
+                                                textBox12.Text = json4;
                                                 Dictionary<string, Tree6> values4 = JsonConvert.DeserializeObject<Dictionary<string, Tree6>>(str5);
                                                 foreach (KeyValuePair<string, Tree6> keyValue4 in values4)
                                                 {
                                                     var str5_1 = resultObject4["tree"]?[keyValue4.Key].ToString();
                                                     Tree6_1 account5 = JsonConvert.DeserializeObject<Tree6_1>(str5_1);
-                                                    //заполняем таблицу 2-го уровня древа
-                                                    dataGridView1.Rows.Add();
-                                                    dataGridView1.Rows[i_1].Cells[0].Value = Convert.ToString(i_1);
-                                                    dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account5.id.ToString());
-                                                    dataGridView1.Rows[i_1].Cells[2].Value = Convert.ToString(account5.name.ToString());
-                                                    dataGridView1.Rows[i_1].Cells[3].Value = Convert.ToString(account5.type.ToString());
-                                                    dataGridView1.Rows[i_1].Cells[4].Value = Convert.ToString(account4.id.ToString());
+                                                   
                                                     i_1++;
 
                                                     //запрос на существование id в базе
@@ -835,7 +815,7 @@ namespace fobos_w
 
            void button1_Cl()
         {
-            dataGridView1.Rows.Clear();
+            
             dataGridView2.Rows.Clear();
 
             string connectionString = GetConnectionString();
