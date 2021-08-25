@@ -816,7 +816,7 @@ namespace fobos_w
            void button1_Cl()
         {
             
-            dataGridView2.Rows.Clear();
+          //  dataGridView2.Rows.Clear();
 
             string connectionString = GetConnectionString();
 
@@ -850,7 +850,7 @@ namespace fobos_w
                         {
                             if (str1 != "[]" && str1 != null)
                             {
-
+                                textBox12.Text = json;
                                 Dictionary<string, Get_Tree> values = JsonConvert.DeserializeObject<Dictionary<string, Get_Tree>>(str1);
                                 foreach (KeyValuePair<string, Get_Tree> keyValue4 in values)
                                 {
@@ -884,6 +884,7 @@ namespace fobos_w
                                         SqlCommand command5_0 = new SqlCommand(sql4_0, connection);
                                         command5_0.ExecuteNonQuery();
                                         //  dataGridView1.Rows[i_1].Cells[1].Value = Convert.ToString(account5.id.ToString());
+                                        
                                     }
                                 }
                                 values.Clear();
@@ -1070,7 +1071,7 @@ namespace fobos_w
 
 
 
-            dataGridView3.Rows.Clear();
+          //  dataGridView3.Rows.Clear();
 
             string connectionString = GetConnectionString();
 
@@ -1646,9 +1647,9 @@ namespace fobos_w
                 }
             }
 
-            dataGridView4.Rows.Clear();
-            dataGridView7.Rows.Clear();
-            dataGridView8.Rows.Clear();
+         //   dataGridView4.Rows.Clear();
+         //   dataGridView7.Rows.Clear();
+         //   dataGridView8.Rows.Clear();
             
             //запрос
             string sql_V = "SELECT * " +
@@ -2129,7 +2130,7 @@ namespace fobos_w
 
 
 
-            dataGridView10.Rows.Clear();
+          //  dataGridView10.Rows.Clear();
             // запрос
             string sql_V = "SELECT * " +
                            "FROM [waviot_prod].[dbo].[modem_info]";
@@ -2183,7 +2184,7 @@ namespace fobos_w
             int unixTimestamp2 = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             int sec_from = unixTimestamp2 - sec_period;
 
-            dataGridView5.Rows.Clear();
+         //   dataGridView5.Rows.Clear();
 
             string connectionString = GetConnectionString();
 
