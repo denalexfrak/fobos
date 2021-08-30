@@ -26,6 +26,7 @@ namespace fobos_w
         }
 
         int i_timer_sbor;
+        int i_error_dev=0;
 
         public string GetConnectionString()
         {
@@ -1407,242 +1408,256 @@ namespace fobos_w
                     string json = getContent("https://lk.curog.ru/api.data/get_full_element_info/?id=" + reader.GetInt32(0).ToString() + "&key=9778a18d58d75bf6d569d31ef277c2cc");
                     if (json != "" && json != null)
                     {
+                        var str1 = "";
                     Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+                      //  textBox10.Text = resultObject["devices"].ToString();
+                        var str0 = resultObject["status"].ToString();
 
-                    var str0 = resultObject["status"].ToString();
-                    var str1 = resultObject["devices"].ToString();
-                    
+                        try {
+                           // if (resultObject["devices"].ToString() != "" && resultObject["devices"].ToString() != null && resultObject != null) {
 
-                        if (str0 == "ok")
+                                
+
+                                 str1 = resultObject["devices"].ToString();
+                            }
+                            catch
                         {
-                            if (str1 != "")
+                            str1 = "";
+                            i_error_dev++;
+                            label6.Text = Convert.ToString(i_error_dev);
+                        }
+
+                            if (str0 == "ok")
                             {
-                                textBox10.Text = json;
-                                var output = JsonConvert.DeserializeObject<Dictionary<string, Devices>>(str1);
-
-                                if (output != null)
+                                if (str1 != "")
                                 {
+                                    textBox10.Text = resultObject["devices"].ToString();
+                                    var output = JsonConvert.DeserializeObject<Dictionary<string, Devices>>(str1);
 
-                                    foreach (KeyValuePair<string, Devices> keyValue in output)
+                                    if (output != null)
                                     {
 
-                                        //запись в базу devices
-                                        Application.DoEvents();
-                                        //запрос на существование id в базе
-                                        // запрос
-                                        string device_id_4 = "";
-                                        string sql4_1 = "SELECT [device_id] FROM [waviot_prod].[dbo].[devices] WHERE [device_id]='" + keyValue.Value.id + "'";
-                                        // объект для выполнения SQL-запроса
-                                        SqlCommand command4_1 = new SqlCommand(sql4_1, connection);
-                                        // выполняем запрос и получаем ответ
-                                        if (command4_1.ExecuteScalar() != null)
+                                        foreach (KeyValuePair<string, Devices> keyValue in output)
                                         {
-                                            device_id_4 = command4_1.ExecuteScalar().ToString();
-                                        }
 
-                                        
-
-                                        if (device_id_4 == keyValue.Value.id)
-                                        {
+                                            //запись в базу devices
+                                            Application.DoEvents();
+                                            //запрос на существование id в базе
                                             // запрос
-                                            string sql4_0 = "UPDATE a_dev " +
-                                                                "  SET    " +
-                                                                " a_dev.[name]='" + keyValue.Value.name + "' " +
-                                                                " ,a_dev.[class_name]='" + keyValue.Value.class_name + "' " +
-                                                                " ,a_dev.[device_sn]='" + keyValue.Value.device_sn + "' " +
-                                                                " ,a_dev.[modem_16hex_id]='" + keyValue.Value.modem_id + "' " +
-                                                                " ,a_dev.[device_time]='" + keyValue.Value.device_time + "' " +
-                                                                " ,a_dev.[config_time]='" + keyValue.Value.config_time + "' " +
-                                                                " ,a_dev.[timezone]='" + keyValue.Value.timezone + "' " +
-                                                                " ,a_dev.[modem_id]=b_mdms.[id] " +
-                                                                " FROM " +
-                                                                "      [waviot_prod].[dbo].[devices] AS a_dev " +
-                                                                "      INNER JOIN [waviot_prod].[dbo].[modems] AS b_mdms " +
-                                                                "       ON b_mdms.[id_16hex]='" + keyValue.Value.modem_id + "' " +
-                                            " WHERE  " +
-                                                                "     [device_id] = '" + keyValue.Value.id + "' " +
-                                                                " ";
+                                            string device_id_4 = "";
+                                            string sql4_1 = "SELECT [device_id] FROM [waviot_prod].[dbo].[devices] WHERE [device_id]='" + keyValue.Value.id + "'";
                                             // объект для выполнения SQL-запроса
-                                            SqlCommand command4_0 = new SqlCommand(sql4_0, connection);
-                                            command4_0.ExecuteNonQuery();
-                                        }
-                                        else
-                                        {
-                                            string sql4 = "" +
-                                             "INSERT INTO [waviot_prod].[dbo].[devices] ( " +
-                                                                              " [device_id] " +
-                                                                              " ,[name] " +
-                                                                              " ,[class_name] " +
-                                                                              " ,[device_sn] " +
-                                                                              " ,[modem_16hex_id] " +
-                                                                              " ,[device_time] " +
-                                                                              " ,[config_time] " +
-                                                                              " ,[timezone] " +
-                                                                              " ,[modem_id] " +
-                                                                              " ,[is_deleted]" +
-                                                                              " ) " +
-                                                                               " VALUES ( " +
-                                                                               " '" + keyValue.Value.id + "', " +
-                                                                               " '" + keyValue.Value.name + "', " +
-                                                                               " '" + keyValue.Value.class_name + "', " +
-                                                                               " '" + keyValue.Value.device_sn + "', " +
-                                                                               " '" + keyValue.Value.modem_id + "', " +
-                                                                               " '" + keyValue.Value.device_time + "', " +
-                                                                               " '" + keyValue.Value.config_time + "', " +
-                                                                               " '" + keyValue.Value.timezone + "', " +
-                                                                               " (SELECT [id] FROM [waviot_prod].[dbo].[modems] WHERE [id_16hex]='" + keyValue.Value.modem_id + "'), " +
-                                                                               " '0' " +
-                                                                               " )";
-
-                                            SqlCommand command4 = new SqlCommand(sql4, connection);
-                                            command4.ExecuteNonQuery();
-                                        }
-                                        //////////////////////////////////////////////////////////////////
-                                        if (keyValue.Key != null && keyValue.Value.registrators != null)
-                                        {
-
-                                            var output2 = JsonConvert.DeserializeObject<Dictionary<string, Registr>>(keyValue.Value.registrators.ToString());
-                                            textBox11.Text = keyValue.Value.registrators.ToString();
-                                            foreach (KeyValuePair<string, Registr> keyValue2 in output2)
+                                            SqlCommand command4_1 = new SqlCommand(sql4_1, connection);
+                                            // выполняем запрос и получаем ответ
+                                            if (command4_1.ExecuteScalar() != null)
                                             {
-                                                //   MessageBox.Show(keyValue2.Key + "---" + keyValue2.Value.id);
-                                                Application.DoEvents();
-                                                //запись в базу registrators
+                                                device_id_4 = command4_1.ExecuteScalar().ToString();
+                                            }
 
-                                                if (device_id_4 == keyValue.Value.id)
+
+
+                                            if (device_id_4 == keyValue.Value.id)
+                                            {
+                                                // запрос
+                                                string sql4_0 = "UPDATE a_dev " +
+                                                                    "  SET    " +
+                                                                    " a_dev.[name]='" + keyValue.Value.name + "' " +
+                                                                    " ,a_dev.[class_name]='" + keyValue.Value.class_name + "' " +
+                                                                    " ,a_dev.[device_sn]='" + keyValue.Value.device_sn + "' " +
+                                                                    " ,a_dev.[modem_16hex_id]='" + keyValue.Value.modem_id + "' " +
+                                                                    " ,a_dev.[device_time]='" + keyValue.Value.device_time + "' " +
+                                                                    " ,a_dev.[config_time]='" + keyValue.Value.config_time + "' " +
+                                                                    " ,a_dev.[timezone]='" + keyValue.Value.timezone + "' " +
+                                                                    " ,a_dev.[modem_id]=b_mdms.[id] " +
+                                                                    " FROM " +
+                                                                    "      [waviot_prod].[dbo].[devices] AS a_dev " +
+                                                                    "      INNER JOIN [waviot_prod].[dbo].[modems] AS b_mdms " +
+                                                                    "       ON b_mdms.[id_16hex]='" + keyValue.Value.modem_id + "' " +
+                                                " WHERE  " +
+                                                                    "     [device_id] = '" + keyValue.Value.id + "' " +
+                                                                    " ";
+                                                // объект для выполнения SQL-запроса
+                                                SqlCommand command4_0 = new SqlCommand(sql4_0, connection);
+                                                command4_0.ExecuteNonQuery();
+                                            }
+                                            else
+                                            {
+                                                string sql4 = "" +
+                                                 "INSERT INTO [waviot_prod].[dbo].[devices] ( " +
+                                                                                  " [device_id] " +
+                                                                                  " ,[name] " +
+                                                                                  " ,[class_name] " +
+                                                                                  " ,[device_sn] " +
+                                                                                  " ,[modem_16hex_id] " +
+                                                                                  " ,[device_time] " +
+                                                                                  " ,[config_time] " +
+                                                                                  " ,[timezone] " +
+                                                                                  " ,[modem_id] " +
+                                                                                  " ,[is_deleted]" +
+                                                                                  " ) " +
+                                                                                   " VALUES ( " +
+                                                                                   " '" + keyValue.Value.id + "', " +
+                                                                                   " '" + keyValue.Value.name + "', " +
+                                                                                   " '" + keyValue.Value.class_name + "', " +
+                                                                                   " '" + keyValue.Value.device_sn + "', " +
+                                                                                   " '" + keyValue.Value.modem_id + "', " +
+                                                                                   " '" + keyValue.Value.device_time + "', " +
+                                                                                   " '" + keyValue.Value.config_time + "', " +
+                                                                                   " '" + keyValue.Value.timezone + "', " +
+                                                                                   " (SELECT [id] FROM [waviot_prod].[dbo].[modems] WHERE [id_16hex]='" + keyValue.Value.modem_id + "'), " +
+                                                                                   " '0' " +
+                                                                                   " )";
+
+                                                SqlCommand command4 = new SqlCommand(sql4, connection);
+                                                command4.ExecuteNonQuery();
+                                            }
+                                            //////////////////////////////////////////////////////////////////
+                                            if (keyValue.Key != null && keyValue.Value.registrators != null)
+                                            {
+
+                                                var output2 = JsonConvert.DeserializeObject<Dictionary<string, Registr>>(keyValue.Value.registrators.ToString());
+                                                textBox11.Text = keyValue.Value.registrators.ToString();
+                                                foreach (KeyValuePair<string, Registr> keyValue2 in output2)
                                                 {
-                                                   
+                                                    //   MessageBox.Show(keyValue2.Key + "---" + keyValue2.Value.id);
+                                                    Application.DoEvents();
+                                                    //запись в базу registrators
 
-                                                    // запрос
-                                                    string sql6_0 = "UPDATE [waviot_prod].[dbo].[registrators_channel] " +
-                                                                        "  SET    " +
-                                                                        " [id_registrators]             ='" + keyValue2.Value.id + "' " +
-                                                                        " ,[name]                       ='" + keyValue2.Value.name + "' " +
-                                                                        " ,[channel_id]                 ='" + keyValue2.Value.channel_id + "' " +
-                                                                        " ,[unit_id]                    ='" + keyValue2.Value.unit_id + "' " +
-                                                                        " ,[offset]                     ='" + keyValue2.Value.offset + "' " +
-                                                                        " ,[modem_value]                ='" + keyValue2.Value.modem_value + "' " +
-                                                                        " ,[last_value]                 ='" + keyValue2.Value.last_value + "' " +
-                                                                        " ,[last_value_timestamp]       ='" + keyValue2.Value.last_value_timestamp + "' " +
-                                                                        " ,[billing_init_value]         ='" + keyValue2.Value.billing_init_value + "' " +
-                                                                        " ,[billing_init_timestamp]     ='" + keyValue2.Value.billing_init_timestamp + "' " +
-                                                    " WHERE  " +
-                                                                        "     [device_id] = '" + keyValue.Value.id + "' " +
-                                                                        " ";
-                                                    // объект для выполнения SQL-запроса
-                                                    SqlCommand command6_0 = new SqlCommand(sql6_0, connection);
-                                                    command6_0.CommandTimeout = 0;
-                                                    command6_0.ExecuteNonQuery();
-                                                }
-                                                else
-                                                {
-                                                    
-                                                    //запись в базу registrators_channel                                           
-
-                                                    string sql6 = "INSERT INTO [waviot_prod].[dbo].[registrators_channel] ( " +
-                                                                                                " [device_id] " +
-                                                                                                "  ,[id_registrators] " +
-                                                                                                "  ,[name] " +
-                                                                                                "  ,[channel_id] " +
-                                                                                                "  ,[unit_id] " +
-                                                                                                "  ,[offset] " +
-                                                                                                "  ,[modem_value] " +
-                                                                                                "  ,[last_value] " +
-                                                                                                "  ,[last_value_timestamp] " +
-                                                                                                "  ,[billing_init_value] " +
-                                                                                                "  ,[billing_init_timestamp] " +
-                                                                                                ") " +
-                                                                                           " VALUES ( " +
-                                                                                           " '" + keyValue.Value.id + "', " +
-                                                                                           " '" + keyValue2.Value.id + "', " +
-                                                                                           " '" + keyValue2.Value.name + "', " +
-                                                                                           " '" + keyValue2.Value.channel_id + "', " +
-                                                                                           " '" + keyValue2.Value.unit_id + "', " +
-                                                                                           " '" + keyValue2.Value.offset + "', " +
-                                                                                           " '" + keyValue2.Value.modem_value + "', " +
-                                                                                           " '" + keyValue2.Value.last_value + "', " +
-                                                                                           " '" + keyValue2.Value.last_value_timestamp + "', " +
-                                                                                           " '" + keyValue2.Value.billing_init_value + "', " +
-                                                                                           " '" + keyValue2.Value.billing_init_timestamp + "' " +
-                                                                                           " )";
-                                                    // объект для выполнения SQL-запроса
-                                                    SqlCommand command6 = new SqlCommand(sql6, connection);
-                                                    command6.CommandTimeout = 0;
-                                                    command6.ExecuteNonQuery();
-                                                }
-                                                //////////////////////////////////////////////////////////////////
-
-                                                if (keyValue2.Value.events != "" && keyValue2.Value.events != "[]" && keyValue2.Value.events != null)
-                                                {
-
-                                                    string str1events = keyValue2.Value.events.ToString();
-                                                    ////последний массив вложенный массив данных в events
-                                                    ///
-
-
-
-                                                    List<Event> list = JsonConvert.DeserializeObject<List<Event>>(str1events);
-
-
-                                                    foreach (var obj in list)
+                                                    if (device_id_4 == keyValue.Value.id)
                                                     {
-                                                        // MessageBox.Show(obj.timestamp.ToString() + "----" + obj.code.ToString());
-                                                        Application.DoEvents();
-                                                        //запись в базу registrators_events                                          
-                                                        if (device_id_4 == keyValue.Value.id)
-                                                        {
-                                                            // запрос
-                                                            string sql7_0 = "UPDATE [waviot_prod].[dbo].[registrators_events] " +
-                                                                                "  SET    " +
-                                                                                " [registrators_id]='" + keyValue2.Value.id + "' " +
-                                                                                " ,[channel]='" + keyValue2.Value.channel_id + "' " +
-                                                                                " ,[timestamp]='" + obj.timestamp + "' " +
-                                                                                " ,[code]='" + obj.code + "' " +
-                                                            " WHERE  " +
-                                                                                "     [device_id] = '" + keyValue.Value.id + "' " +
-                                                                                " ";
-                                                            // объект для выполнения SQL-запроса
-                                                            SqlCommand command7_0 = new SqlCommand(sql7_0, connection);
-                                                            command7_0.CommandTimeout = 0;
-                                                            command7_0.ExecuteNonQuery();
-                                                        }
-                                                        else
-                                                        {
-                                                            string sql7 = "INSERT INTO [waviot_prod].[dbo].[registrators_events] ( " +
+
+
+                                                        // запрос
+                                                        string sql6_0 = "UPDATE [waviot_prod].[dbo].[registrators_channel] " +
+                                                                            "  SET    " +
+                                                                            " [id_registrators]             ='" + keyValue2.Value.id + "' " +
+                                                                            " ,[name]                       ='" + keyValue2.Value.name + "' " +
+                                                                            " ,[channel_id]                 ='" + keyValue2.Value.channel_id + "' " +
+                                                                            " ,[unit_id]                    ='" + keyValue2.Value.unit_id + "' " +
+                                                                            " ,[offset]                     ='" + keyValue2.Value.offset + "' " +
+                                                                            " ,[modem_value]                ='" + keyValue2.Value.modem_value + "' " +
+                                                                            " ,[last_value]                 ='" + keyValue2.Value.last_value + "' " +
+                                                                            " ,[last_value_timestamp]       ='" + keyValue2.Value.last_value_timestamp + "' " +
+                                                                            " ,[billing_init_value]         ='" + keyValue2.Value.billing_init_value + "' " +
+                                                                            " ,[billing_init_timestamp]     ='" + keyValue2.Value.billing_init_timestamp + "' " +
+                                                        " WHERE  " +
+                                                                            "     [device_id] = '" + keyValue.Value.id + "' " +
+                                                                            " ";
+                                                        // объект для выполнения SQL-запроса
+                                                        SqlCommand command6_0 = new SqlCommand(sql6_0, connection);
+                                                        command6_0.CommandTimeout = 0;
+                                                        command6_0.ExecuteNonQuery();
+                                                    }
+                                                    else
+                                                    {
+
+                                                        //запись в базу registrators_channel                                           
+
+                                                        string sql6 = "INSERT INTO [waviot_prod].[dbo].[registrators_channel] ( " +
                                                                                                     " [device_id] " +
-                                                                                                    " ,[registrators_id] " +
-                                                                                                    " ,[channel] " +
-                                                                                                    " ,[timestamp] " +
-                                                                                                    " ,[code] " +
+                                                                                                    "  ,[id_registrators] " +
+                                                                                                    "  ,[name] " +
+                                                                                                    "  ,[channel_id] " +
+                                                                                                    "  ,[unit_id] " +
+                                                                                                    "  ,[offset] " +
+                                                                                                    "  ,[modem_value] " +
+                                                                                                    "  ,[last_value] " +
+                                                                                                    "  ,[last_value_timestamp] " +
+                                                                                                    "  ,[billing_init_value] " +
+                                                                                                    "  ,[billing_init_timestamp] " +
                                                                                                     ") " +
                                                                                                " VALUES ( " +
                                                                                                " '" + keyValue.Value.id + "', " +
                                                                                                " '" + keyValue2.Value.id + "', " +
+                                                                                               " '" + keyValue2.Value.name + "', " +
                                                                                                " '" + keyValue2.Value.channel_id + "', " +
-                                                                                               " '" + obj.timestamp + "', " +
-                                                                                               " '" + obj.code + "' " +
+                                                                                               " '" + keyValue2.Value.unit_id + "', " +
+                                                                                               " '" + keyValue2.Value.offset + "', " +
+                                                                                               " '" + keyValue2.Value.modem_value + "', " +
+                                                                                               " '" + keyValue2.Value.last_value + "', " +
+                                                                                               " '" + keyValue2.Value.last_value_timestamp + "', " +
+                                                                                               " '" + keyValue2.Value.billing_init_value + "', " +
+                                                                                               " '" + keyValue2.Value.billing_init_timestamp + "' " +
                                                                                                " )";
-                                                            // объект для выполнения SQL-запроса
-                                                            SqlCommand command7 = new SqlCommand(sql7, connection);
-                                                            command7.CommandTimeout = 0;
-                                                            command7.ExecuteNonQuery();
+                                                        // объект для выполнения SQL-запроса
+                                                        SqlCommand command6 = new SqlCommand(sql6, connection);
+                                                        command6.CommandTimeout = 0;
+                                                        command6.ExecuteNonQuery();
+                                                    }
+                                                    //////////////////////////////////////////////////////////////////
+
+                                                    if (keyValue2.Value.events != "" && keyValue2.Value.events != "[]" && keyValue2.Value.events != null)
+                                                    {
+
+                                                        string str1events = keyValue2.Value.events.ToString();
+                                                        ////последний массив вложенный массив данных в events
+                                                        ///
+
+
+
+                                                        List<Event> list = JsonConvert.DeserializeObject<List<Event>>(str1events);
+
+
+                                                        foreach (var obj in list)
+                                                        {
+                                                            // MessageBox.Show(obj.timestamp.ToString() + "----" + obj.code.ToString());
+                                                            Application.DoEvents();
+                                                            //запись в базу registrators_events                                          
+                                                            if (device_id_4 == keyValue.Value.id)
+                                                            {
+                                                                // запрос
+                                                                string sql7_0 = "UPDATE [waviot_prod].[dbo].[registrators_events] " +
+                                                                                    "  SET    " +
+                                                                                    " [registrators_id]='" + keyValue2.Value.id + "' " +
+                                                                                    " ,[channel]='" + keyValue2.Value.channel_id + "' " +
+                                                                                    " ,[timestamp]='" + obj.timestamp + "' " +
+                                                                                    " ,[code]='" + obj.code + "' " +
+                                                                " WHERE  " +
+                                                                                    "     [device_id] = '" + keyValue.Value.id + "' " +
+                                                                                    " ";
+                                                                // объект для выполнения SQL-запроса
+                                                                SqlCommand command7_0 = new SqlCommand(sql7_0, connection);
+                                                                command7_0.CommandTimeout = 0;
+                                                                command7_0.ExecuteNonQuery();
+                                                            }
+                                                            else
+                                                            {
+                                                                string sql7 = "INSERT INTO [waviot_prod].[dbo].[registrators_events] ( " +
+                                                                                                        " [device_id] " +
+                                                                                                        " ,[registrators_id] " +
+                                                                                                        " ,[channel] " +
+                                                                                                        " ,[timestamp] " +
+                                                                                                        " ,[code] " +
+                                                                                                        ") " +
+                                                                                                   " VALUES ( " +
+                                                                                                   " '" + keyValue.Value.id + "', " +
+                                                                                                   " '" + keyValue2.Value.id + "', " +
+                                                                                                   " '" + keyValue2.Value.channel_id + "', " +
+                                                                                                   " '" + obj.timestamp + "', " +
+                                                                                                   " '" + obj.code + "' " +
+                                                                                                   " )";
+                                                                // объект для выполнения SQL-запроса
+                                                                SqlCommand command7 = new SqlCommand(sql7, connection);
+                                                                command7.CommandTimeout = 0;
+                                                                command7.ExecuteNonQuery();
+                                                            }
+                                                            //////////////////////////////////////////////////////////////////
+
                                                         }
-                                                        //////////////////////////////////////////////////////////////////
+                                                        list.Clear();
 
                                                     }
-                                                    list.Clear();
-
                                                 }
+                                                output2.Clear();
                                             }
-                                            output2.Clear();
+
                                         }
-
                                     }
+                                    output.Clear();
                                 }
-                                output.Clear();
-                            }
 
-                        }
+                            }
+                      //  }
                     }
                 }
             }
@@ -2591,6 +2606,57 @@ namespace fobos_w
         private void button13_Click(object sender, EventArgs e)
         {
             timer1_sbor.Enabled = false;
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+
+
+            string connectionString = GetConnectionString();
+
+            SqlConnection connection = new SqlConnection();
+
+            connection.ConnectionString = connectionString;
+
+            connection.Open();
+
+            //подсчет модемов
+            // запрос            
+            string sql5_1 = "SELECT count(distinct [id_16hex]) FROM [waviot_prod].[dbo].[modems]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command5_1 = new SqlCommand(sql5_1, connection);
+            command5_1.CommandTimeout = 0;
+            // выполняем запрос и получаем ответ
+            if (command5_1.ExecuteScalar() != null)
+            {
+                label8.Text = command5_1.ExecuteScalar().ToString();
+            }
+
+
+
+
+            int sec_period = Convert.ToInt32(textBox13.Text) * 60 * 60;
+            int unixTimestamp2 = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            int sec_from = unixTimestamp2 - sec_period;
+
+            //подсчет живых модемов
+            // запрос           
+            string sql5_2 = "SELECT count(distinct [modem_id]) FROM [waviot_prod].[dbo].[element_values] " +
+                " WHERE " +
+                " [registrator_id]='1' " +
+                " AND " +
+                " [timestamp_] BETWEEN "+ sec_from + " AND " + unixTimestamp2 + " ";
+            // объект для выполнения SQL-запроса
+            SqlCommand command5_2 = new SqlCommand(sql5_2, connection);
+            command5_2.CommandTimeout = 0;
+            // выполняем запрос и получаем ответ
+            if (command5_2.ExecuteScalar() != null)
+            {
+                label12.Text = command5_2.ExecuteScalar().ToString();
+            }
+
+
+
         }
     }
     }
