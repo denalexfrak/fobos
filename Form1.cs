@@ -2608,6 +2608,33 @@ namespace fobos_w
             timer1_sbor.Enabled = false;
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void button14_Click(object sender, EventArgs e)
         {
 
@@ -2656,6 +2683,183 @@ namespace fobos_w
             }
 
 
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            int sec_period = Convert.ToInt32(textBox5.Text) * 60 * 60;
+            int unixTimestamp2 = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            int sec_from = unixTimestamp2 - sec_period;
+
+            //   dataGridView5.Rows.Clear();
+
+            string connectionString = GetConnectionString();
+
+            SqlConnection connection = new SqlConnection();
+
+            connection.ConnectionString = connectionString;
+
+            connection.Open();
+
+
+
+
+
+            //////////////получение ссписка каналов из таблицы
+            string in_channels_select_id = "";
+            foreach (DataGridViewRow row in dataGridView6.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells[Column7.Name].Value) == true && row.Cells[1].Value != null)
+                {
+                    in_channels_select_id = in_channels_select_id + "," + row.Cells[1].Value.ToString();
+                }
+            }
+            in_channels_select_id = in_channels_select_id.Trim(new Char[] { ' ', ',' });
+            /////////////////////////////////////////////////////
+
+            if (in_channels_select_id != "")
+            {
+               
+
+                        Application.DoEvents();
+                        //перебор каналов учета
+                        string sql2 = "SELECT [title], [id], [text] FROM [waviot_prod].[dbo].[registrators] WHERE [id] IN (" + in_channels_select_id + ")";
+
+                        SqlCommand command2 = new SqlCommand(sql2, connection);
+                        SqlDataReader reader2 = command2.ExecuteReader();
+
+
+                        if (reader2.HasRows)
+                        {
+                            while (reader2.Read())
+                            {
+
+                                Application.DoEvents();
+                                string json = getContent("https://lk.curog.ru/api.data/get_modem_channel_values/?modem_id=" + textBox14.Text + "&channel=" + reader2.GetString(0) + " " +                                    
+                                    "  &key=9778a18d58d75bf6d569d31ef277c2cc");
+                                if (json != null)
+                                {
+                                    Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+                                    var str1 = resultObject["values"].ToString();
+                                    string str0 = resultObject["status"].ToString();
+                                    if (str1 != null && str1 != "")
+                                    {
+                                        if (str0 == "ok")
+                                        {
+
+                                            var output = JsonConvert.DeserializeObject<Dictionary<string, string>>(str1);
+
+                                            if (output != null)
+                                            {
+
+                                                textBox6.Text = json;
+
+                                                foreach (KeyValuePair<string, string> keyValue in output)
+                                                {
+                                                    Application.DoEvents();
+                                                    //  MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
+                                                    // проверяем на нулевые значения разрешено или нет
+
+
+
+                                                    string dev_value_convert = UnixToDate(Convert.ToInt32(keyValue.Key), "yyyy-MM-dd HH:mm:ss");
+
+                                                   
+                                                        
+                                                           
+                                                                string sql4 = "INSERT INTO [waviot_prod].[dbo].[element_val_full] ( " +
+                                                                                            "  [modem_ls] " +
+                                                                                            " ,[device_dn] " +
+                                                                                            " ,[timestamp_] " +
+                                                                                            " ,[dev_value] " +
+                                                                                            " ,[val_date] " +
+                                                                                            " ,[type_el] " +
+                                                                                            " )" +
+                                                                                              " VALUES ( " +
+                                                                                              " '" + textBox15.Text + "', " +
+                                                                                              " '" + textBox16.Text + "', " +
+                                                                                              " '" + keyValue.Key + "', " +
+                                                                                              " '" + keyValue.Value + "', " +
+                                                                                              " '" + dev_value_convert + "', " +
+                                                                                              " '" + reader2.GetString(2) + "' " +
+                                                                                              " )";
+
+                                                                // объект для выполнения SQL-запроса
+                                                                SqlCommand command4 = new SqlCommand(sql4, connection);
+                                                                command4.ExecuteNonQuery();
+                                                            
+                                                        
+                                                    
+                                                    
+                                                }
+                                            }
+                                            output.Clear();
+                                        }
+                                    }
+                                }
+
+                            }
+                        
+
+
+
+
+                    
+                }
+            }
+            else
+            {
+                textBox6.Text = "Необходимо выбрать хоть один канал.";
+            }
+
+            // запрос
+            string sql_V = "SELECT * " +
+                           "FROM [waviot_prod].[dbo].[element_values]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command_v = new SqlCommand(sql_V, connection);
+
+            command_v.ExecuteNonQuery();
+            System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command_v);
+            DataTable DT = new DataTable();
+            DA.Fill(DT);
+            dataGridView5.DataSource = DT;
+            //закрываем и освобождаем ресурсы         
+
+
+            connection.Close();
+            connection.Dispose();
+
+            toolStripStatusLabel8.Text = "Данные получены";
+            
 
         }
     }

@@ -104,6 +104,14 @@
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.button14 = new System.Windows.Forms.Button();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.button15 = new System.Windows.Forms.Button();
+            this.textBox14 = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.textBox15 = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBox16 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -137,6 +145,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).BeginInit();
             this.tabPage6.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.tabPage7.SuspendLayout();
             this.SuspendLayout();
             // 
             // button4
@@ -170,6 +179,7 @@
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage6);
+            this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Location = new System.Drawing.Point(0, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -240,7 +250,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(223, 20);
             this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "172.19.4.22";
+            this.textBox1.Text = "SKH400475\\SQLEXPRESS";
             // 
             // tabPage1
             // 
@@ -895,6 +905,81 @@
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.label15);
+            this.tabPage7.Controls.Add(this.textBox16);
+            this.tabPage7.Controls.Add(this.label14);
+            this.tabPage7.Controls.Add(this.textBox15);
+            this.tabPage7.Controls.Add(this.label13);
+            this.tabPage7.Controls.Add(this.textBox14);
+            this.tabPage7.Controls.Add(this.button15);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage7.Size = new System.Drawing.Size(1224, 561);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "Показания по счетчику";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(11, 187);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(75, 23);
+            this.button15.TabIndex = 0;
+            this.button15.Text = "Загрузить";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // textBox14
+            // 
+            this.textBox14.Location = new System.Drawing.Point(135, 16);
+            this.textBox14.Name = "textBox14";
+            this.textBox14.Size = new System.Drawing.Size(135, 20);
+            this.textBox14.TabIndex = 1;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(8, 23);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(121, 13);
+            this.label13.TabIndex = 2;
+            this.label13.Text = "Номер счетчика 16hex";
+            // 
+            // textBox15
+            // 
+            this.textBox15.Location = new System.Drawing.Point(38, 109);
+            this.textBox15.Name = "textBox15";
+            this.textBox15.Size = new System.Drawing.Size(203, 20);
+            this.textBox15.TabIndex = 3;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(8, 116);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(24, 13);
+            this.label14.TabIndex = 4;
+            this.label14.Text = "л/с";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(8, 142);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(99, 13);
+            this.label15.TabIndex = 6;
+            this.label15.Text = "номер устройства";
+            // 
+            // textBox16
+            // 
+            this.textBox16.Location = new System.Drawing.Point(113, 135);
+            this.textBox16.Name = "textBox16";
+            this.textBox16.Size = new System.Drawing.Size(203, 20);
+            this.textBox16.TabIndex = 5;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -945,6 +1030,8 @@
             this.tabPage6.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1026,6 +1113,14 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox textBox14;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBox16;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBox15;
     }
 }
 
