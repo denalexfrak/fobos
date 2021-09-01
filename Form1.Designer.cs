@@ -250,7 +250,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(223, 20);
             this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "SKH400475\\SQLEXPRESS";
+            this.textBox1.Text = "172.19.4.22";
             // 
             // tabPage1
             // 
