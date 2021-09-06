@@ -2212,7 +2212,18 @@ namespace fobos_w
 
 
 
-
+            //подсчет модемов
+            // запрос            
+            int i_for_progrbar1 = 0;
+            string sql5all_1 = "SELECT count(distinct [id_16hex]) FROM [waviot_prod].[dbo].[modems]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command5all_1 = new SqlCommand(sql5all_1, connection);
+            command5all_1.CommandTimeout = 0;
+            // выполняем запрос и получаем ответ
+            if (command5all_1.ExecuteScalar() != null)
+            {
+                toolStripProgressBar1.Maximum = Convert.ToInt32(command5all_1.ExecuteScalar().ToString());
+            }
 
             //////////////получение ссписка каналов из таблицы
             string in_channels_select_id = "";
@@ -2238,6 +2249,8 @@ namespace fobos_w
                 {
                     while (reader.Read())
                     {
+                        i_for_progrbar1++;
+                        toolStripProgressBar1.Value = i_for_progrbar1;
                         if (checkBox3.Checked == true)
                         {
                             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2275,7 +2288,10 @@ namespace fobos_w
                                         timestamp_2 = command5_1.ExecuteScalar().ToString();
                                     }
 
-
+                                    if (timestamp_2=="")
+                                    {
+                                        timestamp_2 = Convert.ToString(Convert.ToInt32(unixTimestamp2) -(60*60));
+                                    }
 
                                     label16.Text = timestamp_2;
                                     if (timestamp_2 != "")
