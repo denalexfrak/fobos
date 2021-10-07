@@ -57,6 +57,7 @@
             this.dataGridView8 = new System.Windows.Forms.DataGridView();
             this.button3 = new System.Windows.Forms.Button();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.label22 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.textBox17 = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
@@ -120,7 +121,7 @@
             this.toolStripStatusLabel8 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel9 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1_sbor = new System.Windows.Forms.Timer(this.components);
-            this.label22 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -485,6 +486,15 @@
             this.tabPage5.Text = "Сбор показаний";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(466, 210);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(31, 13);
+            this.label22.TabIndex = 18;
+            this.label22.Text = "ИЛИ";
+            // 
             // label19
             // 
             this.label19.AutoSize = true;
@@ -732,6 +742,7 @@
             // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.label23);
             this.tabPage6.Controls.Add(this.label20);
             this.tabPage6.Controls.Add(this.label21);
             this.tabPage6.Controls.Add(this.button14);
@@ -1070,14 +1081,14 @@
             this.timer1_sbor.Interval = 1000;
             this.timer1_sbor.Tick += new System.EventHandler(this.timer1_sbor_Tick);
             // 
-            // label22
+            // label23
             // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(466, 210);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(31, 13);
-            this.label22.TabIndex = 18;
-            this.label22.Text = "ИЛИ";
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(1120, 26);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(13, 13);
+            this.label23.TabIndex = 17;
+            this.label23.Text = "0";
             // 
             // Form1
             // 
@@ -1229,6 +1240,7 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label23;
     }
 }
 
