@@ -1402,6 +1402,20 @@ namespace fobos_w
             SqlDataReader reader = command.ExecuteReader();
 
 
+            //очищаем таблицы
+            string sql6_tr = "TRUNCATE TABLE [waviot_prod].[dbo].[devices]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command6_tr = new SqlCommand(sql6_tr, connection);
+            command6_tr.CommandTimeout = 0;
+            command6_tr.ExecuteNonQuery();
+
+            string sql7_tr = "TRUNCATE TABLE [waviot_prod].[dbo].[registrators_channel]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command7_tr = new SqlCommand(sql7_tr, connection);
+            command7_tr.CommandTimeout = 0;
+            command7_tr.ExecuteNonQuery();
+            //////////////////////////////////////////////////////////////
+
             if (reader.HasRows)
             {
                 while (reader.Read())
@@ -1456,35 +1470,10 @@ namespace fobos_w
                                                 device_id_4 = command4_1.ExecuteScalar().ToString();
                                             }
 
+                                       
 
 
-                                            if (device_id_4 == keyValue.Value.id)
-                                            {
-                                                // запрос
-                                                string sql4_0 = "UPDATE a_dev " +
-                                                                    "  SET    " +
-                                                                    " a_dev.[name]='" + keyValue.Value.name + "' " +
-                                                                    " ,a_dev.[class_name]='" + keyValue.Value.class_name + "' " +
-                                                                    " ,a_dev.[device_sn]='" + keyValue.Value.device_sn + "' " +
-                                                                    " ,a_dev.[modem_16hex_id]='" + keyValue.Value.modem_id + "' " +
-                                                                    " ,a_dev.[device_time]='" + keyValue.Value.device_time + "' " +
-                                                                    " ,a_dev.[config_time]='" + keyValue.Value.config_time + "' " +
-                                                                    " ,a_dev.[timezone]='" + keyValue.Value.timezone + "' " +
-                                                                    " ,a_dev.[modem_id]=b_mdms.[id] " +
-                                                                    " FROM " +
-                                                                    "      [waviot_prod].[dbo].[devices] AS a_dev " +
-                                                                    "      INNER JOIN [waviot_prod].[dbo].[modems] AS b_mdms " +
-                                                                    "       ON b_mdms.[id_16hex]='" + keyValue.Value.modem_id + "' " +
-                                                " WHERE  " +
-                                                                    "     [device_id] = '" + keyValue.Value.id + "' " +
-                                                                    " ";
-                                                // объект для выполнения SQL-запроса
-                                                SqlCommand command4_0 = new SqlCommand(sql4_0, connection);
-                                                command4_0.ExecuteNonQuery();
-                                            }
-                                            else
-                                            {
-                                                string sql4 = "" +
+                                        string sql4 = "" +
                                                  "INSERT INTO [waviot_prod].[dbo].[devices] ( " +
                                                                                   " [device_id] " +
                                                                                   " ,[name] " +
@@ -1512,7 +1501,7 @@ namespace fobos_w
 
                                                 SqlCommand command4 = new SqlCommand(sql4, connection);
                                                 command4.ExecuteNonQuery();
-                                            }
+                                            
                                         //////////////////////////////////////////////////////////////////
                                         ///
                                         try
@@ -1530,33 +1519,7 @@ namespace fobos_w
                                                     Application.DoEvents();
                                                     //запись в базу registrators
 
-                                                    if (device_id_4 == keyValue.Value.id)
-                                                    {
-
-
-                                                        // запрос
-                                                        string sql6_0 = "UPDATE [waviot_prod].[dbo].[registrators_channel] " +
-                                                                            "  SET    " +
-                                                                            " [id_registrators]             ='" + keyValue2.Value.id + "' " +
-                                                                            " ,[name]                       ='" + keyValue2.Value.name + "' " +
-                                                                            " ,[channel_id]                 ='" + keyValue2.Value.channel_id + "' " +
-                                                                            " ,[unit_id]                    ='" + keyValue2.Value.unit_id + "' " +
-                                                                            " ,[offset]                     ='" + keyValue2.Value.offset + "' " +
-                                                                            " ,[modem_value]                ='" + keyValue2.Value.modem_value + "' " +
-                                                                            " ,[last_value]                 ='" + keyValue2.Value.last_value + "' " +
-                                                                            " ,[last_value_timestamp]       ='" + keyValue2.Value.last_value_timestamp + "' " +
-                                                                            " ,[billing_init_value]         ='" + keyValue2.Value.billing_init_value + "' " +
-                                                                            " ,[billing_init_timestamp]     ='" + keyValue2.Value.billing_init_timestamp + "' " +
-                                                        " WHERE  " +
-                                                                            "     [device_id] = '" + keyValue.Value.id + "' " +
-                                                                            " ";
-                                                        // объект для выполнения SQL-запроса
-                                                        SqlCommand command6_0 = new SqlCommand(sql6_0, connection);
-                                                        command6_0.CommandTimeout = 0;
-                                                        command6_0.ExecuteNonQuery();
-                                                    }
-                                                    else
-                                                    {
+                                                   
 
                                                         //запись в базу registrators_channel                                           
 
@@ -1590,7 +1553,7 @@ namespace fobos_w
                                                         SqlCommand command6 = new SqlCommand(sql6, connection);
                                                         command6.CommandTimeout = 0;
                                                         command6.ExecuteNonQuery();
-                                                    }
+                                                    
                                                     //////////////////////////////////////////////////////////////////
 
                                                     if (keyValue2.Value.events != "" && keyValue2.Value.events != "[]" && keyValue2.Value.events != null)
