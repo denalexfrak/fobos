@@ -1513,12 +1513,17 @@ namespace fobos_w
                                                 SqlCommand command4 = new SqlCommand(sql4, connection);
                                                 command4.ExecuteNonQuery();
                                             }
-                                            //////////////////////////////////////////////////////////////////
+                                        //////////////////////////////////////////////////////////////////
+                                        ///
+                                        try
+                                        {
+
                                             if (keyValue.Key != null && keyValue.Value.registrators != null)
                                             {
-
-                                                var output2 = JsonConvert.DeserializeObject<Dictionary<string, Registr>>(keyValue.Value.registrators.ToString());
                                                 textBox11.Text = keyValue.Value.registrators.ToString();
+                                                var output2 = JsonConvert.DeserializeObject<Dictionary<string, Registr>>(keyValue.Value.registrators.ToString());
+
+
                                                 foreach (KeyValuePair<string, Registr> keyValue2 in output2)
                                                 {
                                                     //   MessageBox.Show(keyValue2.Key + "---" + keyValue2.Value.id);
@@ -1650,10 +1655,20 @@ namespace fobos_w
 
                                                     }
                                                 }
+
+
+
                                                 output2.Clear();
                                             }
-
                                         }
+                                        catch
+                                        {
+                                            //  MessageBox.Show(keyValue.Value.registrators.ToString()); //Ловим ошибку - пустое значение JSON
+
+                                            label6.Text = Convert.ToString(Convert.ToInt32(label6.Text)+1);
+                                        }
+
+                                    }
                                     }
                                     output.Clear();
                                 }

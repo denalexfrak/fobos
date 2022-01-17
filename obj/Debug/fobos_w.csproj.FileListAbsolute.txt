@@ -109,3 +109,8 @@ D:\project c\fobos\fobos_w\fobos_w\bin\Debug\System.Xml.XPath.dll
 D:\project c\fobos\fobos_w\fobos_w\bin\Debug\System.Xml.XPath.XDocument.dll
 D:\project c\fobos\fobos_w\fobos_w\bin\Debug\Json.Net.dll
 D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.exe.config
+D:\project c\fobos\fobos_w\fobos_w\bin\Debug\fobos_w.exe.manifest
+D:\project c\fobos\fobos_w\fobos_w\bin\Debug\fobos_w.application
+D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.TrustInfo.xml
+D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.exe.manifest
+D:\project c\fobos\fobos_w\fobos_w\obj\Debug\fobos_w.application
