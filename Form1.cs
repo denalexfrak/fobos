@@ -2283,7 +2283,7 @@ namespace fobos_w
                                     }
                                   //  var key = Encoding.UTF8.GetBytes("eyJhbGciOiJIUzI1NiJ9.e30.Qp0tk7JIsvl07YQh52qzHhvVJ_PMm1Mo3BeGP2k-Rcw");
                                     Application.DoEvents();
-                                    string json = getContent("https://lk.curog.ru/api.data/get_modem_channel_values/?modem_id=7FA60A&channel=" + reader2.GetString(0) + "" +
+                                    string json = getContent("https://lk.curog.ru/api.data/get_modem_channel_values/?modem_id=" + reader.GetString(0) + "&channel=" + reader2.GetString(0) + "" +
                                         "&from=" + timestamp_2 + "" +
                                         "&to=" + unixTimestamp2 + "" +
                                         "&key=9778a18d58d75bf6d569d31ef277c2cc");
