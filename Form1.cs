@@ -2173,6 +2173,10 @@ namespace fobos_w
         }
 
 
+
+
+
+
         void button6_Cl()
         {
             int sec_period = Convert.ToInt32(textBox5.Text) * 60 * 60;
@@ -2277,80 +2281,63 @@ namespace fobos_w
                                     {
                                         label17.Text = UnixToDate(Convert.ToInt32(timestamp_2), "yyyy-MM-dd HH:mm:ss");
                                     }
-
+                                  //  var key = Encoding.UTF8.GetBytes("eyJhbGciOiJIUzI1NiJ9.e30.Qp0tk7JIsvl07YQh52qzHhvVJ_PMm1Mo3BeGP2k-Rcw");
                                     Application.DoEvents();
-                                    string json = getContent("https://lk.curog.ru/api.data/get_modem_channel_values/?modem_id=" + reader.GetString(0) + "&channel=" + reader2.GetString(0) + " " +
-                                        " &from=" + timestamp_2 + " " +
-                                        " &to=" + unixTimestamp2 + " " +
-                                        "  &key=9778a18d58d75bf6d569d31ef277c2cc");
+                                    string json = getContent("https://lk.curog.ru/api.data/get_modem_channel_values/?modem_id=7FA60A&channel=" + reader2.GetString(0) + "" +
+                                        "&from=" + timestamp_2 + "" +
+                                        "&to=" + unixTimestamp2 + "" +
+                                        "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                                    textBox18.Text = reader2.GetString(0) + "    " + json;
+                                    // MessageBox.Show(reader2.GetString(0)+"    "+json);
+
+
+                                    //WebRequest request = WebRequest.Create("https://auth.waviot.ru/?action=user-refresh");
+                                    //WebResponse response = request.GetResponse();
+                                    //// Stream json = response.GetResponseStream();
+                                    //using (Stream stream = response.GetResponseStream())
+                                    //{
+                                    //    using (StreamReader reader3 = new StreamReader(stream))
+                                    //    {
+                                    //        MessageBox.Show(reader2.GetString(0) + "    " + reader3.ReadToEnd());
+                                    //    }
+                                    //}
+                                    //response.Close();
+
+
+
                                     if (json != null)
                                     {
                                         Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
                                         try
                                         {
-                                            
-                                                var str1 = resultObject["values"].ToString();
-                                                string str0 = resultObject["status"].ToString();
-                                                if (str1 != null && str1 != "")
+
+                                            var str1 = resultObject["values"].ToString();
+                                            string str0 = resultObject["status"].ToString();
+                                            if (str1 != null && str1 != "")
+                                            {
+                                                if (str0 == "ok")
                                                 {
-                                                    if (str0 == "ok")
+
+                                                    var output = JsonConvert.DeserializeObject<Dictionary<string, string>>(str1);
+
+                                                    if (output != null)
                                                     {
 
-                                                        var output = JsonConvert.DeserializeObject<Dictionary<string, string>>(str1);
+                                                        textBox6.Text = json;
 
-                                                        if (output != null)
+                                                        foreach (KeyValuePair<string, string> keyValue in output)
                                                         {
+                                                            Application.DoEvents();
+                                                            //  MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
+                                                            // проверяем на нулевые значения разрешено или нет
 
-                                                            textBox6.Text = json;
 
-                                                            foreach (KeyValuePair<string, string> keyValue in output)
+
+                                                            string dev_value_convert = UnixToDate(Convert.ToInt32(keyValue.Key), "yyyy-MM-dd HH:mm:ss");
+
+                                                            if (checkBox1.Checked == false)
                                                             {
-                                                                Application.DoEvents();
-                                                                //  MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
-                                                                // проверяем на нулевые значения разрешено или нет
-
-
-
-                                                                string dev_value_convert = UnixToDate(Convert.ToInt32(keyValue.Key), "yyyy-MM-dd HH:mm:ss");
-
-                                                                if (checkBox1.Checked == false)
-                                                                {
-                                                                    if (keyValue.Value != "0.0000")
-                                                                    {
-                                                                        string id_2 = "";
-                                                                        //проверка на существования повторных показаний
-                                                                        string sql1_1 = "SELECT [id] FROM [waviot_prod].[dbo].[element_values] WHERE [timestamp_]='" + keyValue.Key + "' AND [dev_value]='" + keyValue.Value + "' AND [modem_id]='" + reader.GetInt32(1).ToString() + "' AND [registrator_id]='" + reader2.GetInt32(1).ToString() + "'";
-                                                                        // объект для выполнения SQL-запроса
-                                                                        SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
-                                                                        // выполняем запрос и получаем ответ
-                                                                        if (command1_1.ExecuteScalar() != null)
-                                                                        {
-                                                                            id_2 = command1_1.ExecuteScalar().ToString();
-                                                                        }
-                                                                        if (id_2 == "")
-                                                                        {
-                                                                            string sql4 = "INSERT INTO [waviot_prod].[dbo].[element_values] ( " +
-                                                                                                        "  [modem_id] " +
-                                                                                                        " ,[registrator_id] " +
-                                                                                                        " ,[timestamp_] " +
-                                                                                                        " ,[dev_value] " +
-                                                                                                        " ,[val_date] " +
-                                                                                                        " )" +
-                                                                                                          " VALUES ( " +
-                                                                                                          " '" + reader.GetInt32(1).ToString() + "', " +
-                                                                                                          " '" + reader2.GetInt32(1).ToString() + "', " +
-                                                                                                          " '" + keyValue.Key + "', " +
-                                                                                                          " '" + keyValue.Value + "', " +
-                                                                                                          " '" + dev_value_convert + "' " +
-                                                                                                          " )";
-
-                                                                            // объект для выполнения SQL-запроса
-                                                                            SqlCommand command4 = new SqlCommand(sql4, connection);
-                                                                            command4.ExecuteNonQuery();
-                                                                        }
-                                                                    }
-                                                                }
-                                                                else
+                                                                if (keyValue.Value != "0.0000")
                                                                 {
                                                                     string id_2 = "";
                                                                     //проверка на существования повторных показаний
@@ -2365,19 +2352,19 @@ namespace fobos_w
                                                                     if (id_2 == "")
                                                                     {
                                                                         string sql4 = "INSERT INTO [waviot_prod].[dbo].[element_values] ( " +
-                                                                                                        "  [modem_id] " +
-                                                                                                        " ,[registrator_id] " +
-                                                                                                        " ,[timestamp_] " +
-                                                                                                        " ,[dev_value] " +
-                                                                                                        " ,[val_date] " +
-                                                                                                        " )" +
-                                                                                                          " VALUES ( " +
-                                                                                                          " '" + reader.GetInt32(1).ToString() + "', " +
-                                                                                                          " '" + reader2.GetInt32(1).ToString() + "', " +
-                                                                                                          " '" + keyValue.Key + "', " +
-                                                                                                          " '" + keyValue.Value + "', " +
-                                                                                                          " '" + dev_value_convert + "' " +
-                                                                                                          " )";
+                                                                                                    "  [modem_id] " +
+                                                                                                    " ,[registrator_id] " +
+                                                                                                    " ,[timestamp_] " +
+                                                                                                    " ,[dev_value] " +
+                                                                                                    " ,[val_date] " +
+                                                                                                    " )" +
+                                                                                                      " VALUES ( " +
+                                                                                                      " '" + reader.GetInt32(1).ToString() + "', " +
+                                                                                                      " '" + reader2.GetInt32(1).ToString() + "', " +
+                                                                                                      " '" + keyValue.Key + "', " +
+                                                                                                      " '" + keyValue.Value + "', " +
+                                                                                                      " '" + dev_value_convert + "' " +
+                                                                                                      " )";
 
                                                                         // объект для выполнения SQL-запроса
                                                                         SqlCommand command4 = new SqlCommand(sql4, connection);
@@ -2385,18 +2372,53 @@ namespace fobos_w
                                                                     }
                                                                 }
                                                             }
+                                                            else
+                                                            {
+                                                                string id_2 = "";
+                                                                //проверка на существования повторных показаний
+                                                                string sql1_1 = "SELECT [id] FROM [waviot_prod].[dbo].[element_values] WHERE [timestamp_]='" + keyValue.Key + "' AND [dev_value]='" + keyValue.Value + "' AND [modem_id]='" + reader.GetInt32(1).ToString() + "' AND [registrator_id]='" + reader2.GetInt32(1).ToString() + "'";
+                                                                // объект для выполнения SQL-запроса
+                                                                SqlCommand command1_1 = new SqlCommand(sql1_1, connection);
+                                                                // выполняем запрос и получаем ответ
+                                                                if (command1_1.ExecuteScalar() != null)
+                                                                {
+                                                                    id_2 = command1_1.ExecuteScalar().ToString();
+                                                                }
+                                                                if (id_2 == "")
+                                                                {
+                                                                    string sql4 = "INSERT INTO [waviot_prod].[dbo].[element_values] ( " +
+                                                                                                    "  [modem_id] " +
+                                                                                                    " ,[registrator_id] " +
+                                                                                                    " ,[timestamp_] " +
+                                                                                                    " ,[dev_value] " +
+                                                                                                    " ,[val_date] " +
+                                                                                                    " )" +
+                                                                                                      " VALUES ( " +
+                                                                                                      " '" + reader.GetInt32(1).ToString() + "', " +
+                                                                                                      " '" + reader2.GetInt32(1).ToString() + "', " +
+                                                                                                      " '" + keyValue.Key + "', " +
+                                                                                                      " '" + keyValue.Value + "', " +
+                                                                                                      " '" + dev_value_convert + "' " +
+                                                                                                      " )";
+
+                                                                    // объект для выполнения SQL-запроса
+                                                                    SqlCommand command4 = new SqlCommand(sql4, connection);
+                                                                    command4.ExecuteNonQuery();
+                                                                }
+                                                            }
                                                         }
-                                                        output.Clear();
                                                     }
+                                                    output.Clear();
                                                 }
-                                            
+                                            }
+
                                         }
                                         catch
                                         {
                                             i_sbor_data_error = i_sbor_data_error + 1;
                                             label23.Text = Convert.ToString(i_sbor_data_error);
                                         }
-                                        }
+                                    }
 
                                 }
                             }

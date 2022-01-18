@@ -122,6 +122,7 @@
             this.toolStripStatusLabel8 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel9 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1_sbor = new System.Windows.Forms.Timer(this.components);
+            this.textBox18 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -465,6 +466,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.textBox18);
             this.tabPage5.Controls.Add(this.label22);
             this.tabPage5.Controls.Add(this.label19);
             this.tabPage5.Controls.Add(this.textBox17);
@@ -693,7 +695,8 @@
             this.textBox6.Location = new System.Drawing.Point(637, 239);
             this.textBox6.Multiline = true;
             this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(584, 316);
+            this.textBox6.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox6.Size = new System.Drawing.Size(584, 194);
             this.textBox6.TabIndex = 9;
             // 
             // label2
@@ -1092,6 +1095,15 @@
             this.timer1_sbor.Interval = 1000;
             this.timer1_sbor.Tick += new System.EventHandler(this.timer1_sbor_Tick);
             // 
+            // textBox18
+            // 
+            this.textBox18.Location = new System.Drawing.Point(637, 439);
+            this.textBox18.Multiline = true;
+            this.textBox18.Name = "textBox18";
+            this.textBox18.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox18.Size = new System.Drawing.Size(584, 116);
+            this.textBox18.TabIndex = 19;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1243,6 +1255,7 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox textBox18;
     }
 }
 
