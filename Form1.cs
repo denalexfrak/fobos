@@ -2168,7 +2168,7 @@ namespace fobos_w
 
         private void button6_Click(object sender, EventArgs e)
         {
-            button11_Cl();
+           // button11_Cl();
             button6_Cl();
         }
 
@@ -2690,7 +2690,7 @@ namespace fobos_w
         {
             button11_Cl();
         }
-            void button11_Cl()
+        void button11_Cl()
         {
             foreach (DataGridViewRow row in dataGridView6.Rows)
             {
@@ -2711,6 +2711,21 @@ namespace fobos_w
             dataGridView6[0, 48].Value = true;
             dataGridView6[0, 52].Value = true;
             dataGridView6[0, 57].Value = true;
+        }
+
+        void button16_Cl()
+        {
+            foreach (DataGridViewRow row in dataGridView6.Rows)
+            {
+                row.Cells[Column7.Name].Value = false;
+            }
+            dataGridView6[0, 0].Value = true;
+            dataGridView6[0, 1].Value = true;
+            dataGridView6[0, 4].Value = true;
+            dataGridView6[0, 5].Value = true;
+            dataGridView6[0, 6].Value = true;
+            dataGridView6[0, 9].Value = true;
+            
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -3065,6 +3080,11 @@ namespace fobos_w
             toolStripStatusLabel8.Text = "Данные получены";
             
 
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            button16_Cl();
         }
     }
     }

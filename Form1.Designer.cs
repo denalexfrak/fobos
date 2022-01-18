@@ -123,6 +123,7 @@
             this.toolStripStatusLabel9 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1_sbor = new System.Windows.Forms.Timer(this.components);
             this.textBox18 = new System.Windows.Forms.TextBox();
+            this.button16 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -599,6 +600,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button16);
             this.groupBox1.Controls.Add(this.button11);
             this.groupBox1.Controls.Add(this.button10);
             this.groupBox1.Controls.Add(this.button9);
@@ -681,7 +683,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(538, 180);
+            this.button7.Location = new System.Drawing.Point(539, 142);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 23);
             this.button7.TabIndex = 5;
@@ -1104,6 +1106,16 @@
             this.textBox18.Size = new System.Drawing.Size(584, 116);
             this.textBox18.TabIndex = 19;
             // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(453, 192);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(148, 31);
+            this.button16.TabIndex = 8;
+            this.button16.Text = "По умолчанию (укороч)";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1256,6 +1268,7 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox textBox18;
+        private System.Windows.Forms.Button button16;
     }
 }
 
