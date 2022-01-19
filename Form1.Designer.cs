@@ -124,6 +124,11 @@
             this.timer1_sbor = new System.Windows.Forms.Timer(this.components);
             this.textBox18 = new System.Windows.Forms.TextBox();
             this.button16 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.button18 = new System.Windows.Forms.Button();
+            this.button19 = new System.Windows.Forms.Button();
+            this.textBox19 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -262,7 +267,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(223, 20);
             this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "ST-ASK-70\\MSSQLSERVER2017";
+            this.textBox1.Text = "172.19.4.22";
             // 
             // tabPage1
             // 
@@ -600,6 +605,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBox4);
+            this.groupBox1.Controls.Add(this.button17);
             this.groupBox1.Controls.Add(this.button16);
             this.groupBox1.Controls.Add(this.button11);
             this.groupBox1.Controls.Add(this.button10);
@@ -683,7 +690,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(539, 142);
+            this.button7.Location = new System.Drawing.Point(539, 42);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 23);
             this.button7.TabIndex = 5;
@@ -749,6 +756,9 @@
             // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.textBox19);
+            this.tabPage6.Controls.Add(this.button19);
+            this.tabPage6.Controls.Add(this.button18);
             this.tabPage6.Controls.Add(this.label23);
             this.tabPage6.Controls.Add(this.label20);
             this.tabPage6.Controls.Add(this.label21);
@@ -877,6 +887,8 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
+            this.checkBox2.Checked = true;
+            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox2.Location = new System.Drawing.Point(8, 95);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(216, 17);
@@ -1108,13 +1120,63 @@
             // 
             // button16
             // 
-            this.button16.Location = new System.Drawing.Point(453, 192);
+            this.button16.Location = new System.Drawing.Point(453, 143);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(148, 31);
             this.button16.TabIndex = 8;
             this.button16.Text = "По умолчанию (укороч)";
             this.button16.UseVisualStyleBackColor = true;
             this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(453, 180);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(148, 41);
+            this.button17.TabIndex = 9;
+            this.button17.Text = "По умолчанию (укороч 2)\r\n3 канала t1 t2 sum A";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(453, 85);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(145, 43);
+            this.checkBox4.TabIndex = 20;
+            this.checkBox4.Text = "Без контроля\r\n повторений показаний\r\n за 1 сутки";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(33, 462);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(230, 67);
+            this.button18.TabIndex = 18;
+            this.button18.Text = "Удаление дубликатов показаний";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(33, 389);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(230, 67);
+            this.button19.TabIndex = 19;
+            this.button19.Text = "Вывод дубликатов показаний";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
+            // 
+            // textBox19
+            // 
+            this.textBox19.Location = new System.Drawing.Point(452, 138);
+            this.textBox19.Multiline = true;
+            this.textBox19.Name = "textBox19";
+            this.textBox19.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox19.Size = new System.Drawing.Size(764, 417);
+            this.textBox19.TabIndex = 20;
             // 
             // Form1
             // 
@@ -1124,7 +1186,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
-            this.Text = "Фобос v0.14";
+            this.Text = "Фобос v0.15";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
@@ -1269,6 +1331,11 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox textBox18;
         private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.TextBox textBox19;
     }
 }
 

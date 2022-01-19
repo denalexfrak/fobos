@@ -2169,11 +2169,241 @@ namespace fobos_w
         private void button6_Click(object sender, EventArgs e)
         {
            // button11_Cl();
-            button6_Cl();
+            
+            if (checkBox4.Checked == true)
+            {
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ///
+                ///                   Чтение и запись показаний с максимальной записи timestamp без проверки дубляжей за 1 сутки
+                ///                   
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ///
+                button6speed_Cl();
+            }
+            else
+            {
+                button6_Cl();
+            }
+         }
+
+
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///
+        ///                   Чтение и запись показаний с максимальной записи timestamp без проверки дубляжей за 1 сутки
+        ///                   
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        void button6speed_Cl()
+        {
+            int sec_period = Convert.ToInt32(textBox5.Text) * 60 * 60;
+            int unixTimestamp2 = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            int sec_from = unixTimestamp2 - sec_period;
+
+            //   dataGridView5.Rows.Clear();
+
+            string connectionString = GetConnectionString();
+
+            SqlConnection connection = new SqlConnection();
+
+            connection.ConnectionString = connectionString;
+
+            connection.Open();
+
+
+
+            //подсчет модемов
+            // запрос            
+            int i_for_progrbar1 = 0;
+            string sql5all_1 = "SELECT count(distinct [id_16hex]) FROM [waviot_prod].[dbo].[modems]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command5all_1 = new SqlCommand(sql5all_1, connection);
+            command5all_1.CommandTimeout = 0;
+            // выполняем запрос и получаем ответ
+            if (command5all_1.ExecuteScalar() != null)
+            {
+                toolStripProgressBar1.Maximum = Convert.ToInt32(command5all_1.ExecuteScalar().ToString());
+            }
+
+            //////////////получение ссписка каналов из таблицы
+            string in_channels_select_id = "";
+            foreach (DataGridViewRow row in dataGridView6.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells[Column7.Name].Value) == true && row.Cells[1].Value != null)
+                {
+                    in_channels_select_id = in_channels_select_id + "," + row.Cells[1].Value.ToString();
+                }
+            }
+            in_channels_select_id = in_channels_select_id.Trim(new Char[] { ' ', ',' });
+            /////////////////////////////////////////////////////
+
+            if (in_channels_select_id != "")
+            {
+                string sql = "SELECT [id_16hex], [id]  FROM [waviot_prod].[dbo].[modems]";
+
+                SqlCommand command = new SqlCommand(sql, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        i_for_progrbar1++;
+                        toolStripProgressBar1.Value = i_for_progrbar1;
+
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        ///
+                        ///                   Чтение и запись показаний за 1 сутки
+                        ///                   
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        Application.DoEvents();
+                            //перебор каналов учета
+                            string sql2 = "SELECT [title], [id] FROM [waviot_prod].[dbo].[registrators] WHERE [id] IN (" + in_channels_select_id + ")";
+
+                            SqlCommand command2 = new SqlCommand(sql2, connection);
+                            SqlDataReader reader2 = command2.ExecuteReader();
+
+
+                            if (reader2.HasRows)
+                            {
+                                while (reader2.Read())
+                                {
+
+                                    int sec_period_2 = Convert.ToInt32(textBox17.Text) * 24 * 60 * 60;
+
+                                    
+                                    string timestamp_2 = "";                              
+
+                                    
+                                        timestamp_2 = Convert.ToString(Convert.ToInt32(unixTimestamp2) - (60 * 60));                                    
+
+                                    label16.Text = timestamp_2;
+                                    
+                                        label17.Text = UnixToDate(Convert.ToInt32(timestamp_2), "yyyy-MM-dd HH:mm:ss");
+                                    
+                                    //  var key = Encoding.UTF8.GetBytes("eyJhbGciOiJIUzI1NiJ9.e30.Qp0tk7JIsvl07YQh52qzHhvVJ_PMm1Mo3BeGP2k-Rcw");
+                                    Application.DoEvents();
+                                    string json = getContent("https://lk.curog.ru/api.data/get_modem_channel_values/?modem_id=" + reader.GetString(0) + "&channel=" + reader2.GetString(0) + "" +
+                                        "&from=" + timestamp_2 + "" +
+                                        "&to=" + unixTimestamp2 + "" +
+                                        "&key=9778a18d58d75bf6d569d31ef277c2cc");
+                                    textBox18.Text = reader2.GetString(0) + "    " + json;
+                                    // MessageBox.Show(reader2.GetString(0)+"    "+json);
+
+
+
+
+                                    if (json != null)
+                                    {
+                                        Newtonsoft.Json.Linq.JObject resultObject = Newtonsoft.Json.Linq.JObject.Parse(json);
+                                        try
+                                        {
+
+                                            var str1 = resultObject["values"].ToString();
+                                            string str0 = resultObject["status"].ToString();
+                                            if (str1 != null && str1 != "")
+                                            {
+                                                if (str0 == "ok")
+                                                {
+
+                                                    var output = JsonConvert.DeserializeObject<Dictionary<string, string>>(str1);
+
+                                                    if (output != null)
+                                                    {
+
+                                                        textBox6.Text = json;
+
+                                                        foreach (KeyValuePair<string, string> keyValue in output)
+                                                        {
+                                                            Application.DoEvents();
+                                                            //  MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
+                                                            // проверяем на нулевые значения разрешено или нет
+
+
+
+                                                            string dev_value_convert = UnixToDate(Convert.ToInt32(keyValue.Key), "yyyy-MM-dd HH:mm:ss");
+
+                                                           
+                                                                if (keyValue.Value != "0.0000")
+                                                                {
+                                                                   
+                                                                        string sql4 = "INSERT INTO [waviot_prod].[dbo].[element_values] ( " +
+                                                                                                    "  [modem_id] " +
+                                                                                                    " ,[registrator_id] " +
+                                                                                                    " ,[timestamp_] " +
+                                                                                                    " ,[dev_value] " +
+                                                                                                    " ,[val_date] " +
+                                                                                                    " )" +
+                                                                                                      " VALUES ( " +
+                                                                                                      " '" + reader.GetInt32(1).ToString() + "', " +
+                                                                                                      " '" + reader2.GetInt32(1).ToString() + "', " +
+                                                                                                      " '" + keyValue.Key + "', " +
+                                                                                                      " '" + keyValue.Value + "', " +
+                                                                                                      " '" + dev_value_convert + "' " +
+                                                                                                      " )";
+
+                                                                        // объект для выполнения SQL-запроса
+                                                                        SqlCommand command4 = new SqlCommand(sql4, connection);
+                                                                        command4.ExecuteNonQuery();
+                                                                    
+                                                                }
+                                                            
+                                                           
+                                                        }
+                                                    }
+                                                    output.Clear();
+                                                }
+                                            }
+
+                                        }
+                                        catch
+                                        {
+                                            i_sbor_data_error = i_sbor_data_error + 1;
+                                            label23.Text = Convert.ToString(i_sbor_data_error);
+                                        }
+                                    }
+
+                                }
+                            }
+                        
+                        
+
+                    }
+
+
+
+
+
+                }
+            }
+            else
+            {
+                textBox6.Text = "Необходимо выбрать хоть один канал.";
+            }
+
+            // запрос
+            string sql_V = "SELECT * " +
+                           "FROM [waviot_prod].[dbo].[element_values]";
+            // объект для выполнения SQL-запроса
+            SqlCommand command_v = new SqlCommand(sql_V, connection);
+
+            command_v.ExecuteNonQuery();
+            System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command_v);
+            DataTable DT = new DataTable();
+            DA.Fill(DT);
+            dataGridView5.DataSource = DT;
+            //закрываем и освобождаем ресурсы         
+
+
+            connection.Close();
+            connection.Dispose();
+
+            toolStripStatusLabel6.Text = "1";
+            toolStripStatusLabel9.Text = "0";
         }
-
-
-
+        /// <summary>
+        /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
 
 
 
@@ -2725,7 +2955,20 @@ namespace fobos_w
             dataGridView6[0, 5].Value = true;
             dataGridView6[0, 6].Value = true;
             dataGridView6[0, 9].Value = true;
-            
+            dataGridView6[0, 14].Value = true;
+
+        }
+
+        void button17_Cl()
+        {
+            foreach (DataGridViewRow row in dataGridView6.Rows)
+            {
+                row.Cells[Column7.Name].Value = false;
+            }
+            dataGridView6[0, 0].Value = true;
+            dataGridView6[0, 1].Value = true;
+            dataGridView6[0, 4].Value = true;            
+
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -2793,15 +3036,41 @@ namespace fobos_w
             {
                 toolStripStatusLabel8.Text = "Показания (fl)";
                 toolStripStatusLabel9.Text = "1";               
-                button11_Cl();               
-                button6_Cl();
+                button11_Cl();
+                if (checkBox4.Checked == true)
+                {
+                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ///
+                    ///                   Чтение и запись показаний с максимальной записи timestamp без проверки дубляжей за 1 сутки
+                    ///                   
+                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ///
+                    button6speed_Cl();
+                }
+                else
+                {
+                    button6_Cl();
+                }
             }
 
             if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "0" && toolStripStatusLabel9.Text == "0" && checkBox2.Checked == true)
             {
                 toolStripStatusLabel8.Text = "Показания (tr)";
-                toolStripStatusLabel9.Text = "1";               
-                button6_Cl();
+                toolStripStatusLabel9.Text = "1";
+                if (checkBox4.Checked == true)
+                {
+                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ///
+                    ///                   Чтение и запись показаний с максимальной записи timestamp без проверки дубляжей за 1 сутки
+                    ///                   
+                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ///
+                    button6speed_Cl();
+                }
+                else
+                {
+                    button6_Cl();
+                }
             }
 
             if (toolStripStatusLabel1.Text == "1" && toolStripStatusLabel2.Text == "1" && toolStripStatusLabel3.Text == "1" && toolStripStatusLabel4.Text == "1" && toolStripStatusLabel5.Text == "1" && toolStripStatusLabel6.Text == "1" && toolStripStatusLabel9.Text == "0")
@@ -2816,6 +3085,8 @@ namespace fobos_w
                 toolStripStatusLabel4.Text = "0";
                 toolStripStatusLabel5.Text = "0";
                 toolStripStatusLabel6.Text = "0";
+
+                button18_Cl();
             }
 
             toolStripStatusLabel9.Text = "1";
@@ -3085,6 +3356,96 @@ namespace fobos_w
         private void button16_Click(object sender, EventArgs e)
         {
             button16_Cl();
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            button17_Cl();
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            button18_Cl();
+        }
+
+
+        void button18_Cl()
+        { 
+            string connectionString = GetConnectionString();
+
+            SqlConnection connection = new SqlConnection();
+
+            connection.ConnectionString = connectionString;
+
+            connection.Open();
+
+
+            string sql4 = "   DELETE FROM[waviot_prod].[dbo].[element_values] " +
+                          "   WHERE " +
+                          "           id in " +
+                          "          (SELECT  " +
+                          "            MIN(b.id) mid " +
+                          "            FROM[waviot_prod].[dbo].[element_values] b " +
+                          "   GROUP BY b.modem_id, b.registrator_id, b.timestamp_, b.dev_value HAVING COUNT(*) > 1 " +
+                          "       ) ";
+
+            // объект для выполнения SQL-запроса
+        SqlCommand command4 = new SqlCommand(sql4, connection);
+            command4.ExecuteNonQuery();
+
+
+            connection.Close();
+            connection.Dispose();
+
+        }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox4.Checked == true)
+            {
+                checkBox3.Enabled = false;
+                textBox17.Enabled = false;
+                textBox5.Enabled = false;
+            }
+            else
+            {
+                checkBox3.Enabled = true;
+                textBox17.Enabled = true;
+                textBox5.Enabled = true;
+            }
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            string connectionString = GetConnectionString();
+
+            SqlConnection connection = new SqlConnection();
+
+            connection.ConnectionString = connectionString;
+
+            connection.Open();
+
+
+            string sql4 = "   SELECT a.* FROM[waviot_prod].[dbo].[element_values] a " +
+                          "   WHERE " +
+                          "           a.id in " +
+                          "          (SELECT  " +
+                          "            MIN(b.id) mid " +
+                          "            FROM[waviot_prod].[dbo].[element_values] b " +
+                          "   GROUP BY b.modem_id, b.registrator_id, b.timestamp_, b.dev_value HAVING COUNT(*) > 1 " +
+                          "       ) ";
+
+           
+            SqlCommand command4 = new SqlCommand(sql4, connection);
+            command4.CommandTimeout = 0;
+            // выполняем запрос и получаем ответ
+            if (command4.ExecuteScalar() != null)
+            {
+                textBox19.Text = command4.ExecuteScalar().ToString();
+            }
+
+            connection.Close();
+            connection.Dispose();
         }
     }
     }
