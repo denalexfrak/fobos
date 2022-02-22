@@ -57,6 +57,7 @@
             this.dataGridView8 = new System.Windows.Forms.DataGridView();
             this.button3 = new System.Windows.Forms.Button();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.textBox18 = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.textBox17 = new System.Windows.Forms.TextBox();
@@ -69,6 +70,9 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView10 = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
@@ -84,6 +88,9 @@
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.button19 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -122,13 +129,6 @@
             this.toolStripStatusLabel8 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel9 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1_sbor = new System.Windows.Forms.Timer(this.components);
-            this.textBox18 = new System.Windows.Forms.TextBox();
-            this.button16 = new System.Windows.Forms.Button();
-            this.button17 = new System.Windows.Forms.Button();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.button18 = new System.Windows.Forms.Button();
-            this.button19 = new System.Windows.Forms.Button();
-            this.textBox19 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -161,6 +161,7 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).BeginInit();
             this.tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage7.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -496,9 +497,19 @@
             this.tabPage5.Text = "Сбор показаний";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // textBox18
+            // 
+            this.textBox18.Location = new System.Drawing.Point(637, 439);
+            this.textBox18.Multiline = true;
+            this.textBox18.Name = "textBox18";
+            this.textBox18.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox18.Size = new System.Drawing.Size(584, 116);
+            this.textBox18.TabIndex = 19;
+            // 
             // label22
             // 
             this.label22.AutoSize = true;
+            this.label22.Enabled = false;
             this.label22.Location = new System.Drawing.Point(466, 210);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(31, 13);
@@ -508,6 +519,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
+            this.label19.Enabled = false;
             this.label19.Location = new System.Drawing.Point(760, 191);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(35, 13);
@@ -516,6 +528,7 @@
             // 
             // textBox17
             // 
+            this.textBox17.Enabled = false;
             this.textBox17.Location = new System.Drawing.Point(706, 188);
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new System.Drawing.Size(48, 20);
@@ -525,6 +538,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
+            this.label18.Enabled = false;
             this.label18.Location = new System.Drawing.Point(634, 191);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(66, 13);
@@ -552,6 +566,7 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
+            this.checkBox3.Enabled = false;
             this.checkBox3.Location = new System.Drawing.Point(469, 190);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(146, 17);
@@ -621,6 +636,39 @@
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Каналы";
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Checked = true;
+            this.checkBox4.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox4.Location = new System.Drawing.Point(453, 85);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(145, 43);
+            this.checkBox4.TabIndex = 20;
+            this.checkBox4.Text = "Без контроля\r\n повторений показаний\r\n за 1 сутки";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(453, 180);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(148, 41);
+            this.button17.TabIndex = 9;
+            this.button17.Text = "По умолчанию (укороч 2)\r\n3 канала t1 t2 sum A";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(453, 143);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(148, 31);
+            this.button16.TabIndex = 8;
+            this.button16.Text = "По умолчанию (укороч)";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // button11
             // 
@@ -711,6 +759,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Enabled = false;
             this.label2.Location = new System.Drawing.Point(598, 225);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(30, 13);
@@ -720,6 +769,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Enabled = false;
             this.label1.Location = new System.Drawing.Point(466, 225);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 13);
@@ -728,6 +778,7 @@
             // 
             // textBox5
             // 
+            this.textBox5.Enabled = false;
             this.textBox5.Location = new System.Drawing.Point(546, 218);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(49, 20);
@@ -756,7 +807,7 @@
             // 
             // tabPage6
             // 
-            this.tabPage6.Controls.Add(this.textBox19);
+            this.tabPage6.Controls.Add(this.dataGridView1);
             this.tabPage6.Controls.Add(this.button19);
             this.tabPage6.Controls.Add(this.button18);
             this.tabPage6.Controls.Add(this.label23);
@@ -784,6 +835,34 @@
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Автозапуск";
             this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(452, 119);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(769, 436);
+            this.dataGridView1.TabIndex = 20;
+            // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(33, 389);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(230, 67);
+            this.button19.TabIndex = 19;
+            this.button19.Text = "Вывод дубликатов показаний";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(33, 462);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(230, 67);
+            this.button18.TabIndex = 18;
+            this.button18.Text = "Удаление дубликатов показаний";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // label23
             // 
@@ -1109,75 +1188,6 @@
             this.timer1_sbor.Interval = 1000;
             this.timer1_sbor.Tick += new System.EventHandler(this.timer1_sbor_Tick);
             // 
-            // textBox18
-            // 
-            this.textBox18.Location = new System.Drawing.Point(637, 439);
-            this.textBox18.Multiline = true;
-            this.textBox18.Name = "textBox18";
-            this.textBox18.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox18.Size = new System.Drawing.Size(584, 116);
-            this.textBox18.TabIndex = 19;
-            // 
-            // button16
-            // 
-            this.button16.Location = new System.Drawing.Point(453, 143);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(148, 31);
-            this.button16.TabIndex = 8;
-            this.button16.Text = "По умолчанию (укороч)";
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
-            // 
-            // button17
-            // 
-            this.button17.Location = new System.Drawing.Point(453, 180);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(148, 41);
-            this.button17.TabIndex = 9;
-            this.button17.Text = "По умолчанию (укороч 2)\r\n3 канала t1 t2 sum A";
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(453, 85);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(145, 43);
-            this.checkBox4.TabIndex = 20;
-            this.checkBox4.Text = "Без контроля\r\n повторений показаний\r\n за 1 сутки";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
-            // 
-            // button18
-            // 
-            this.button18.Location = new System.Drawing.Point(33, 462);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(230, 67);
-            this.button18.TabIndex = 18;
-            this.button18.Text = "Удаление дубликатов показаний";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
-            // 
-            // button19
-            // 
-            this.button19.Location = new System.Drawing.Point(33, 389);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(230, 67);
-            this.button19.TabIndex = 19;
-            this.button19.Text = "Вывод дубликатов показаний";
-            this.button19.UseVisualStyleBackColor = true;
-            this.button19.Click += new System.EventHandler(this.button19_Click);
-            // 
-            // textBox19
-            // 
-            this.textBox19.Location = new System.Drawing.Point(452, 138);
-            this.textBox19.Multiline = true;
-            this.textBox19.Name = "textBox19";
-            this.textBox19.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox19.Size = new System.Drawing.Size(764, 417);
-            this.textBox19.TabIndex = 20;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1186,7 +1196,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
-            this.Text = "Фобос v0.15";
+            this.Text = "Фобос v0.16";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
@@ -1226,6 +1236,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).EndInit();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -1335,7 +1346,7 @@
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.Button button19;
-        private System.Windows.Forms.TextBox textBox19;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 
