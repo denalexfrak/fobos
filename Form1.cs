@@ -2346,7 +2346,7 @@ namespace fobos_w
 
                                                                         // объект для выполнения SQL-запроса
                                                                         SqlCommand command4 = new SqlCommand(sql4, connection);
-                                                            command4.CommandTimeout = 0;
+                                                           // command4.CommandTimeout = 0;
                                                             command4.ExecuteNonQuery();
                                                                     
                                                                 }
@@ -3442,7 +3442,7 @@ namespace fobos_w
            
             SqlCommand command4 = new SqlCommand(sql4, connection);
             command4.CommandTimeout = 0;
-            command4.CommandTimeout = 0;
+           
             // выполняем запрос и получаем ответ
             if (command4.ExecuteScalar() != null)
             {
