@@ -2315,7 +2315,17 @@ namespace fobos_w
 
                                                         textBox6.Text = json;
 
-                                                        foreach (KeyValuePair<string, string> keyValue in output)
+                                                    string sql4_1 = "INSERT INTO [waviot_prod].[dbo].[element_values] ( " +
+                                                                                                    "  [modem_id] " +
+                                                                                                    " ,[registrator_id] " +
+                                                                                                    " ,[timestamp_] " +
+                                                                                                    " ,[dev_value] " +
+                                                                                                    " ,[val_date] " +
+                                                                                                    " )" +
+                                                                                                      " VALUES ";
+                                                    string sql4_2 = "";
+                                                    string sql4_3 = "";
+                                                    foreach (KeyValuePair<string, string> keyValue in output)
                                                         {
                                                             Application.DoEvents();
                                                             //  MessageBox.Show(keyValue.Key + "----" + keyValue.Value);
@@ -2328,32 +2338,41 @@ namespace fobos_w
                                                            
                                                                 if (keyValue.Value != "0.0000")
                                                                 {
-                                                                   
-                                                                        string sql4 = "INSERT INTO [waviot_prod].[dbo].[element_values] ( " +
-                                                                                                    "  [modem_id] " +
-                                                                                                    " ,[registrator_id] " +
-                                                                                                    " ,[timestamp_] " +
-                                                                                                    " ,[dev_value] " +
-                                                                                                    " ,[val_date] " +
-                                                                                                    " )" +
-                                                                                                      " VALUES ( " +
+
+                                                                     sql4_2 = "( " +
                                                                                                       " '" + reader.GetInt32(1).ToString() + "', " +
                                                                                                       " '" + reader2.GetInt32(1).ToString() + "', " +
                                                                                                       " '" + keyValue.Key + "', " +
                                                                                                       " '" + keyValue.Value + "', " +
                                                                                                       " '" + dev_value_convert + "' " +
-                                                                                                      " )";
+                                                                                                      " ) , ";
 
-                                                                        // объект для выполнения SQL-запроса
-                                                                        SqlCommand command4 = new SqlCommand(sql4, connection);
-                                                           // command4.CommandTimeout = 0;
-                                                            command4.ExecuteNonQuery();
-                                                                    
+
+                                                                     sql4_3 = sql4_3 + sql4_2;
+                                                            
                                                                 }
                                                             
                                                            
                                                         }
+
+                                                    if (sql4_3 != "")
+                                                    {
+                                                        sql4_3 = sql4_3.Substring(0, sql4_3.Length - 2);
+
+                                                        
+
+                                                        string sql4 = sql4_1 + sql4_3;
+
+                                                        textBox19.Text = sql4;
+                                                        // объект для выполнения SQL-запроса
+                                                        SqlCommand command4 = new SqlCommand(sql4, connection);
+                                                        command4.CommandTimeout = 3600;
+                                                        command4.ExecuteNonQuery();
+
+
                                                     }
+
+                                                }
                                                     output.Clear();
                                                 }
                                             }
@@ -2385,16 +2404,16 @@ namespace fobos_w
             }
 
             // запрос
-            string sql_V = "SELECT * " +
-                           "FROM [waviot_prod].[dbo].[element_values]";
-            // объект для выполнения SQL-запроса
-            SqlCommand command_v = new SqlCommand(sql_V, connection);
-            command_v.CommandTimeout = 0;
-            command_v.ExecuteNonQuery();
-            System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command_v);
-            DataTable DT = new DataTable();
-            DA.Fill(DT);
-            dataGridView5.DataSource = DT;
+            //string sql_V = "SELECT * " +
+            //               "FROM [waviot_prod].[dbo].[element_values]";
+            //// объект для выполнения SQL-запроса
+            //SqlCommand command_v = new SqlCommand(sql_V, connection);
+            //command_v.CommandTimeout = 0;
+            //command_v.ExecuteNonQuery();
+            //System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter(command_v);
+            //DataTable DT = new DataTable();
+            //DA.Fill(DT);
+            //dataGridView5.DataSource = DT;
             //закрываем и освобождаем ресурсы         
 
 

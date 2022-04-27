@@ -129,6 +129,7 @@
             this.toolStripStatusLabel8 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel9 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1_sbor = new System.Windows.Forms.Timer(this.components);
+            this.textBox19 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -473,6 +474,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.textBox19);
             this.tabPage5.Controls.Add(this.textBox18);
             this.tabPage5.Controls.Add(this.label22);
             this.tabPage5.Controls.Add(this.label19);
@@ -499,11 +501,11 @@
             // 
             // textBox18
             // 
-            this.textBox18.Location = new System.Drawing.Point(637, 439);
+            this.textBox18.Location = new System.Drawing.Point(637, 329);
             this.textBox18.Multiline = true;
             this.textBox18.Name = "textBox18";
             this.textBox18.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox18.Size = new System.Drawing.Size(584, 116);
+            this.textBox18.Size = new System.Drawing.Size(584, 94);
             this.textBox18.TabIndex = 19;
             // 
             // label22
@@ -753,7 +755,7 @@
             this.textBox6.Multiline = true;
             this.textBox6.Name = "textBox6";
             this.textBox6.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox6.Size = new System.Drawing.Size(584, 194);
+            this.textBox6.Size = new System.Drawing.Size(584, 85);
             this.textBox6.TabIndex = 9;
             // 
             // label2
@@ -1188,6 +1190,15 @@
             this.timer1_sbor.Interval = 1000;
             this.timer1_sbor.Tick += new System.EventHandler(this.timer1_sbor_Tick);
             // 
+            // textBox19
+            // 
+            this.textBox19.Location = new System.Drawing.Point(637, 429);
+            this.textBox19.Multiline = true;
+            this.textBox19.Name = "textBox19";
+            this.textBox19.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox19.Size = new System.Drawing.Size(584, 126);
+            this.textBox19.TabIndex = 20;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1347,6 +1358,7 @@
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.TextBox textBox19;
     }
 }
 
